@@ -2,11 +2,14 @@
   "name": "popeye",
   "private": true,
   "version": "0.0.0",
-  "type": "module",
+  "homepage": "./",
+  "main": "./electron/main.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "electron": "electronmon .",
+    "electron-build": "yarn build && electron-builder -m -c.extraMetadata.main=electron/main.js"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -28,6 +31,34 @@
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
     "@vitejs/plugin-react": "^2.0.0",
-    "vite": "^3.0.0"
+    "concurrently": "^7.2.2",
+    "cross-env": "^7.0.3",
+    "electron": "^19.0.8",
+    "electron-builder": "^23.1.0",
+    "electronmon": "^2.0.2",
+    "node-osc": "^8.0.3",
+    "vite": "^3.0.0",
+    "wait-on": "^6.0.1"
+  },
+  "build": {
+    "appId": "com.thomasgeissl.popeye",
+    "productName": "popeye",
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "node_modules/**/*"
+    ],
+    "directories": {
+      "buildResources": "public"
+    },
+    "mac": {
+      "target": "dmg"
+    },
+    "win": {
+      "target": "nsis"
+    },
+    "linux": {
+      "target": "snap"
+    }
   }
 }
