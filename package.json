@@ -3,13 +3,13 @@
   "private": true,
   "version": "0.0.0",
   "homepage": "./",
-  "main": "./electron/main.js",
+  "main": "./public/electron.js",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "electron": "electronmon .",
-    "electron-build": "yarn build && electron-builder -m -c.extraMetadata.main=electron/main.js"
+    "electron-build": "yarn build && electron-builder -m -c.extraMetadata.main=dist/electron.js"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",

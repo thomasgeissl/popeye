@@ -1,13 +1,10 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol } = require("electron");
+const { app, BrowserWindow, protocol, ipcMain } = require("electron");
 const path = require("path");
 const url = require("url");
 
-const Client = require("node-osc").Client;
+const { Client, Message } = require("node-osc");
 const client = new Client("127.0.0.1", 8000);
-client.send("/oscAddress", 200, () => {
-  client.close();
-});
 
 // Create the native browser window.
 function createWindow() {
@@ -26,7 +23,7 @@ function createWindow() {
   // In development, set it to localhost to allow live/hot-reloading.
   const appURL = app.isPackaged
     ? url.format({
-        pathname: path.join(__dirname, "index.html"),
+        pathname: path.join(__dirname, "..", "index.html"),
         protocol: "file:",
         slashes: true,
       })
@@ -95,3 +92,22 @@ app.on("web-contents-created", (event, contents) => {
 
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+ipcMain.on("sendOsc", (event, arg) => {
+  const message = new Message(`/popeye/${arg.address}`);
+  arg?.args.forEach((arg) => {
+    if (typeof arg === "object") {
+      message.append(arg.x);
+      message.append(arg.y);
+      message.append(arg.z);
+      message.append(arg.visibility);
+    } else {
+      message.append(arg);
+    }
+  });
+  client.send(message, (err) => {
+    if (err) {
+      console.error(new Error(err));
+    }
+  });
+});
