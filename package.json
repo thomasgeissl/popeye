@@ -33,8 +33,10 @@
     "@vitejs/plugin-react": "^2.0.0",
     "concurrently": "^7.2.2",
     "cross-env": "^7.0.3",
+    "dotenv": "^16.0.1",
     "electron": "^19.0.8",
     "electron-builder": "^23.1.0",
+    "electron-notarize": "^1.2.1",
     "electronmon": "^2.0.2",
     "node-osc": "^8.0.3",
     "vite": "^3.0.0",
@@ -45,7 +47,7 @@
     "productName": "popeye",
     "files": [
       "dist/**/*",
-      "electron/**/*",
+      "public/**/*",
       "node_modules/**/*"
     ],
     "directories": {
