@@ -100,7 +100,6 @@ ipcMain.on("sendOsc", (event, arg) => {
       message.append(arg.x);
       message.append(arg.y);
       message.append(arg.z);
-      message.append(arg.visibility);
     } else {
       message.append(arg);
     }

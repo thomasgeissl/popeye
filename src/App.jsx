@@ -6,8 +6,8 @@ import MFaceMesh from './components/MFaceMesh'
 function App() {
   return (
     <div className="App">
-      <MPose></MPose>
-      {/* <MHands></MHands> */}
+      {/* <MPose></MPose> */}
+      <MHands></MHands>
       {/* <MFaceMesh></MFaceMesh> */}
     </div>
   )
