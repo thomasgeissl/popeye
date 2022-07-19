@@ -1,10 +1,18 @@
 // Module to control the application lifecycle and the native browser window.
-const { app, BrowserWindow, protocol, ipcMain } = require("electron");
+const {
+  app,
+  BrowserWindow,
+  protocol,
+  ipcMain,
+  systemPreferences,
+} = require("electron");
 const path = require("path");
 const url = require("url");
 
 const { Client, Message } = require("node-osc");
 const client = new Client("127.0.0.1", 8000);
+
+const camera = systemPreferences.askForMediaAccess("camera");
 
 // Create the native browser window.
 function createWindow() {
@@ -14,20 +22,20 @@ function createWindow() {
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
+      nodeIntegration: true,
+      contextIsolation: true,
+      devTools: true,
       preload: path.join(__dirname, "preload.js"),
     },
   });
 
-  // In production, set the initial browser path to the local bundle generated
-  // by the Create React App build process.
-  // In development, set it to localhost to allow live/hot-reloading.
-  console.log(__dirname);
   const appURL = app.isPackaged
-    ? url.format({
-        pathname: path.join(__dirname, "index.html"),
-        protocol: "file:",
-        slashes: true,
-      })
+    ? // ? url.format({
+      //     pathname: path.join(__dirname, "index.html"),
+      //     protocol: "file:",
+      //     slashes: true,
+      //   })
+      `file://${path.join(__dirname, "..", "dist", "index.html")}`
     : "http://localhost:5173";
   mainWindow.loadURL(appURL);
 
@@ -35,6 +43,31 @@ function createWindow() {
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
+}
+
+async function askForMediaAccess() {
+  try {
+    if (platform !== "darwin") {
+      return true;
+    }
+
+    const status = await systemPreferences.getMediaAccessStatus("camera");
+    log.info("Current camera access status:", status);
+
+    if (status === "not-determined") {
+      const success = await systemPreferences.askForMediaAccess("camera");
+      log.info(
+        "Result of camera access:",
+        success.valueOf() ? "granted" : "denied"
+      );
+      return success.valueOf();
+    }
+
+    return status === "granted";
+  } catch (error) {
+    log.error("Could not get camera permission:", error.message);
+  }
+  return false;
 }
 
 // Setup a local proxy to adjust the paths of requested files when loading
@@ -55,7 +88,8 @@ function setupLocalFilesNormalizerProxy() {
 // This method will be called when Electron has finished its initialization and
 // is ready to create the browser windows.
 // Some APIs can only be used after this event occurs.
-app.whenReady().then(() => {
+app.whenReady().then(async () => {
+  // await askForMediaAccess();
   createWindow();
   setupLocalFilesNormalizerProxy();
 

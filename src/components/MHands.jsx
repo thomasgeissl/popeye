@@ -1,14 +1,14 @@
 import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
-import { Hands } from "@mediapipe/hands";
-import { Camera } from "@mediapipe/camera_utils";
+// import { Hands } from "@mediapipe/hands";
+// import { Camera } from "@mediapipe/camera_utils";
 import * as THREE from "three";
 // import { LandmarkGrid } from "@mediapipe/control_utils_3d";
-import {
-  drawConnectors,
-  drawLandmarks,
-  HAND_CONNECTIONS,
-} from "@mediapipe/drawing_utils";
+// import {
+//   drawConnectors,
+//   drawLandmarks,
+//   HAND_CONNECTIONS,
+// } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
 
 const Overlay = styled.canvas`

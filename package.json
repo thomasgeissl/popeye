@@ -2,14 +2,13 @@
   "name": "popeye",
   "private": true,
   "version": "0.0.0",
-  "homepage": "./",
   "main": "./public/electron.js",
   "scripts": {
     "dev": "vite",
-    "build": "vite build",
+    "build": "vite build  --base=./",
     "preview": "vite preview",
     "electron": "electronmon .",
-    "electron-build": "yarn build && electron-builder -m -c.extraMetadata.main=dist/electron.js"
+    "electron-build": "yarn build && cp ./public/entitlements.mac.plist ./dist && electron-builder -m -c.extraMetadata.main=dist/electron.js"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
@@ -56,7 +55,9 @@
       "buildResources": "public"
     },
     "mac": {
-      "target": "dmg"
+      "target": "dmg",
+      "entitlements": "dist/entitlements.mac.plist",
+      "entitlementsInherit": "dist/entitlements.mac.plist"
     },
     "win": {
       "target": "nsis"

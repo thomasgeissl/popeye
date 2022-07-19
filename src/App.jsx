@@ -9,9 +9,9 @@ function App() {
   return (
     <div className="App">
       {/* <MPose></MPose> */}
-      {/* <MHands></MHands> */}
+      <MHands></MHands>
       {/* <MFaceMesh></MFaceMesh> */}
-      <MHolistic></MHolistic>
+      {/* <MHolistic></MHolistic> */}
       {/* <FaceExpression></FaceExpression> */}
     </div>
   )
