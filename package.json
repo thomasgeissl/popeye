@@ -20,7 +20,10 @@
     "@mediapipe/drawing_utils": "^0.3.1620248257",
     "@mediapipe/face_mesh": "^0.4.1633559619",
     "@mediapipe/hands": "^0.4.1646424915",
+    "@mediapipe/holistic": "^0.5.1635989137",
     "@mediapipe/pose": "^0.5.1635988162",
+    "face-api.js": "^0.22.2",
+    "node-osc": "^8.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-webcam": "^7.0.1",
@@ -38,7 +41,6 @@
     "electron-builder": "^23.1.0",
     "electron-notarize": "^1.2.1",
     "electronmon": "^2.0.2",
-    "node-osc": "^8.0.3",
     "vite": "^3.0.0",
     "wait-on": "^6.0.1"
   },
