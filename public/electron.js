@@ -12,7 +12,7 @@ const url = require("url");
 const { Client, Message } = require("node-osc");
 const client = new Client("127.0.0.1", 8000);
 
-const camera = systemPreferences.askForMediaAccess("camera");
+// const camera = systemPreferences.askForMediaAccess("camera");
 
 // Create the native browser window.
 function createWindow() {

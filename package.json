@@ -57,7 +57,8 @@
     "mac": {
       "target": "dmg",
       "entitlements": "dist/entitlements.mac.plist",
-      "entitlementsInherit": "dist/entitlements.mac.plist"
+      "entitlementsInherit": "dist/entitlements.mac.plist",
+      "hardenedRuntime": false
     },
     "win": {
       "target": "nsis"
