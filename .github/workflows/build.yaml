@@ -10,7 +10,7 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: yarn electron-build-linux
-  build-max:
+  build-mac:
     runs-on: macOS-latest
     steps:
       - uses: actions/checkout@v3
@@ -19,3 +19,12 @@ jobs:
           node-version: '16'
       - run: yarn
       - run: yarn electron-build-mac
+  build-win:
+    runs-on: win-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16'
+      - run: yarn
+      - run: yarn electron-build-win

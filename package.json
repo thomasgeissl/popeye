@@ -10,7 +10,8 @@
     "electron": "electronmon .",
     "electron-build": "yarn electron-build-mac",
     "electron-build-mac": "yarn build && cp ./public/entitlements.mac.plist ./dist && electron-builder -m -c.extraMetadata.main=dist/electron.js",
-    "electron-build-linux": "yarn build && electron-builder -l -c.extraMetadata.main=dist/electron.js"
+    "electron-build-linux": "yarn build && electron-builder -l -c.extraMetadata.main=dist/electron.js",
+    "electron-build-win": "yarn build && electron-builder -w -c.extraMetadata.main=dist/electron.js"
   },
   "dependencies": {
     "@emotion/react": "^11.9.3",
