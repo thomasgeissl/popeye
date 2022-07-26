@@ -9,4 +9,4 @@ jobs:
         with:
           node-version: '16'
       - run: yarn
-      - run: yarn electron-build
+      - run: yarn electron-build-linux
