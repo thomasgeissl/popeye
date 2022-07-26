@@ -21,13 +21,15 @@
     "@mediapipe/hands": "^0.4.1646424915",
     "@mediapipe/holistic": "^0.5.1635989137",
     "@mediapipe/pose": "^0.5.1635988162",
+    "@mui/icons-material": "^5.8.4",
+    "@mui/material": "^5.9.1",
     "face-api.js": "^0.22.2",
     "node-osc": "^8.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-webcam": "^7.0.1",
     "three": "^0.142.0",
-    "zustand": "^4.0.0-rc.1"
+    "zustand": "^4.0.0-rc.4"
   },
   "devDependencies": {
     "@types/react": "^18.0.15",
@@ -48,12 +50,12 @@
     "productName": "popeye",
     "files": [
       "dist/**/*",
-      "public/**/*",
-      "node_modules/**/*"
+      "public/**/*"
     ],
     "directories": {
       "buildResources": "public"
     },
+    "afterSign": "scripts/notarize.js",
     "mac": {
       "target": "dmg",
       "entitlements": "dist/entitlements.mac.plist",

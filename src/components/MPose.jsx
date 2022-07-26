@@ -11,6 +11,9 @@ import {
 } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
 
+const WebcamContainer = styled.div`
+  display: none;
+`;
 const Overlay = styled.canvas`
   position: absolute;
   top: 0;
@@ -149,7 +152,9 @@ function MPose() {
   }, []);
   return (
     <div className="pose">
-      <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+      <WebcamContainer>
+        <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+      </WebcamContainer>
       <Overlay ref={canvasRef} className="output_canvas"></Overlay>
       <div ref={landmarkRef} className="landmark-grid-container"></div>
     </div>

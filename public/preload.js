@@ -11,7 +11,11 @@ process.once("loaded", () => {
   contextBridge.exposeInMainWorld("api", {
     send: (channel, data) => {
       // whitelist channels
-      let validChannels = ["sendOsc"];
+      let validChannels = [
+        "sendOsc",
+        "setOscDestinationPort",
+        "setOscDestinationHost",
+      ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);
       }

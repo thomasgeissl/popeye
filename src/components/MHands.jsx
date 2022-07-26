@@ -2,7 +2,6 @@ import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
 // import { Hands } from "@mediapipe/hands";
 // import { Camera } from "@mediapipe/camera_utils";
-import * as THREE from "three";
 // import { LandmarkGrid } from "@mediapipe/control_utils_3d";
 // import {
 //   drawConnectors,
@@ -11,10 +10,11 @@ import * as THREE from "three";
 // } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
 
+const WebcamContainer = styled.div`
+  display: none;
+`;
+
 const Overlay = styled.canvas`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 640px;
   height: 480px;
 `;
@@ -111,7 +111,9 @@ function MHands() {
   }, []);
   return (
     <div className="hands">
-      <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+      <WebcamContainer>
+        <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+      </WebcamContainer>
       <Overlay ref={canvasRef} className="output_canvas"></Overlay>
     </div>
   );

@@ -10,7 +10,7 @@ const path = require("path");
 const url = require("url");
 
 const { Client, Message } = require("node-osc");
-const client = new Client("127.0.0.1", 8000);
+let client = new Client("127.0.0.1", 8000);
 
 // const camera = systemPreferences.askForMediaAccess("camera");
 
@@ -144,4 +144,11 @@ ipcMain.on("sendOsc", (event, arg) => {
       console.error(new Error(err));
     }
   });
+});
+ipcMain.on("setOscDestinationHost", (event, arg) => {
+  console.log(client);
+  client = new Client(arg, client.port);
+});
+ipcMain.on("setOscDestinationPort", (event, arg) => {
+  client = new Client(client.host, arg);
 });
