@@ -20,6 +20,7 @@ const Container = styled.div`
 const Content = styled.div`
   flex-grow: 1;
   position: relative;
+  padding:24px;
 `;
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
     <Container>
         <Header></Header>
       <Content>
-        {showSettings && <Settings></Settings>}
+        {(showSettings || !tracker) && <Settings></Settings>}
         {!showSettings && (
           <div>
             {tracker === TRACKERS.POSE && <MPose></MPose>}
