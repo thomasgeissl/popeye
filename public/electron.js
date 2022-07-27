@@ -12,8 +12,10 @@ const url = require("url");
 const { Client, Message } = require("node-osc");
 const mqtt = require("mqtt");
 let oscClient = new Client("127.0.0.1", 8000);
-let oscActive = false;
 let mqttClient = mqtt.connect("mqtt://localhost:1883");
+
+let active = true;
+let oscActive = false;
 let mqttActive = false;
 
 mqttClient.on("connect", function () {
@@ -24,10 +26,7 @@ mqttClient.on("connect", function () {
   });
 });
 
-mqttClient.on("message", function (topic, message) {
-  console.log(message.toString());
-  // client.end()
-});
+mqttClient.on("message", function (topic, message) {});
 
 // const camera = systemPreferences.askForMediaAccess("camera");
 
@@ -146,6 +145,9 @@ app.on("web-contents-created", (event, contents) => {
 // code. You can also put them in separate files and require them here.
 
 ipcMain.on("sendMessage", (event, arg) => {
+  if (!active) {
+    return;
+  }
   const address = `/popeye/${arg.address}`;
   if (oscActive) {
     const message = new Message(address);
@@ -168,6 +170,9 @@ ipcMain.on("sendMessage", (event, arg) => {
   if (mqttActive) {
     mqttClient.publish(address, JSON.stringify(arg));
   }
+});
+ipcMain.on("setActive", (event, arg) => {
+  active = arg;
 });
 ipcMain.on("setOscActive", (event, arg) => {
   oscActive = arg;

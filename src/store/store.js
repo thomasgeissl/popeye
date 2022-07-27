@@ -9,6 +9,7 @@ const TRACKERS = {
 const useStore = create(
   devtools((set) => ({
     tracker: null,
+    active: true,
     oscActive: false,
     oscDestinationHost: "localhost",
     oscDestinationPort: 8000,
@@ -18,6 +19,10 @@ const useStore = create(
     toggleSettings: () =>
       set((state) => ({ showSettings: !state.showSettings })),
     setTracker: (tracker) => set((state) => ({ tracker: tracker })),
+    setActive: (active) => {
+      window.api?.send("setActive", active);
+      set((state) => ({ active: active }));
+    },
     setOscActive: (active) => {
       window.api?.send("setOscActive", active);
       set((state) => ({ oscActive: active }));

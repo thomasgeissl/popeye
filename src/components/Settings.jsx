@@ -65,7 +65,7 @@ function Settings() {
         })}
       </RadioGroup>
       <ul></ul>
-      <h2>output</h2>
+      <h2>outputs</h2>
       <Grid container spacing={2} className="outputs">
         <Grid item xs={6} className="osc">
           <h3>
