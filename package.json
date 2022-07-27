@@ -27,6 +27,7 @@
     "@mui/icons-material": "^5.8.4",
     "@mui/material": "^5.9.1",
     "face-api.js": "^0.22.2",
+    "mqtt": "^4.3.7",
     "node-osc": "^8.0.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

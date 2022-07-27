@@ -51,7 +51,7 @@ function MHands() {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, index) => {
           labels.forEach((label) => {
-            window.api?.send("sendOsc", {
+            window.api?.send("sendMessage", {
               address: `hands/${index}/${label}`,
               args: [landmarks[index]],
             });

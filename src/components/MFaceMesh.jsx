@@ -37,8 +37,8 @@ function MFaceMesh() {
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
     function onResults(results) {
-      console.log(results.multiFaceLandmarks)
-      // window.api?.send("sendOsc", { address: "face_mesh", args: results.multiFaceLandmarks });
+      console.log(results.multiFaceLandmarks);
+      // window.api?.send("sendMessage", { address: "face_mesh", args: results.multiFaceLandmarks });
       canvasCtx.save();
       canvasCtx.clearRect(
         0,

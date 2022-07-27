@@ -10,7 +10,24 @@ const path = require("path");
 const url = require("url");
 
 const { Client, Message } = require("node-osc");
-let client = new Client("127.0.0.1", 8000);
+const mqtt = require("mqtt");
+let oscClient = new Client("127.0.0.1", 8000);
+let oscActive = false;
+let mqttClient = mqtt.connect("mqtt://localhost:1883");
+let mqttActive = false;
+
+mqttClient.on("connect", function () {
+  mqttClient.subscribe("presence", function (err) {
+    if (!err) {
+      mqttClient.publish("presence", "Hello mqtt");
+    }
+  });
+});
+
+mqttClient.on("message", function (topic, message) {
+  console.log(message.toString());
+  // client.end()
+});
 
 // const camera = systemPreferences.askForMediaAccess("camera");
 
@@ -128,27 +145,43 @@ app.on("web-contents-created", (event, contents) => {
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
 
-ipcMain.on("sendOsc", (event, arg) => {
-  const message = new Message(`/popeye/${arg.address}`);
-  arg?.args.forEach((arg) => {
-    if (typeof arg === "object") {
-      message.append(arg.x);
-      message.append(arg.y);
-      message.append(arg.z);
-    } else {
-      message.append(arg);
-    }
-  });
-  client.send(message, (err) => {
-    if (err) {
-      console.error(new Error(err));
-    }
-  });
+ipcMain.on("sendMessage", (event, arg) => {
+  const address = `/popeye/${arg.address}`;
+  if (oscActive) {
+    const message = new Message(address);
+    arg?.args.forEach((arg) => {
+      if (typeof arg === "object") {
+        message.append(arg.x);
+        message.append(arg.y);
+        message.append(arg.z);
+      } else {
+        message.append(arg);
+      }
+    });
+    oscClient.send(message, (err) => {
+      if (err) {
+        console.error(new Error(err));
+      }
+    });
+  }
+
+  if (mqttActive) {
+    mqttClient.publish(address, JSON.stringify(arg));
+  }
+});
+ipcMain.on("setOscActive", (event, arg) => {
+  oscActive = arg;
 });
 ipcMain.on("setOscDestinationHost", (event, arg) => {
-  console.log(client);
-  client = new Client(arg, client.port);
+  console.log(oscClient);
+  oscClient = new Client(arg, oscClient.port);
 });
 ipcMain.on("setOscDestinationPort", (event, arg) => {
-  client = new Client(client.host, arg);
+  oscClient = new Client(oscClient.host, arg);
+});
+ipcMain.on("setMqttActive", (event, arg) => {
+  mqttActive = arg;
+});
+ipcMain.on("setMqttBroker", (event, arg) => {
+  mqttClient = mqtt.connect(arg);
 });

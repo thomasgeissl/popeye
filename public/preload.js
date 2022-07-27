@@ -12,9 +12,12 @@ process.once("loaded", () => {
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
-        "sendOsc",
+        "setOscActive",
         "setOscDestinationPort",
         "setOscDestinationHost",
+        "setMqttActive",
+        "setMqttBroker",
+        "sendMessage",
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);

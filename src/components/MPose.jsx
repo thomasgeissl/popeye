@@ -82,13 +82,13 @@ function MPose() {
         "right_foot_index",
       ];
       labels.forEach((label, index) => {
-        window.api?.send("sendOsc", {
+        window.api?.send("sendMessage", {
           address: `pose/${label}`,
           args: [results.poseLandmarks[index]],
         });
       });
-      // window.api?.send("sendOsc", { address: "pose", args: results.poseLandmarks });
-      // window.api?.send("sendOsc", { address: "pose/raw", args: [JSON.stringify(results.poseLandmarks)] });
+      // window.api?.send("sendMessage", { address: "pose", args: results.poseLandmarks });
+      // window.api?.send("sendMessage", { address: "pose/raw", args: [JSON.stringify(results.poseLandmarks)] });
 
       canvasCtx.save();
       canvasCtx.clearRect(
