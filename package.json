@@ -7,7 +7,7 @@
     "dev": "vite",
     "build": "vite build  --base=./",
     "preview": "vite preview",
-    "electron": "electronmon .",
+    "electron-dev": "electronmon .",
     "electron-build": "yarn electron-build-mac",
     "electron-build-mac": "yarn build && cp ./public/entitlements.mac.plist ./dist && electron-builder -m -c.extraMetadata.main=dist/electron.js",
     "electron-build-linux": "yarn build && electron-builder -l -c.extraMetadata.main=dist/electron.js",
