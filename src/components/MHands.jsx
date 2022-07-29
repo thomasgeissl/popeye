@@ -89,7 +89,7 @@ function MHands() {
     }
     const hands = new Hands({
       locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+        return `/models/hands/${file}`;
       },
     });
     hands.setOptions({

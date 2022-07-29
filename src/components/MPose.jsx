@@ -30,7 +30,7 @@ function MPose() {
     const canvasCtx = canvasRef.current.getContext("2d");
     const pose = new Pose({
       locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/pose/${file}`;
+        return `/models/pose/${file}`;
       },
     });
     pose.setOptions({
