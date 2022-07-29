@@ -21,13 +21,13 @@ function Header() {
   const showSettings = useStore((state) => state.showSettings);
   const toggleSettings = useStore((state) => state.toggleSettings);
   return (
-    <AppBar position="static" sx={{ bgcolor: "lightgreen" }}>
+    <AppBar position="static">
       <Toolbar>
         <ToolbarContent>
           <IconButton
             size="large"
             edge="start"
-            color="inherit"
+            color="secondary"
             aria-label="menu"
             sx={{ mr: 2 }}
             onClick={() => toggleSettings()}
@@ -38,6 +38,7 @@ function Header() {
           <Switch
             checked={active}
             onChange={(event) => setActive(event.target.checked)}
+            color="secondary"
           />
         </ToolbarContent>
       </Toolbar>

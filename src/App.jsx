@@ -10,6 +10,8 @@ import Settings from "./components/Settings";
 import styled from "@emotion/styled";
 import useStore from "./store/store";
 import { TRACKERS } from "./store/store";
+import { ThemeProvider } from "@mui/material";
+import theme from "./theme"
 
 const Container = styled.div`
   display: flex;
@@ -20,7 +22,7 @@ const Container = styled.div`
 const Content = styled.div`
   flex-grow: 1;
   position: relative;
-  padding:24px;
+  padding: 24px;
 `;
 
 function App() {
@@ -29,22 +31,24 @@ function App() {
   const setTracker = useStore((state) => state.setTracker);
 
   return (
-    <Container>
+    <ThemeProvider theme={theme}>
+      <Container>
         <Header></Header>
-      <Content>
-        {(showSettings || !tracker) && <Settings></Settings>}
-        {!showSettings && (
-          <div>
-            {tracker === TRACKERS.POSE && <MPose></MPose>}
-            {tracker === TRACKERS.HANDS && <MHands></MHands>}
-            {/* <MFaceMesh></MFaceMesh> */}
-            {/* <MHolistic></MHolistic> */}
-            {/* <FaceExpression></FaceExpression> */}
-          </div>
-        )}
-      </Content>
+        <Content>
+          {(showSettings || !tracker) && <Settings></Settings>}
+          {!showSettings && (
+            <div>
+              {tracker === TRACKERS.POSE && <MPose></MPose>}
+              {tracker === TRACKERS.HANDS && <MHands></MHands>}
+              {/* <MFaceMesh></MFaceMesh> */}
+              {/* <MHolistic></MHolistic> */}
+              {/* <FaceExpression></FaceExpression> */}
+            </div>
+          )}
+        </Content>
         <Footer></Footer>
-    </Container>
+      </Container>
+    </ThemeProvider>
   );
 }
 

@@ -1,8 +1,9 @@
 import packageJson from "../../package.json";
 import styled from "@emotion/styled";
+import { ThemeOptions } from "../theme";
 
 const Container = styled.div`
-  background-color: lightgreen;
+  background-color: ${ThemeOptions.palette.primary.main};
   display:flex;
   flex-direction:row;
 `;
