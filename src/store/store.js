@@ -8,6 +8,7 @@ const TRACKERS = {
 
 const useStore = create(
   devtools((set) => ({
+    videoDeviceId: null,
     tracker: null,
     active: true,
     oscActive: false,
@@ -19,6 +20,8 @@ const useStore = create(
     toggleSettings: () =>
       set((state) => ({ showSettings: !state.showSettings })),
     setTracker: (tracker) => set((state) => ({ tracker: tracker })),
+    setVideoDeviceId: (videoDeviceId) =>
+      set((state) => ({ videoDeviceId: videoDeviceId })),
     setActive: (active) => {
       window.api?.send("setActive", active);
       set((state) => ({ active: active }));

@@ -1,14 +1,15 @@
-import { useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import styled from "@emotion/styled";
 import useStore from "../store/store";
 import { TRACKERS } from "../store/store";
-import { TextField } from "@mui/material";
+import { MenuItem, TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormControl from "@mui/material/FormControl";
 import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
+import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 
 const Container = styled.div`
@@ -26,8 +27,11 @@ const Form = styled.div`
 `;
 
 function Settings() {
+  // global state
   const tracker = useStore((state) => state.tracker);
   const setTracker = useStore((state) => state.setTracker);
+  const videoDeviceId = useStore((state) => state.videoDeviceId);
+  const setVideoDeviceId = useStore((state) => state.setVideoDeviceId);
   const oscActive = useStore((state) => state.oscActive);
   const setOscActive = useStore((state) => state.setOscActive);
   const oscDestinationPort = useStore((state) => state.oscDestinationPort);
@@ -43,8 +47,29 @@ function Settings() {
   const setMqttActive = useStore((state) => state.setMqttActive);
   const setMqttBroker = useStore((state) => state.setMqttBroker);
 
+  // local state
+  const [devices, setDevices] = useState([]);
+  const handleDevices = useCallback(
+    (mediaDevices) =>
+      setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
+    [setDevices]
+  );
+
+  useEffect(() => {
+    navigator.mediaDevices.enumerateDevices().then(handleDevices);
+  }, [handleDevices]);
+
   return (
     <Container>
+      <h2>input</h2>
+      <Select
+        value={videoDeviceId}
+        onChange={(event) => setVideoDeviceId(event.target.value)}
+      >
+        {devices.map((device, key) => (
+          <MenuItem value={device.deviceId}>{device.label}</MenuItem>
+        ))}
+      </Select>
       <h2>trackers</h2>
       <RadioGroup
         aria-labelledby="demo-radio-buttons-group-label"

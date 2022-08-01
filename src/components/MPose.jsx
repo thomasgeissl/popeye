@@ -4,6 +4,7 @@ import { Pose } from "@mediapipe/pose";
 import { Camera } from "@mediapipe/camera_utils";
 import * as THREE from "three";
 // import { LandmarkGrid } from "@mediapipe/control_utils_3d";
+import useStore from "../store/store";
 import {
   drawConnectors,
   drawLandmarks,
@@ -26,6 +27,8 @@ function MPose() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const landmarkRef = useRef(null);
+  const videoDeviceId = useStore((state) => state.videoDeviceId);
+
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
     const pose = new Pose({
@@ -153,7 +156,12 @@ function MPose() {
   return (
     <div className="pose">
       <WebcamContainer>
-        <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+        <Webcam
+          ref={webcamRef}
+          width="640px"
+          height="480px"
+          videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
+        ></Webcam>
       </WebcamContainer>
       <Overlay ref={canvasRef} className="output_canvas"></Overlay>
       <div ref={landmarkRef} className="landmark-grid-container"></div>

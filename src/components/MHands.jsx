@@ -9,6 +9,7 @@ import Webcam from "react-webcam";
 //   HAND_CONNECTIONS,
 // } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
+import useStore from "../store/store";
 
 const WebcamContainer = styled.div`
   display: none;
@@ -22,6 +23,7 @@ const Overlay = styled.canvas`
 function MHands() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
+  const videoDeviceId = useStore((state) => state.videoDeviceId);
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
     function onResults(results) {
@@ -112,7 +114,12 @@ function MHands() {
   return (
     <div className="hands">
       <WebcamContainer>
-        <Webcam ref={webcamRef} width="640px" height="480px"></Webcam>
+        <Webcam
+          ref={webcamRef}
+          width="640px"
+          height="480px"
+          videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
+        ></Webcam>
       </WebcamContainer>
       <Overlay ref={canvasRef} className="output_canvas"></Overlay>
     </div>
