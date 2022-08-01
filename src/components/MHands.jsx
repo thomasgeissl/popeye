@@ -10,6 +10,7 @@ import Webcam from "react-webcam";
 // } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
 import useStore from "../store/store";
+import ThemeOptions from "../theme";
 
 const WebcamContainer = styled.div`
   display: none;
@@ -78,11 +79,11 @@ function MHands() {
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-            color: "#00FF00",
+            color: ThemeOptions.palette.primary.main,
             lineWidth: 5,
           });
           drawLandmarks(canvasCtx, landmarks, {
-            color: "#FF0000",
+            color: ThemeOptions.palette.secondary.main,
             lineWidth: 2,
           });
         }

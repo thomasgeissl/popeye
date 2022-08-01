@@ -11,6 +11,7 @@ import {
   POSE_CONNECTIONS,
 } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
+import ThemeOptions from "../theme";
 
 const WebcamContainer = styled.div`
   display: none;
@@ -130,11 +131,11 @@ function MPose() {
 
       canvasCtx.globalCompositeOperation = "source-over";
       drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-        color: "#00FF00",
+        color: ThemeOptions.palette.primary.main,
         lineWidth: 1,
       });
       drawLandmarks(canvasCtx, results.poseLandmarks, {
-        color: "#FF0000",
+        color: ThemeOptions.palette.secondary.main,
         lineWidth: 1,
       });
       canvasCtx.restore();
