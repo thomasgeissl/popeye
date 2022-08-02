@@ -29,6 +29,7 @@ function MPose() {
   const canvasRef = useRef(null);
   const landmarkRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
+  const sessionPrefix = useStore((state) => state.sessionPrefix);
 
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
@@ -47,6 +48,13 @@ function MPose() {
     });
     const onResults = (results) => {
       if (!results.poseLandmarks) {
+        canvasCtx.drawImage(
+          results.image,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
         // grid.updateLandmarks([]);
         return;
       }
@@ -88,6 +96,7 @@ function MPose() {
       labels.forEach((label, index) => {
         window.api?.send("sendMessage", {
           address: `pose/${label}`,
+          sessionPrefix,
           args: [results.poseLandmarks[index]],
         });
       });

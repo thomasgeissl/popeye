@@ -14,6 +14,7 @@ const useStore = create(
     oscActive: false,
     oscDestinationHost: "localhost",
     oscDestinationPort: 8000,
+    oscSessionPrefix: "",
     mqttActive: false,
     mqttBroker: "mqtt://localhost:1883",
     showSettings: false,
@@ -38,6 +39,10 @@ const useStore = create(
       window.api?.send("setOscDestinationPort", port);
       set((state) => ({ oscDestinationPort: port }));
     },
+    setOscSessionPrefix: (oscSessionPrefix) => {
+      window.api?.send("setOscSessionPrefix", oscSessionPrefix);
+      set((state) => ({ oscSessionPrefix }));
+    },
     setMqttActive: (active) => {
       window.api?.send("setMqttActive", active);
       set((state) => ({ mqttActive: active }));
@@ -45,6 +50,10 @@ const useStore = create(
     setMqttBroker: (broker) => {
       window.api?.send("setMqttBroker", broker);
       set((state) => ({ mqttBroker: broker }));
+    },
+    setMqttSessionPrefix: (mqttSessionPrefix) => {
+      window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
+      set((state) => ({ mqttSessionPrefix }));
     },
   }))
 );

@@ -19,6 +19,8 @@ process.once("loaded", () => {
         "setMqttActive",
         "setMqttBroker",
         "sendMessage",
+        "setOscSessionPrefix",
+        "setMqttSessionPrefix",
       ];
       if (validChannels.includes(channel)) {
         ipcRenderer.send(channel, data);

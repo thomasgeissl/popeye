@@ -21,8 +21,8 @@ const Content = styled.div`
   position: relative;
 `;
 const Form = styled.div`
-  * {
-    margin-bottom: 12px;
+  .MuiFormControl-root {
+    margin-bottom: 16px;
   }
 `;
 
@@ -46,6 +46,10 @@ function Settings() {
   const mqttBroker = useStore((state) => state.mqttBroker);
   const setMqttActive = useStore((state) => state.setMqttActive);
   const setMqttBroker = useStore((state) => state.setMqttBroker);
+  const oscSessionPrefix = useStore((state) => state.oscSessionPrefix);
+  const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
+  const setOscSessionPrefix = useStore((state) => state.setOscSessionPrefix);
+  const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
 
   // local state
   const [devices, setDevices] = useState([]);
@@ -91,6 +95,7 @@ function Settings() {
       </RadioGroup>
       <ul></ul>
       <h2>outputs</h2>
+
       <Grid container spacing={2} className="outputs">
         <Grid item xs={6} className="osc">
           <h3>
@@ -107,6 +112,7 @@ function Settings() {
               label="host"
               variant="outlined"
               size="small"
+              fullWidth
               value={oscDestinationHost}
               onChange={(event) => {
                 setOscDestinationHost(event.target.value);
@@ -116,10 +122,23 @@ function Settings() {
               label="port"
               variant="outlined"
               size="small"
+              fullWidth
               value={oscDestinationPort}
               onChange={(event) => {
                 setOscDestinationPort(event.target.value);
               }}
+            />
+            <TextField
+              label="session prefix"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={oscSessionPrefix}
+              placeholder="/sessionId"
+              onChange={(event) => {
+                setOscSessionPrefix(event.target.value);
+              }}
+              helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
             />
           </Form>
         </Grid>
@@ -138,10 +157,23 @@ function Settings() {
               label="mqtt broker"
               variant="outlined"
               size="small"
+              fullWidth
               value={mqttBroker}
               onChange={(event) => {
                 setMqttBroker(event.target.value);
               }}
+            />
+            <TextField
+              label="session prefix"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={mqttSessionPrefix}
+              placeholder="sessionId"
+              onChange={(event) => {
+                setMqttSessionPrefix(event.target.value);
+              }}
+              helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
             />
           </Form>
         </Grid>
