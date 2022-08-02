@@ -47,6 +47,13 @@ function MPose() {
     });
     const onResults = (results) => {
       if (!results.poseLandmarks) {
+        canvasCtx.drawImage(
+          results.image,
+          0,
+          0,
+          canvasRef.current.width,
+          canvasRef.current.height
+        );
         // grid.updateLandmarks([]);
         return;
       }
