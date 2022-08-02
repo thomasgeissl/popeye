@@ -91,8 +91,6 @@ function MPose() {
           args: [results.poseLandmarks[index]],
         });
       });
-      // window.api?.send("sendMessage", { address: "pose", args: results.poseLandmarks });
-      // window.api?.send("sendMessage", { address: "pose/raw", args: [JSON.stringify(results.poseLandmarks)] });
 
       canvasCtx.save();
       canvasCtx.clearRect(
@@ -162,6 +160,7 @@ function MPose() {
           width="640px"
           height="480px"
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
+          mirrored={true}
         ></Webcam>
       </WebcamContainer>
       <Overlay ref={canvasRef} className="output_canvas"></Overlay>

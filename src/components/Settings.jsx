@@ -63,11 +63,11 @@ function Settings() {
     <Container>
       <h2>input</h2>
       <Select
-        value={videoDeviceId}
+        value={videoDeviceId ? videoDeviceId : "default"}
         onChange={(event) => setVideoDeviceId(event.target.value)}
       >
         {devices.map((device, key) => (
-          <MenuItem value={device.deviceId}>{device.label}</MenuItem>
+          <MenuItem value={device.deviceId} key={device.deviceId}>{device.label}</MenuItem>
         ))}
       </Select>
       <h2>trackers</h2>
