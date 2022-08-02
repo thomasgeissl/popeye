@@ -13,6 +13,8 @@ const { Client, Message } = require("node-osc");
 const mqtt = require("mqtt");
 let oscClient = new Client("127.0.0.1", 8000);
 let mqttClient = mqtt.connect("mqtt://localhost:1883");
+let oscSessionPrefix = "";
+let mqttSessionPrefix = "";
 
 let active = true;
 let oscActive = false;
@@ -148,9 +150,9 @@ ipcMain.on("sendMessage", (event, arg) => {
   if (!active) {
     return;
   }
-  const address = `/popeye/${arg.address}`;
   if (oscActive) {
-    const message = new Message(address);
+    const oscAddress = `${oscSessionPrefix}/popeye/${arg.address}`;
+    const message = new Message(oscAddress);
     arg?.args.forEach((arg) => {
       if (typeof arg === "object") {
         message.append(arg.x);
@@ -168,7 +170,8 @@ ipcMain.on("sendMessage", (event, arg) => {
   }
 
   if (mqttActive) {
-    mqttClient.publish(address, JSON.stringify(arg));
+    const topic = `${mqttSessionPrefx}/popeye/${arg.address}`;
+    mqttClient.publish(topic, JSON.stringify(arg));
   }
 });
 ipcMain.on("setActive", (event, arg) => {
@@ -178,15 +181,20 @@ ipcMain.on("setOscActive", (event, arg) => {
   oscActive = arg;
 });
 ipcMain.on("setOscDestinationHost", (event, arg) => {
-  console.log(oscClient);
   oscClient = new Client(arg, oscClient.port);
 });
 ipcMain.on("setOscDestinationPort", (event, arg) => {
   oscClient = new Client(oscClient.host, arg);
+});
+ipcMain.on("setOscSessionPrefix", (event, arg) => {
+  oscSessionPrefx = arg;
 });
 ipcMain.on("setMqttActive", (event, arg) => {
   mqttActive = arg;
 });
 ipcMain.on("setMqttBroker", (event, arg) => {
   mqttClient = mqtt.connect(arg);
+});
+ipcMain.on("setMqttSessionPrefix", (event, arg) => {
+  mqttSessionPrefx = arg;
 });
