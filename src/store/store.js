@@ -4,12 +4,16 @@ import { devtools } from "zustand/middleware";
 const TRACKERS = {
   POSE: "POSE",
   HANDS: "HANDS",
+  // FACE_MESH: "FACE_MESH",
+  TEACHABLE_MACHINE: "TEACHABLE_MACHINE",
 };
 
 const useStore = create(
   devtools((set) => ({
     videoDeviceId: null,
     tracker: null,
+    teachableMachineModelUrl:
+      "https://teachablemachine.withgoogle.com/models/4F0vC57p4/",
     active: true,
     oscActive: false,
     oscDestinationHost: "localhost",
@@ -17,7 +21,7 @@ const useStore = create(
     oscSessionPrefix: "",
     mqttActive: false,
     mqttBroker: "mqtt://localhost:1883",
-    showSettings: false,
+    showSettings: true,
     toggleSettings: () =>
       set((state) => ({ showSettings: !state.showSettings })),
     setTracker: (tracker) => set((state) => ({ tracker: tracker })),
@@ -54,6 +58,9 @@ const useStore = create(
     setMqttSessionPrefix: (mqttSessionPrefix) => {
       window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
       set((state) => ({ mqttSessionPrefix }));
+    },
+    setTeachableMachineModelUrl: (teachableMachineModelUrl) => {
+      set((state) => ({ teachableMachineModelUrl }));
     },
   }))
 );

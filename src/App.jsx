@@ -1,9 +1,10 @@
 import { useState } from "react";
 import MPose from "./components/MPose";
 import MHands from "./components/MHands";
-import MFaceMesh from "./components/MFaceMesh";
+// import MFaceMesh from "./components/MFaceMesh";
 import MHolistic from "./components/MHolistic";
 import FaceExpression from "./components/FaceExpression";
+import TeachableMachine from "./components/TeachableMachine";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Settings from "./components/Settings";
@@ -40,6 +41,8 @@ function App() {
             <div>
               {tracker === TRACKERS.POSE && <MPose></MPose>}
               {tracker === TRACKERS.HANDS && <MHands></MHands>}
+              {/* {tracker === TRACKERS.FACE_MESH && <MFaceMesh></MFaceMesh>} */}
+              {tracker === TRACKERS.TEACHABLE_MACHINE && <TeachableMachine></TeachableMachine>}
               {/* <MFaceMesh></MFaceMesh> */}
               {/* <MHolistic></MHolistic> */}
               {/* <FaceExpression></FaceExpression> */}

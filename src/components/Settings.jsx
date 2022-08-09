@@ -50,6 +50,12 @@ function Settings() {
   const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
   const setOscSessionPrefix = useStore((state) => state.setOscSessionPrefix);
   const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
+  const teachableMachineModelUrl = useStore(
+    (state) => state.teachableMachineModelUrl
+  );
+  const setTeachableMachineModelUrl = useStore(
+    (state) => state.setTeachableMachineModelUrl
+  );
 
   // local state
   const [devices, setDevices] = useState([]);
@@ -71,7 +77,9 @@ function Settings() {
         onChange={(event) => setVideoDeviceId(event.target.value)}
       >
         {devices.map((device, key) => (
-          <MenuItem value={device.deviceId} key={device.deviceId}>{device.label}</MenuItem>
+          <MenuItem value={device.deviceId} key={device.deviceId}>
+            {device.label}
+          </MenuItem>
         ))}
       </Select>
       <h2>trackers</h2>
@@ -93,7 +101,18 @@ function Settings() {
           );
         })}
       </RadioGroup>
-      <ul></ul>
+      {tracker === TRACKERS.TEACHABLE_MACHINE && (
+        <TextField
+          label="model url"
+          variant="outlined"
+          size="small"
+          fullWidth
+          value={teachableMachineModelUrl}
+          onChange={(event) => {
+            setTeachableMachineModelUrl(event.target.value);
+          }}
+        />
+      )}
       <h2>outputs</h2>
 
       <Grid container spacing={2} className="outputs">
