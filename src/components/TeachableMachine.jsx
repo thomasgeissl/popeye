@@ -59,7 +59,7 @@ function TeachableMachine() {
       />
       <h3>results</h3>
       <ul>
-        {results.map((result) => {
+        {results.sort((a,b)=>a.label - b.label).map((result) => {
           <li>
             {result.label} {result.confidence}
           </li>;
