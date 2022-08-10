@@ -150,6 +150,7 @@ ipcMain.on("sendMessage", (event, arg) => {
   if (!active) {
     return;
   }
+  // console.log(arg);
   if (oscActive) {
     const oscAddress = `${oscSessionPrefix}/popeye/${arg.address}`;
     const message = new Message(oscAddress);

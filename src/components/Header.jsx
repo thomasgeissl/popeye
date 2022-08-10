@@ -3,6 +3,7 @@ import { Toolbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import Switch from "@mui/material/Switch";
 import { Settings as MenuIcon } from "@mui/icons-material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import useStore from "../store/store";
 import styled from "@emotion/styled";
 
@@ -32,7 +33,8 @@ function Header() {
             sx={{ mr: 2 }}
             onClick={() => toggleSettings()}
           >
-            <MenuIcon />
+            {showSettings && <ArrowBackIcon />}
+            {!showSettings && <MenuIcon />}
           </IconButton>
           <Spacer></Spacer>
           <Switch

@@ -12,6 +12,9 @@ import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 
+import { landmarkPoints as poseLandmarkPoints } from "./MPose";
+import { landmarkPoints as handLandmarkPoints } from "./MHands";
+
 const Container = styled.div`
   display: flex;
   flex-direction: column;
@@ -26,6 +29,10 @@ const Form = styled.div`
   }
 `;
 
+const LandmarksSelector = styled.ul`
+  columns: 4;
+  list-style-type: none;
+`;
 function Settings() {
   // global state
   const tracker = useStore((state) => state.tracker);
@@ -50,6 +57,24 @@ function Settings() {
   const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
   const setOscSessionPrefix = useStore((state) => state.setOscSessionPrefix);
   const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
+  const activePoseLandmarkPoints = useStore(
+    (state) => state.activePoseLandmarkPoints
+  );
+  const activeHandLandmarkPoints = useStore(
+    (state) => state.activeHandLandmarkPoints
+  );
+  const toggleActivePoseLandmarkPoint = useStore(
+    (state) => state.toggleActivePoseLandmarkPoint
+  );
+  const setAllPoseLandmarkPointsActive = useStore(
+    (state) => state.setAllPoseLandmarkPointsActive
+  );
+  const toggleActiveHandLandmarkPoint = useStore(
+    (state) => state.toggleActiveHandLandmarkPoint
+  );
+  const setAllHandLandmarkPointsActive = useStore(
+    (state) => state.setAllHandLandmarkPointsActive
+  );
   const teachableMachineModelUrl = useStore(
     (state) => state.teachableMachineModelUrl
   );
@@ -101,6 +126,60 @@ function Settings() {
           );
         })}
       </RadioGroup>
+      {tracker === TRACKERS.POSE && (
+        <LandmarksSelector>
+          <li key={`poseLandmarkPoint-all`}>
+            <Checkbox
+              checked={false}
+              onChange={() => {
+                setAllPoseLandmarkPointsActive()
+                // setOscActive(event.target.checked);
+              }}
+            />{" "}
+            all
+          </li>
+          {poseLandmarkPoints.map((poseLandmark) => {
+            return (
+              <li key={`poseLandmarkPoint-${poseLandmark}`}>
+                <Checkbox
+                  checked={activePoseLandmarkPoints.includes(poseLandmark)}
+                  onChange={(event) => {
+                    // setOscActive(event.target.checked);
+                    toggleActivePoseLandmarkPoint(poseLandmark);
+                  }}
+                />{" "}
+                {poseLandmark}
+              </li>
+            );
+          })}
+        </LandmarksSelector>
+      )}
+       {tracker === TRACKERS.HANDS && (
+        <LandmarksSelector>
+          <li key={`handLandmarkPoint-all`}>
+            <Checkbox
+              checked={false}
+              onChange={() => {
+                setAllPoseLandmarkPointsActive()
+              }}
+            />{" "}
+            all
+          </li>
+          {handLandmarkPoints.map((handLandmark) => {
+            return (
+              <li key={`handLandmarkPoint-${handLandmark}`}>
+                <Checkbox
+                  checked={activeHandLandmarkPoints.includes(handLandmark)}
+                  onChange={() => {
+                    toggleActiveHandLandmarkPoint(handLandmark);
+                  }}
+                />{" "}
+                {handLandmark}
+              </li>
+            );
+          })}
+        </LandmarksSelector>
+      )}
       {tracker === TRACKERS.TEACHABLE_MACHINE && (
         <TextField
           label="model url"

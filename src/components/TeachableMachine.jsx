@@ -1,7 +1,19 @@
-// https://codesandbox.io/s/react-teachable-machine-image-obmef?file=/src/Ml5tmimg.jsx:0-1579
 import { useRef, useEffect, useState } from "react";
 import ml5 from "ml5";
 import useStore from "../store/store";
+import styled from "@emotion/styled";
+
+const Results = styled.ul`
+  list-style-type: none;
+`;
+const Result = styled.li`
+  position: relative;
+  .confidence {
+    position: relative;
+    width: ${(props) =>
+      (props.confidence > 0.3 ? props.confidence : 0.3) * 100}%;
+  }
+`;
 
 function TeachableMachine() {
   const videoRef = useRef(null);
@@ -15,7 +27,6 @@ function TeachableMachine() {
       return;
     }
     setResults(r);
-    console.log(results);
     r.forEach((result) => {
       // console.log(result.label, result.confidence)
       window.api?.send("sendMessage", {
@@ -44,7 +55,7 @@ function TeachableMachine() {
         }
       }, 500);
     },
-    [setResults],
+    [setClassifier, setResults],
     () => {
       clearInterval(intervalId);
     }
@@ -54,17 +65,23 @@ function TeachableMachine() {
       <video
         ref={videoRef}
         style={{ transform: "scale(-1, 1)" }}
-        width="300"
-        height="150"
+        width="640"
+        height="480"
       />
       <h3>results</h3>
-      <ul>
-        {results.sort((a,b)=>a.label - b.label).map((result) => {
-          <li>
-            {result.label} {result.confidence}
-          </li>;
-        })}
-      </ul>
+      <Results>
+        {results
+          .sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0))
+          .map((result) => {
+            return (
+              <Result confidence={result.confidence}>
+                <span className="confidence">
+                  {result.label}: {Math.round(result.confidence * 100) / 100}
+                </span>
+              </Result>
+            );
+          })}
+      </Results>
     </div>
   );
 }

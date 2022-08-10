@@ -8,10 +8,14 @@ const TRACKERS = {
   TEACHABLE_MACHINE: "TEACHABLE_MACHINE",
 };
 
+import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
+
 const useStore = create(
   devtools((set) => ({
     videoDeviceId: null,
     tracker: null,
+    activePoseLandmarkPoints: [],
+    activeHandLandmarkPoints: [],
     teachableMachineModelUrl:
       "https://teachablemachine.withgoogle.com/models/4F0vC57p4/",
     active: true,
@@ -58,6 +62,44 @@ const useStore = create(
     setMqttSessionPrefix: (mqttSessionPrefix) => {
       window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
       set((state) => ({ mqttSessionPrefix }));
+    },
+    toggleActivePoseLandmarkPoint: (landmarkPoint) => {
+      set((state) => {
+        let activePoseLandmarkPoints = [...state.activePoseLandmarkPoints];
+        if (activePoseLandmarkPoints.includes(landmarkPoint)) {
+          activePoseLandmarkPoints.splice(
+            activePoseLandmarkPoints.indexOf(landmarkPoint),
+            1
+          );
+        } else {
+          activePoseLandmarkPoints.push(landmarkPoint);
+        }
+        return { activePoseLandmarkPoints };
+      });
+    },
+    setAllPoseLandmarkPointsActive: () => {
+      set((state) => {
+        return { activePoseLandmarkPoints: [...poseLandmarkPoints] };
+      });
+    },
+    toggleActiveHandLandmarkPoint: (landmarkPoint) => {
+      set((state) => {
+        let activeHandLandmarkPoints = [...state.activeHandLandmarkPoints];
+        if (activeHandLandmarkPoints.includes(landmarkPoint)) {
+          activeHandLandmarkPoints.splice(
+            activeHandLandmarkPoints.indexOf(landmarkPoint),
+            1
+          );
+        } else {
+          activeHandLandmarkPoints.push(landmarkPoint);
+        }
+        return { activeHandLandmarkPoints };
+      });
+    },
+    setAllHandLandmarkPointsActive: () => {
+      set((state) => {
+        return { activeHandLandmarkPoints: [...handLandmarkPoints] };
+      });
     },
     setTeachableMachineModelUrl: (teachableMachineModelUrl) => {
       set((state) => ({ teachableMachineModelUrl }));

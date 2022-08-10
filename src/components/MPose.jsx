@@ -13,6 +13,42 @@ import {
 import styled from "@emotion/styled";
 import ThemeOptions from "../theme";
 
+const labels = [
+  "nose",
+  "left_eye_inner",
+  "left_eye",
+  "left_eye_outer",
+  "right_eye_inner",
+  "right_eye",
+  "right_eye_outer",
+  "left_ear",
+  "right_ear",
+  "mouth_left",
+  "mouth_right",
+  "left_shoulder",
+  "right_shoulder",
+  "left_elbow",
+  "right_elbow",
+  "left_wrist",
+  "right_wrist",
+  "left_pinky",
+  "right_pinky",
+  "left_index",
+  "right_index",
+  "left_thumb",
+  "right_thumb",
+  "left_hip",
+  "right_hip",
+  "left_knee",
+  "right_knee",
+  "left_ankle",
+  "right_ankle",
+  "left_heel",
+  "right_heel",
+  "left_foot_index",
+  "right_foot_index",
+];
+
 const WebcamContainer = styled.div`
   display: none;
 `;
@@ -30,6 +66,9 @@ function MPose() {
   const landmarkRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
   const sessionPrefix = useStore((state) => state.sessionPrefix);
+  const activePoseLandmarkPoints = useStore(
+    (state) => state.activePoseLandmarkPoints
+  );
 
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
@@ -58,47 +97,15 @@ function MPose() {
         // grid.updateLandmarks([]);
         return;
       }
-      const labels = [
-        "nose",
-        "left_eye_inner",
-        "left_eye",
-        "left_eye_outer",
-        "right_eye_inner",
-        "right_eye",
-        "right_eye_outer",
-        "left_ear",
-        "right_ear",
-        "mouth_left",
-        "mouth_right",
-        "left_shoulder",
-        "right_shoulder",
-        "left_elbow",
-        "right_elbow",
-        "left_wrist",
-        "right_wrist",
-        "left_pinky",
-        "right_pinky",
-        "left_index",
-        "right_index",
-        "left_thumb",
-        "right_thumb",
-        "left_hip",
-        "right_hip",
-        "left_knee",
-        "right_knee",
-        "left_ankle",
-        "right_ankle",
-        "left_heel",
-        "right_heel",
-        "left_foot_index",
-        "right_foot_index",
-      ];
+
       labels.forEach((label, index) => {
-        window.api?.send("sendMessage", {
-          address: `pose/${label}`,
-          sessionPrefix,
-          args: [results.poseLandmarks[index]],
-        });
+        if (activePoseLandmarkPoints.includes(label)) {
+          window.api?.send("sendMessage", {
+            address: `pose/${label}`,
+            sessionPrefix,
+            args: [results.poseLandmarks[index]],
+          });
+        }
       });
 
       canvasCtx.save();
@@ -179,3 +186,4 @@ function MPose() {
 }
 
 export default MPose;
+export { labels as landmarkPoints };
