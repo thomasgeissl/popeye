@@ -22,8 +22,8 @@ const Container = styled.div`
 `;
 const Content = styled.div`
   flex-grow: 1;
-  position: relative;
   padding: 24px;
+  overflow:scroll;
 `;
 
 function App() {

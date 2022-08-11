@@ -46,7 +46,7 @@ function TeachableMachine() {
       };
 
       const intervalId = setInterval(function () {
-        if (classifier) {
+        if (classifier && videoRef.current) {
           classifier.classify(videoRef.current, onResults);
         }
       }, 100);

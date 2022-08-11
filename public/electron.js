@@ -1,3 +1,4 @@
+const fs = require("fs");
 const path = require("path");
 const url = require("url");
 
@@ -216,5 +217,32 @@ ipcMain.on("setMqttBroker", (event, arg) => {
   mqttClient = mqtt.connect(arg);
 });
 ipcMain.on("setMqttSessionPrefix", (event, arg) => {
-  mqttSessionPrefx = arg;
+  mqttSessionPrefix = arg;
+});
+ipcMain.on("save", (event, arg) => {
+  dialog
+    .showSaveDialog(mainWindow, {
+      defaultPath: path.join(app.getPath("home"), "popeye_settings.json"),
+    })
+    .then((result) => {
+      if (!result.canceled) {
+        fs.writeFile(result.filePath, arg, (err, data) => {});
+      }
+    });
+});
+ipcMain.on("load", (event, arg) => {
+  dialog
+    .showOpenDialog(mainWindow, {
+      defaultPath: app.getPath("home"),
+      properties: ["openFile"],
+    })
+    .then((result) => {
+      if (!result.canceled) {
+        fs.readFile(result.filePaths[0], (err, data) => {
+          if (err) throw err;
+          const state = JSON.parse(data);
+          mainWindow.webContents.send("load", state);
+        });
+      }
+    });
 });

@@ -11,6 +11,7 @@ import FormLabel from "@mui/material/FormLabel";
 import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
+import Button from "@mui/material/Button";
 
 import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
@@ -211,6 +212,11 @@ function Settings() {
         </LandmarksSelector>
       )}
       {tracker === TRACKERS.TEACHABLE_MACHINE && (
+       <>
+       <div>
+
+       train a model <a href="https://teachablemachine.withgoogle.com/train">here</a>.
+       </div>
         <TextField
           label="model url"
           variant="outlined"
@@ -221,6 +227,7 @@ function Settings() {
             setTeachableMachineModelUrl(event.target.value);
           }}
         />
+       </> 
       )}
       <h2>outputs</h2>
 
