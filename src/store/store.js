@@ -24,6 +24,12 @@ const useStore = create(
       window.api?.send("setMqttBroker", data.mqttBroker);
       window.api?.send("setMqttSessionPrefix", data.mqttSessionPrefix);
     });
+    window.api?.receive("setTeachableMachineModelUrl", (data) => {
+      console.log(data);
+      set(() => ({
+        teachableMachineModelUrl: data,
+      }));
+    });
     return {
       videoDeviceId: null,
       tracker: null,

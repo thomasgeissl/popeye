@@ -1,6 +1,8 @@
 const fs = require("fs");
+const fse = require("fs-extra");
 const path = require("path");
 const url = require("url");
+const cors = require("cors");
 
 const {
   app,
@@ -15,6 +17,12 @@ const { Client, Message } = require("node-osc");
 
 const express = Express();
 const port = 3333;
+express.use(
+  cors({
+    origin: "*",
+  })
+);
+express.use("/model", Express.static(app.getPath("userData")));
 express.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
@@ -50,6 +58,7 @@ function createWindow() {
     // Set the path of an additional "preload" script that can be used to
     // communicate between node-land and browser-land.
     webPreferences: {
+      webSecurity: false,
       nodeIntegration: true,
       contextIsolation: true,
       devTools: true,
@@ -242,6 +251,34 @@ ipcMain.on("load", (event, arg) => {
           if (err) throw err;
           const state = JSON.parse(data);
           mainWindow.webContents.send("load", state);
+        });
+      }
+    });
+});
+ipcMain.on("loadTeachableMachineModel", (event, arg) => {
+  dialog
+    .showOpenDialog(mainWindow, {
+      defaultPath: app.getPath("home"),
+      properties: ["openDirectory"],
+    })
+    .then((result) => {
+      if (!result.canceled) {
+        console.log(app.getPath("userData"));
+        const sourcePath = result.filePaths[0];
+        const destinationPath = path.join(
+          app.getPath("userData"),
+          "model",
+          path.basename(sourcePath)
+        );
+        fse.copy(sourcePath, destinationPath, (err, data) => {
+          if (err) {
+            console.error(err);
+          } else {
+            mainWindow.webContents.send(
+              "setTeachableMachineModelUrl",
+              `http://localhost:3333/model/${path.basename(destinationPath)}`
+            );
+          }
         });
       }
     });

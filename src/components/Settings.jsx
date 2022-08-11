@@ -141,7 +141,7 @@ function Settings() {
       </RadioGroup>
       {tracker === TRACKERS.POSE && (
         <LandmarksSelector>
-                  <li key={`poseLandmarkPoint-all-json`}>
+          <li key={`poseLandmarkPoint-all-json`}>
             <Checkbox
               checked={allPoseLandmarkPointsAsJson}
               onChange={(event) => {
@@ -212,22 +212,34 @@ function Settings() {
         </LandmarksSelector>
       )}
       {tracker === TRACKERS.TEACHABLE_MACHINE && (
-       <>
-       <div>
-
-       train a model <a href="https://teachablemachine.withgoogle.com/train">here</a>.
-       </div>
-        <TextField
-          label="model url"
-          variant="outlined"
-          size="small"
-          fullWidth
-          value={teachableMachineModelUrl}
-          onChange={(event) => {
-            setTeachableMachineModelUrl(event.target.value);
-          }}
-        />
-       </> 
+        <>
+          <TextField
+            label="model url"
+            variant="outlined"
+            size="small"
+            fullWidth
+            value={teachableMachineModelUrl}
+            onChange={(event) => {
+              setTeachableMachineModelUrl(event.target.value);
+            }}
+          />
+          <div>
+            train a model{" "}
+            <a href="https://teachablemachine.withgoogle.com/train">here</a>.
+          </div>
+          <div>
+            or load one from your filesystem
+            <Button
+            variant="outlined"
+            size="small"
+              onClick={() => {
+                window.api?.send("loadTeachableMachineModel");
+              }}
+            >
+              choose
+            </Button>
+          </div>
+        </>
       )}
       <h2>outputs</h2>
 
