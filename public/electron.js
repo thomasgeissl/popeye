@@ -55,8 +55,6 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
-    // Set the path of an additional "preload" script that can be used to
-    // communicate between node-land and browser-land.
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
@@ -64,6 +62,10 @@ function createWindow() {
       devTools: true,
       preload: path.join(__dirname, "preload.js"),
     },
+  });
+  mainWindow.webContents.on("new-window", function (e, url) {
+    e.preventDefault();
+    require("electron").shell.openExternal(url);
   });
 
   const appURL = app.isPackaged

@@ -225,7 +225,7 @@ function Settings() {
           />
           <div>
             train a model{" "}
-            <a href="https://teachablemachine.withgoogle.com/train">here</a>.
+            <a href="https://teachablemachine.withgoogle.com/train" target="_blank">here</a>.
           </div>
           <div>
             or load one from your filesystem
