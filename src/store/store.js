@@ -15,7 +15,14 @@ const useStore = create(
   devtools((set, get) => {
     window.api?.receive("load", (data) => {
       set(() => data);
-      // TODO: update node side
+      window.api?.send("setActive", data.active);
+      window.api?.send("setOscActive", data.oscActive);
+      window.api?.send("setOscDestinationHost", data.oscDestinationHost);
+      window.api?.send("setOscDestinationPort", data.oscDestinationPort);
+      window.api?.send("setOscSessionPrefix", data.oscSessionPrefix);
+      window.api?.send("setMqttActive", data.mqttActive);
+      window.api?.send("setMqttBroker", data.mqttBroker);
+      window.api?.send("setMqttSessionPrefix", data.mqttSessionPrefix);
     });
     return {
       videoDeviceId: null,
