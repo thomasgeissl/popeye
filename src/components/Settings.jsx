@@ -160,7 +160,7 @@ function Settings() {
             <Checkbox
               checked={false}
               onChange={() => {
-                setAllPoseLandmarkPointsActive()
+                setAllHandLandmarkPointsActive()
               }}
             />{" "}
             all

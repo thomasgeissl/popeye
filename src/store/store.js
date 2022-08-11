@@ -9,6 +9,7 @@ const TRACKERS = {
 };
 
 import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
+import { landmarkPoints as handLandmarkPoints } from "../components/MHands";
 
 const useStore = create(
   devtools((set) => ({

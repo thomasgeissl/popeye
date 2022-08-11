@@ -1,15 +1,24 @@
-// Module to control the application lifecycle and the native browser window.
+const path = require("path");
+const url = require("url");
+
 const {
   app,
   BrowserWindow,
   protocol,
   ipcMain,
   systemPreferences,
+  dialog,
 } = require("electron");
-const path = require("path");
-const url = require("url");
-
+const Express = require("express");
 const { Client, Message } = require("node-osc");
+
+const express = Express();
+const port = 3333;
+express.listen(port, () => {
+  console.log(`Example app listening on port ${port}`);
+});
+
+let mainWindow;
 const mqtt = require("mqtt");
 let oscClient = new Client("127.0.0.1", 8000);
 let mqttClient = mqtt.connect("mqtt://localhost:1883");
@@ -34,7 +43,7 @@ mqttClient.on("message", function (topic, message) {});
 
 // Create the native browser window.
 function createWindow() {
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
     // Set the path of an additional "preload" script that can be used to
@@ -61,6 +70,16 @@ function createWindow() {
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
+
+  // dialog
+  //   .showOpenDialog(mainWindow, {
+  //     properties: ["openDirectory"],
+  //   })
+  //   .then((file) => {
+  //     if (!file.canceled) {
+  //       express.use("/model", express.static(file.filePaths[0]));
+  //     }
+  //   });
 }
 
 async function askForMediaAccess() {
