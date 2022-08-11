@@ -60,6 +60,18 @@ function Settings() {
   const activePoseLandmarkPoints = useStore(
     (state) => state.activePoseLandmarkPoints
   );
+  const allPoseLandmarkPointsAsJson = useStore(
+    (state) => state.allPoseLandmarkPointsAsJson
+  );
+  const setAllPoseLandmarkPointsAsJson = useStore(
+    (state) => state.setAllPoseLandmarkPointsAsJson
+  );
+  const allHandLandmarkPointsJson = useStore(
+    (state) => state.allHandLandmarkPointsJson
+  );
+  const setAllHandLandmarkPointsAsJson = useStore(
+    (state) => state.setAllHandLandmarkPointsAsJson
+  );
   const activeHandLandmarkPoints = useStore(
     (state) => state.activeHandLandmarkPoints
   );
@@ -128,11 +140,20 @@ function Settings() {
       </RadioGroup>
       {tracker === TRACKERS.POSE && (
         <LandmarksSelector>
+                  <li key={`poseLandmarkPoint-all-json`}>
+            <Checkbox
+              checked={allPoseLandmarkPointsAsJson}
+              onChange={(event) => {
+                setAllPoseLandmarkPointsAsJson(event.target.checked);
+              }}
+            />{" "}
+            all as single json
+          </li>
           <li key={`poseLandmarkPoint-all`}>
             <Checkbox
               checked={false}
               onChange={() => {
-                setAllPoseLandmarkPointsActive()
+                setAllPoseLandmarkPointsActive();
                 // setOscActive(event.target.checked);
               }}
             />{" "}
@@ -154,13 +175,22 @@ function Settings() {
           })}
         </LandmarksSelector>
       )}
-       {tracker === TRACKERS.HANDS && (
+      {tracker === TRACKERS.HANDS && (
         <LandmarksSelector>
+          <li key={`handLandmarkPoint-all-json`}>
+            <Checkbox
+              checked={allHandLandmarkPointsJson}
+              onChange={(event) => {
+                setAllHandLandmarkPointsAsJson(event.target.checked);
+              }}
+            />{" "}
+            all as single json
+          </li>
           <li key={`handLandmarkPoint-all`}>
             <Checkbox
               checked={false}
               onChange={() => {
-                setAllHandLandmarkPointsActive()
+                setAllHandLandmarkPointsActive();
               }}
             />{" "}
             all

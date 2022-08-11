@@ -17,6 +17,8 @@ const useStore = create(
     tracker: null,
     activePoseLandmarkPoints: [],
     activeHandLandmarkPoints: [],
+    allPoseLandmarkPointsAsJson: false,
+    allHandLandmarkPointsAsJson: false,
     teachableMachineModelUrl:
       "https://teachablemachine.withgoogle.com/models/4F0vC57p4/",
     active: true,
@@ -83,6 +85,11 @@ const useStore = create(
         return { activePoseLandmarkPoints: [...poseLandmarkPoints] };
       });
     },
+    setAllPoseLandmarkPointsAsJson: (allPoseLandmarkPointsAsJson) => {
+      set((state) => {
+        return { allPoseLandmarkPointsAsJson };
+      });
+    },
     toggleActiveHandLandmarkPoint: (landmarkPoint) => {
       set((state) => {
         let activeHandLandmarkPoints = [...state.activeHandLandmarkPoints];
@@ -100,6 +107,11 @@ const useStore = create(
     setAllHandLandmarkPointsActive: () => {
       set((state) => {
         return { activeHandLandmarkPoints: [...handLandmarkPoints] };
+      });
+    },
+    setAllHandLandmarkPointsAsJson: (allHandLandmarkPointsAsJson) => {
+      set((state) => {
+        return { allHandLandmarkPointsAsJson };
       });
     },
     setTeachableMachineModelUrl: (teachableMachineModelUrl) => {

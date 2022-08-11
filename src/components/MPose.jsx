@@ -69,6 +69,9 @@ function MPose() {
   const activePoseLandmarkPoints = useStore(
     (state) => state.activePoseLandmarkPoints
   );
+  const allPoseLandmarkPointsAsJson = useStore(
+    (state) => state.allPoseLandmarkPointsAsJson
+  );
 
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
@@ -98,6 +101,12 @@ function MPose() {
         return;
       }
 
+      if (allPoseLandmarkPointsAsJson) {
+        window.api?.send("sendMessage", {
+          address: `pose/all`,
+          args: [JSON.stringify(results.poseLandmarks)],
+        });
+      }
       labels.forEach((label, index) => {
         if (activePoseLandmarkPoints.includes(label)) {
           window.api?.send("sendMessage", {

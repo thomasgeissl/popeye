@@ -52,11 +52,20 @@ function MHands() {
   const activeHandLandmarkPoints = useStore(
     (state) => state.activeHandLandmarkPoints
   );
+  const allHandLandmarkPointsAsJson = useStore(
+    (state) => state.allHandLandmarkPointsAsJson
+  );
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
     function onResults(results) {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, index) => {
+          if (allHandLandmarkPointsAsJson) {
+            window.api?.send("sendMessage", {
+              address: `hands/${index}/all`,
+              args: [JSON.stringify(landmarks)],
+            });
+          }
           labels.forEach((label) => {
             if (activeHandLandmarkPoints.includes(label)) {
               window.api?.send("sendMessage", {
