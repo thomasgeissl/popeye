@@ -11,6 +11,7 @@ const {
   ipcMain,
   systemPreferences,
   dialog,
+  session,
 } = require("electron");
 const Express = require("express");
 const { Client, Message } = require("node-osc");
@@ -26,6 +27,19 @@ express.use("/model", Express.static(app.getPath("userData")));
 express.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
+
+// https://levelup.gitconnected.com/use-tensorflow-js-models-in-offline-applications-a7b5b0c67d4
+protocol.registerSchemesAsPrivileged([
+  {
+    scheme: "static",
+    privileges: {
+      standard: true,
+      supportFetchAPI: true,
+      bypassCSP: true,
+      secure: true,
+    },
+  },
+]);
 
 let mainWindow;
 const mqtt = require("mqtt");
@@ -82,16 +96,6 @@ function createWindow() {
   if (!app.isPackaged) {
     mainWindow.webContents.openDevTools();
   }
-
-  // dialog
-  //   .showOpenDialog(mainWindow, {
-  //     properties: ["openDirectory"],
-  //   })
-  //   .then((file) => {
-  //     if (!file.canceled) {
-  //       express.use("/model", express.static(file.filePaths[0]));
-  //     }
-  //   });
 }
 
 async function askForMediaAccess() {
@@ -122,6 +126,14 @@ async function askForMediaAccess() {
 // Setup a local proxy to adjust the paths of requested files when loading
 // them from the local production bundle (e.g.: local fonts, etc...).
 function setupLocalFilesNormalizerProxy() {
+  session.defaultSession.protocol.registerFileProtocol(
+    "static",
+    (request, callback) => {
+      const fileUrl = request.url.replace("static://", "");
+      // const filePath = path.join(app.getAppPath(), '.webpack/renderer', fileUrl);
+      callback({ path: path.normalize(`${__dirname}/${fileUrl}`) });
+    }
+  );
   protocol.registerHttpProtocol(
     "file",
     (request, callback) => {

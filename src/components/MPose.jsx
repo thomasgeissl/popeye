@@ -1,15 +1,15 @@
 import { useRef, useEffect } from "react";
 import Webcam from "react-webcam";
-import { Pose } from "@mediapipe/pose";
-import { Camera } from "@mediapipe/camera_utils";
+// import { Pose } from "@mediapipe/pose";
+// import { Camera } from "@mediapipe/camera_utils";
 import * as THREE from "three";
 // import { LandmarkGrid } from "@mediapipe/control_utils_3d";
 import useStore from "../store/store";
-import {
-  drawConnectors,
-  drawLandmarks,
-  POSE_CONNECTIONS,
-} from "@mediapipe/drawing_utils";
+// import {
+//   drawConnectors,
+//   drawLandmarks,
+//   POSE_CONNECTIONS,
+// } from "@mediapipe/drawing_utils";
 import styled from "@emotion/styled";
 import ThemeOptions from "../theme";
 
@@ -53,9 +53,6 @@ const WebcamContainer = styled.div`
   display: none;
 `;
 const Overlay = styled.canvas`
-  position: absolute;
-  top: 0;
-  left: 0;
   width: 640px;
   height: 480px;
 `;
@@ -77,7 +74,7 @@ function MPose() {
     const canvasCtx = canvasRef.current.getContext("2d");
     const pose = new Pose({
       locateFile: (file) => {
-        return `/models/pose/${file}`;
+        return `static://models/pose/${file}`;
       },
     });
     pose.setOptions({
