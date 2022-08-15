@@ -5,7 +5,7 @@
 popeye does some very basic skeleton and hand tracking, and sends recognized landmarks via osc or mqtt.
 it uses mediapipe internally.
 
-popeye sends a seperate message for each landmark point.
+popeye sends a separate message for each landmark point.
 [session]/popeye/pose/{pointId}
 [session]/popeye/hands/{handIndex}/{pointId}
 
@@ -13,14 +13,14 @@ Please note that mqtt topics have no leading slash.
 
 ## Installation
 ## Mac OS
-[gh releases](https://github.com/thomasgeissl/popeye/releases/)
+download the packaged app from the [gh releases](https://github.com/thomasgeissl/popeye/releases/) pages or install it via brew.
 
-``
+```
 brew tap thomasgeissl/tools
 brew install --cask ragazzi
-``
+```
 ## Windows
-[gh releases](https://github.com/thomasgeissl/popeye/releases/)
+download the packaged app from the [gh releases](https://github.com/thomasgeissl/popeye/releases/) pages.
 
 
 ## Dev
