@@ -11,6 +11,18 @@ popeye sends a seperate message for each landmark point.
 
 Please note that mqtt topics have no leading slash.
 
+## Installation
+## Mac OS
+[gh releases](https://github.com/thomasgeissl/popeye/releases/)
+
+``
+brew tap thomasgeissl/tools
+brew install --cask ragazzi
+``
+## Windows
+[gh releases](https://github.com/thomasgeissl/popeye/releases/)
+
+
 ## Dev
 
 - yarn install
