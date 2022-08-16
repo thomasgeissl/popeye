@@ -78,7 +78,7 @@ function MPose() {
     const canvasCtx = canvasRef.current.getContext("2d");
     const pose = new Pose({
       locateFile: (file) => {
-        return `static://models/pose/${file}`;
+        return window.api ? `static://models/pose/${file}` : `/models/pose/${file}` ;
       },
     });
     pose.setOptions({

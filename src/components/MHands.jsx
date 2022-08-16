@@ -105,7 +105,7 @@ function MHands() {
     }
     const hands = new Hands({
       locateFile: (file) => {
-        return `static://models/hands/${file}`;
+        return window.api ? `static://models/hands/${file}` : `/models/hands/${file}` ;
       },
     });
     hands.setOptions({
