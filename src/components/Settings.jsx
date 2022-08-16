@@ -132,10 +132,9 @@ function Settings() {
       >
         {Object.entries(TRACKERS).map(([key, value]) => {
           return (
-            <>
+            <div key={key}>
               <FormControlLabel
                 value={value}
-                key={key}
                 control={<Radio />}
                 label={value}
               ></FormControlLabel>
@@ -271,7 +270,7 @@ function Settings() {
                   </div>
                 </TrackerSettings>
               )}
-            </>
+            </div>
           );
         })}
       </RadioGroup>
@@ -279,7 +278,7 @@ function Settings() {
       <h2>outputs</h2>
 
       <Grid container spacing={2} className="outputs">
-        <Grid item xs={6} className="osc">
+        {window.api && <Grid item xs={6} className="osc">
           <h3>
             <Checkbox
               checked={oscActive}
@@ -323,7 +322,7 @@ function Settings() {
               helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
             />
           </Form>
-        </Grid>
+        </Grid>}
         <Grid item xs={6} className="mqtt">
           <h3>
             <Checkbox

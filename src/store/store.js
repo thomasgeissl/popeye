@@ -1,5 +1,6 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
+import { connectClient as connectBroker } from "../mqtt";
 
 const TRACKERS = {
   POSE: "POSE",
@@ -50,7 +51,7 @@ const useStore = create(
       oscDestinationPort: 8000,
       oscSessionPrefix: "",
       mqttActive: false,
-      mqttBroker: "mqtt://localhost:1883",
+      mqttBroker: "ws://localhost:9001",
       showSettings: true,
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),
@@ -78,15 +79,20 @@ const useStore = create(
         set((state) => ({ oscSessionPrefix }));
       },
       setMqttActive: (active) => {
-        window.api?.send("setMqttActive", active);
-        set((state) => ({ mqttActive: active }));
+        // window.api?.send("setMqttActive", active);
+        set((state) => {
+          if (active) {
+            connectBroker(state.broker);
+          }
+          return { mqttActive: active };
+        });
       },
       setMqttBroker: (broker) => {
-        window.api?.send("setMqttBroker", broker);
-        set((state) => ({ mqttBroker: broker }));
+        // window.api?.send("setMqttBroker", broker);
+        set((state) => ({ mqttActive: false, mqttBroker: broker }));
       },
       setMqttSessionPrefix: (mqttSessionPrefix) => {
-        window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
+        // window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
         set((state) => ({ mqttSessionPrefix }));
       },
       toggleActivePoseLandmarkPoint: (landmarkPoint) => {

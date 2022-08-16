@@ -11,6 +11,7 @@ import Webcam from "react-webcam";
 import styled from "@emotion/styled";
 import useStore from "../store/store";
 import ThemeOptions from "../theme";
+import {send} from "../sender"
 
 const labels = [
   "wrist",
@@ -61,10 +62,7 @@ function MHands() {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, index) => {
           if (allHandLandmarkPointsAsJson) {
-            window.api?.send("sendMessage", {
-              address: `hands/${index}/all`,
-              args: [JSON.stringify(landmarks)],
-            });
+            send("hands/${index}/all", [JSON.stringify(landmarks)] )
           }
           labels.forEach((label) => {
             if (activeHandLandmarkPoints.includes(label)) {
@@ -120,7 +118,9 @@ function MHands() {
 
     const camera = new Camera(webcamRef.current.video, {
       onFrame: async () => {
-        await hands.send({ image: webcamRef.current.video });
+        if (webcamRef.current?.video) {
+          await hands.send({ image: webcamRef.current.video });
+        }
       },
       width: 640,
       height: 480,

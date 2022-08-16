@@ -13,6 +13,8 @@ import useStore from "../store/store";
 import styled from "@emotion/styled";
 import ThemeOptions from "../theme";
 
+import { send } from "../sender";
+
 const labels = [
   "nose",
   "left_eye_inner",
@@ -63,6 +65,8 @@ function MPose() {
   const landmarkRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
   const sessionPrefix = useStore((state) => state.sessionPrefix);
+  const active = useStore((state) => state.active);
+  const mqttActive = useStore((state) => state.mqttActive);
   const activePoseLandmarkPoints = useStore(
     (state) => state.activePoseLandmarkPoints
   );
@@ -99,18 +103,11 @@ function MPose() {
       }
 
       if (allPoseLandmarkPointsAsJson) {
-        window.api?.send("sendMessage", {
-          address: `pose/all`,
-          args: [JSON.stringify(results.poseLandmarks)],
-        });
+        send(`pose/all`, [results.poseLandmarks]);
       }
       labels.forEach((label, index) => {
         if (activePoseLandmarkPoints.includes(label)) {
-          window.api?.send("sendMessage", {
-            address: `pose/${label}`,
-            sessionPrefix,
-            args: [results.poseLandmarks[index]],
-          });
+          send(`pose/${label}`, [results.poseLandmarks[index]]);
         }
       });
 
@@ -167,7 +164,9 @@ function MPose() {
 
     const camera = new Camera(webcamRef.current.video, {
       onFrame: async () => {
-        await pose.send({ image: webcamRef.current.video });
+        if (webcamRef.current?.video) {
+          await pose.send({ image: webcamRef.current.video });
+        }
       },
       width: 640,
       height: 480,
