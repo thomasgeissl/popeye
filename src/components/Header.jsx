@@ -2,10 +2,10 @@ import AppBar from "@mui/material/AppBar";
 import { Toolbar } from "@mui/material";
 import { IconButton } from "@mui/material";
 import Switch from "@mui/material/Switch";
-import { Settings as MenuIcon } from "@mui/icons-material";
 import { Save as SaveIcon } from "@mui/icons-material";
 import FileOpenIcon from "@mui/icons-material/FileOpen";
-import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import StopIcon from '@mui/icons-material/Stop';
 import useStore from "../store/store";
 import styled from "@emotion/styled";
 
@@ -23,12 +23,13 @@ function Header() {
   const setActive = useStore((state) => state.setActive);
   const showSettings = useStore((state) => state.showSettings);
   const toggleSettings = useStore((state) => state.toggleSettings);
+  const tracker = useStore((state) => state.tracker);
   const save = useStore((state) => state.save);
   return (
     <AppBar position="static">
       <Toolbar>
         <ToolbarContent>
-          <IconButton
+          {tracker && <IconButton
             size="large"
             edge="start"
             color="secondary"
@@ -36,9 +37,9 @@ function Header() {
             sx={{ mr: 2 }}
             onClick={() => toggleSettings()}
           >
-            {showSettings && <ArrowBackIcon />}
-            {!showSettings && <MenuIcon />}
-          </IconButton>
+            {showSettings && <PlayArrowIcon />}
+            {!showSettings && <StopIcon />}
+          </IconButton>}
           <Spacer></Spacer>
           {showSettings && (
             <>
