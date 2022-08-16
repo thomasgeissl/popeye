@@ -14,9 +14,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: '16'
-      - run: |
-        yarn
-        yarn build
+      - run: yarn
+      - run: yarn build
       - uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist  # The folder the action should deploy.
