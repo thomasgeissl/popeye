@@ -1,7 +1,6 @@
 import { useEffect, useState, useCallback } from "react";
 import styled from "@emotion/styled";
-import useStore from "../store/store";
-import { TRACKERS } from "../store/store";
+import useStore, { TM_MODE, TRACKERS } from "../store/store";
 import { MenuItem, TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
@@ -24,6 +23,9 @@ const Content = styled.div`
   flex-grow: 1;
   position: relative;
 `;
+const TrackerSettings = styled.div`
+  padding: 12px;
+`;
 const Form = styled.div`
   .MuiFormControl-root {
     margin-bottom: 16px;
@@ -33,6 +35,7 @@ const Form = styled.div`
 const LandmarksSelector = styled.ul`
   columns: 4;
   list-style-type: none;
+  padding-left: 0;
 `;
 function Settings() {
   // global state
@@ -91,6 +94,8 @@ function Settings() {
   const teachableMachineModelUrl = useStore(
     (state) => state.teachableMachineModelUrl
   );
+  const tmMode = useStore((state) => state.tmMode);
+  const setTmMode = useStore((state) => state.setTmMode);
   const setTeachableMachineModelUrl = useStore(
     (state) => state.setTeachableMachineModelUrl
   );
@@ -122,125 +127,155 @@ function Settings() {
       </Select>
       <h2>trackers</h2>
       <RadioGroup
-        aria-labelledby="demo-radio-buttons-group-label"
-        defaultValue="female"
-        name="radio-buttons-group"
         value={tracker}
         onChange={(event) => setTracker(event.target.value)}
       >
         {Object.entries(TRACKERS).map(([key, value]) => {
           return (
-            <FormControlLabel
-              value={value}
-              key={key}
-              control={<Radio />}
-              label={value}
-            ></FormControlLabel>
+            <>
+              <FormControlLabel
+                value={value}
+                key={key}
+                control={<Radio />}
+                label={value}
+              ></FormControlLabel>
+              {tracker === key && tracker === TRACKERS.POSE && (
+                <TrackerSettings>
+                <LandmarksSelector>
+                  <li key={`poseLandmarkPoint-all-json`}>
+                    <Checkbox
+                      checked={allPoseLandmarkPointsAsJson}
+                      onChange={(event) => {
+                        setAllPoseLandmarkPointsAsJson(event.target.checked);
+                      }}
+                    />{" "}
+                    all as single json
+                  </li>
+                  <li key={`poseLandmarkPoint-all`}>
+                    <Checkbox
+                      checked={false}
+                      onChange={() => {
+                        setAllPoseLandmarkPointsActive();
+                        // setOscActive(event.target.checked);
+                      }}
+                    />{" "}
+                    all
+                  </li>
+                  {poseLandmarkPoints.map((poseLandmark) => {
+                    return (
+                      <li key={`poseLandmarkPoint-${poseLandmark}`}>
+                        <Checkbox
+                          checked={activePoseLandmarkPoints.includes(
+                            poseLandmark
+                          )}
+                          onChange={(event) => {
+                            // setOscActive(event.target.checked);
+                            toggleActivePoseLandmarkPoint(poseLandmark);
+                          }}
+                        />{" "}
+                        {poseLandmark}
+                      </li>
+                    );
+                  })}
+                </LandmarksSelector>
+                </TrackerSettings>
+              )}
+              {tracker === key && tracker === TRACKERS.HANDS && (
+                <TrackerSettings>
+                <LandmarksSelector>
+                  <li key={`handLandmarkPoint-all-json`}>
+                    <Checkbox
+                      checked={allHandLandmarkPointsJson}
+                      onChange={(event) => {
+                        setAllHandLandmarkPointsAsJson(event.target.checked);
+                      }}
+                    />{" "}
+                    all as single json
+                  </li>
+                  <li key={`handLandmarkPoint-all`}>
+                    <Checkbox
+                      checked={false}
+                      onChange={() => {
+                        setAllHandLandmarkPointsActive();
+                      }}
+                    />{" "}
+                    all
+                  </li>
+                  {handLandmarkPoints.map((handLandmark) => {
+                    return (
+                      <li key={`handLandmarkPoint-${handLandmark}`}>
+                        <Checkbox
+                          checked={activeHandLandmarkPoints.includes(
+                            handLandmark
+                          )}
+                          onChange={() => {
+                            toggleActiveHandLandmarkPoint(handLandmark);
+                          }}
+                        />{" "}
+                        {handLandmark}
+                      </li>
+                    );
+                  })}
+                </LandmarksSelector>
+                </TrackerSettings>
+              )}
+              {tracker === key && tracker === TRACKERS.TEACHABLE_MACHINE && (
+                <TrackerSettings>
+                  <RadioGroup
+                    value={tmMode}
+                    onChange={(event) => setTmMode(event.target.value)}
+                  >
+                    {Object.entries(TM_MODE).map(([key, value]) => {
+                      return (
+                        <FormControlLabel
+                          value={value}
+                          key={key}
+                          control={<Radio />}
+                          label={value}
+                        ></FormControlLabel>
+                      );
+                    })}
+                  </RadioGroup>
+                  <TextField
+                    label="model url"
+                    variant="outlined"
+                    size="small"
+                    fullWidth
+                    value={teachableMachineModelUrl}
+                    onChange={(event) => {
+                      setTeachableMachineModelUrl(event.target.value);
+                    }}
+                  />
+
+                  <div>
+                    train a model{" "}
+                    <a
+                      href="https://teachablemachine.withgoogle.com/train"
+                      target="_blank"
+                    >
+                      here
+                    </a>
+                    .
+                  </div>
+                  <div>
+                    or load one from your filesystem
+                    <Button
+                      variant="outlined"
+                      size="small"
+                      onClick={() => {
+                        window.api?.send("loadTeachableMachineModel");
+                      }}
+                    >
+                      choose
+                    </Button>
+                  </div>
+                </TrackerSettings>
+              )}
+            </>
           );
         })}
       </RadioGroup>
-      {tracker === TRACKERS.POSE && (
-        <LandmarksSelector>
-          <li key={`poseLandmarkPoint-all-json`}>
-            <Checkbox
-              checked={allPoseLandmarkPointsAsJson}
-              onChange={(event) => {
-                setAllPoseLandmarkPointsAsJson(event.target.checked);
-              }}
-            />{" "}
-            all as single json
-          </li>
-          <li key={`poseLandmarkPoint-all`}>
-            <Checkbox
-              checked={false}
-              onChange={() => {
-                setAllPoseLandmarkPointsActive();
-                // setOscActive(event.target.checked);
-              }}
-            />{" "}
-            all
-          </li>
-          {poseLandmarkPoints.map((poseLandmark) => {
-            return (
-              <li key={`poseLandmarkPoint-${poseLandmark}`}>
-                <Checkbox
-                  checked={activePoseLandmarkPoints.includes(poseLandmark)}
-                  onChange={(event) => {
-                    // setOscActive(event.target.checked);
-                    toggleActivePoseLandmarkPoint(poseLandmark);
-                  }}
-                />{" "}
-                {poseLandmark}
-              </li>
-            );
-          })}
-        </LandmarksSelector>
-      )}
-      {tracker === TRACKERS.HANDS && (
-        <LandmarksSelector>
-          <li key={`handLandmarkPoint-all-json`}>
-            <Checkbox
-              checked={allHandLandmarkPointsJson}
-              onChange={(event) => {
-                setAllHandLandmarkPointsAsJson(event.target.checked);
-              }}
-            />{" "}
-            all as single json
-          </li>
-          <li key={`handLandmarkPoint-all`}>
-            <Checkbox
-              checked={false}
-              onChange={() => {
-                setAllHandLandmarkPointsActive();
-              }}
-            />{" "}
-            all
-          </li>
-          {handLandmarkPoints.map((handLandmark) => {
-            return (
-              <li key={`handLandmarkPoint-${handLandmark}`}>
-                <Checkbox
-                  checked={activeHandLandmarkPoints.includes(handLandmark)}
-                  onChange={() => {
-                    toggleActiveHandLandmarkPoint(handLandmark);
-                  }}
-                />{" "}
-                {handLandmark}
-              </li>
-            );
-          })}
-        </LandmarksSelector>
-      )}
-      {tracker === TRACKERS.TEACHABLE_MACHINE && (
-        <>
-          <TextField
-            label="model url"
-            variant="outlined"
-            size="small"
-            fullWidth
-            value={teachableMachineModelUrl}
-            onChange={(event) => {
-              setTeachableMachineModelUrl(event.target.value);
-            }}
-          />
-          <div>
-            train a model{" "}
-            <a href="https://teachablemachine.withgoogle.com/train" target="_blank">here</a>.
-          </div>
-          <div>
-            or load one from your filesystem
-            <Button
-            variant="outlined"
-            size="small"
-              onClick={() => {
-                window.api?.send("loadTeachableMachineModel");
-              }}
-            >
-              choose
-            </Button>
-          </div>
-        </>
-      )}
+
       <h2>outputs</h2>
 
       <Grid container spacing={2} className="outputs">

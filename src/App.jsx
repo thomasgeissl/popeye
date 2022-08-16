@@ -4,13 +4,14 @@ import MHands from "./components/MHands";
 // import MFaceMesh from "./components/MFaceMesh";
 import MHolistic from "./components/MHolistic";
 import FaceExpression from "./components/FaceExpression";
-import TeachableMachine from "./components/TeachableMachine";
+import TeachableMachineImage from "./components/TeachableMachineImage";
+import TeachableMachinePose from "./components/TeachableMachinePose";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Settings from "./components/Settings";
 import styled from "@emotion/styled";
 import useStore from "./store/store";
-import { TRACKERS } from "./store/store";
+import { TRACKERS, TM_MODE } from "./store/store";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme"
 
@@ -29,6 +30,7 @@ const Content = styled.div`
 function App() {
   const showSettings = useStore((state) => state.showSettings);
   const tracker = useStore((state) => state.tracker);
+  const tmMode = useStore((state) => state.tmMode);
   const setTracker = useStore((state) => state.setTracker);
 
   return (
@@ -42,7 +44,8 @@ function App() {
               {tracker === TRACKERS.POSE && <MPose></MPose>}
               {tracker === TRACKERS.HANDS && <MHands></MHands>}
               {/* {tracker === TRACKERS.FACE_MESH && <MFaceMesh></MFaceMesh>} */}
-              {tracker === TRACKERS.TEACHABLE_MACHINE && <TeachableMachine></TeachableMachine>}
+              {tracker === TRACKERS.TEACHABLE_MACHINE && tmMode === TM_MODE.IMAGE && <TeachableMachineImage></TeachableMachineImage>}
+              {tracker === TRACKERS.TEACHABLE_MACHINE && tmMode === TM_MODE.POSE && <TeachableMachinePose></TeachableMachinePose>}
               {/* <MFaceMesh></MFaceMesh> */}
               {/* <MHolistic></MHolistic> */}
               {/* <FaceExpression></FaceExpression> */}

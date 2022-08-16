@@ -15,7 +15,7 @@ const Result = styled.li`
   }
 `;
 
-function TeachableMachine() {
+function TeachableMachineImage() {
   const videoRef = useRef(null);
   const [classifier, setClassifier] = useState(null);
   const [results, setResults] = useState([]);
@@ -95,4 +95,4 @@ function TeachableMachine() {
   );
 }
 
-export default TeachableMachine;
+export default TeachableMachineImage;

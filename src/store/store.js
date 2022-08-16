@@ -7,6 +7,10 @@ const TRACKERS = {
   // FACE_MESH: "FACE_MESH",
   TEACHABLE_MACHINE: "TEACHABLE_MACHINE",
 };
+const TM_MODE = {
+  IMAGE: "IMAGE",
+  POSE: "POSE",
+};
 
 import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
 import { landmarkPoints as handLandmarkPoints } from "../components/MHands";
@@ -39,6 +43,7 @@ const useStore = create(
       allHandLandmarkPointsAsJson: false,
       teachableMachineModelUrl:
         "https://teachablemachine.withgoogle.com/models/4F0vC57p4/",
+      tmMode: TM_MODE.IMAGE,
       active: true,
       oscActive: false,
       oscDestinationHost: "localhost",
@@ -135,6 +140,9 @@ const useStore = create(
       setTeachableMachineModelUrl: (teachableMachineModelUrl) => {
         set((state) => ({ teachableMachineModelUrl }));
       },
+      setTmMode: (tmMode) => {
+        set((state) => ({ tmMode }));
+      },
       save: () => {
         const state = get();
         window.api?.send("save", JSON.stringify(state));
@@ -144,4 +152,4 @@ const useStore = create(
 );
 
 export default useStore;
-export { TRACKERS };
+export { TRACKERS, TM_MODE };
