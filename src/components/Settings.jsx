@@ -58,9 +58,13 @@ function Settings() {
   const setMqttActive = useStore((state) => state.setMqttActive);
   const setMqttBroker = useStore((state) => state.setMqttBroker);
   const oscSessionPrefix = useStore((state) => state.oscSessionPrefix);
+  const oscThrottleTime = useStore((state) => state.oscThrottleTime);
   const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
+  const mqttThrottleTime = useStore((state) => state.mqttThrottleTime);
   const setOscSessionPrefix = useStore((state) => state.setOscSessionPrefix);
+  const setOscThrottleTime = useStore((state) => state.setOscThrottleTime);
   const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
+  const setMqttThrottleTime = useStore((state) => state.setMqttThrottleTime);
   const activePoseLandmarkPoints = useStore(
     (state) => state.activePoseLandmarkPoints
   );
@@ -313,6 +317,17 @@ function Settings() {
                 }}
               />
               <TextField
+                inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+                label="throttle time (ms)"
+                variant="outlined"
+                size="small"
+                fullWidth
+                value={oscThrottleTime}
+                onChange={(event) => {
+                  setOscThrottleTime(event.target.value);
+                }}
+              />
+              <TextField
                 label="session prefix"
                 variant="outlined"
                 size="small"
@@ -346,6 +361,17 @@ function Settings() {
               value={mqttBroker}
               onChange={(event) => {
                 setMqttBroker(event.target.value);
+              }}
+            />
+            <TextField
+              inputProps={{ inputMode: "numeric", pattern: "[0-9]*" }}
+              label="throttle time (ms)"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={mqttThrottleTime}
+              onChange={(event) => {
+                setMqttThrottleTime(event.target.value);
               }}
             />
             <TextField

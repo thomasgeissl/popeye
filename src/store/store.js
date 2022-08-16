@@ -1,6 +1,6 @@
 import create from "zustand";
 import { devtools } from "zustand/middleware";
-import { connectClient as connectBroker } from "../mqtt";
+import { connectClient as connectBroker, setThrottleTime } from "../mqtt";
 
 const TRACKERS = {
   POSE: "POSE",
@@ -25,9 +25,6 @@ const useStore = create(
       window.api?.send("setOscDestinationHost", data.oscDestinationHost);
       window.api?.send("setOscDestinationPort", data.oscDestinationPort);
       window.api?.send("setOscSessionPrefix", data.oscSessionPrefix);
-      window.api?.send("setMqttActive", data.mqttActive);
-      window.api?.send("setMqttBroker", data.mqttBroker);
-      window.api?.send("setMqttSessionPrefix", data.mqttSessionPrefix);
     });
     window.api?.receive("setTeachableMachineModelUrl", (data) => {
       console.log(data);
@@ -50,8 +47,11 @@ const useStore = create(
       oscDestinationHost: "localhost",
       oscDestinationPort: 8000,
       oscSessionPrefix: "",
+      oscThrottleTime: 16,
       mqttActive: false,
       mqttBroker: "ws://localhost:9001",
+      mqttSessionPrefix: "",
+      mqttThrottleTime: 32,
       showSettings: true,
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),
@@ -78,22 +78,27 @@ const useStore = create(
         window.api?.send("setOscSessionPrefix", oscSessionPrefix);
         set((state) => ({ oscSessionPrefix }));
       },
+      setOscThrottleTime: (oscThrottleTime) => {
+        window.api?.send("setOscThrottleTime", oscThrottleTime);
+        set((state) => ({ oscThrottleTime }));
+      },
       setMqttActive: (active) => {
-        // window.api?.send("setMqttActive", active);
         set((state) => {
           if (active) {
-            connectBroker(state.broker);
+            connectBroker(state.mqttBroker);
           }
           return { mqttActive: active };
         });
       },
       setMqttBroker: (broker) => {
-        // window.api?.send("setMqttBroker", broker);
         set((state) => ({ mqttActive: false, mqttBroker: broker }));
       },
       setMqttSessionPrefix: (mqttSessionPrefix) => {
-        // window.api?.send("setMqttSessionPrefix", mqttSessionPrefix);
         set((state) => ({ mqttSessionPrefix }));
+      },
+      setMqttThrottleTime: (mqttThrottleTime) => {
+        setThrottleTime(mqttThrottleTime);
+        set((state) => ({ mqttThrottleTime }));
       },
       toggleActivePoseLandmarkPoint: (landmarkPoint) => {
         set((state) => {

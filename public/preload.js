@@ -16,6 +16,7 @@ process.once("loaded", () => {
         "setOscActive",
         "setOscDestinationPort",
         "setOscDestinationHost",
+        "setoscThrottleTime",
         "sendMessage",
         "setOscSessionPrefix",
         "save",
