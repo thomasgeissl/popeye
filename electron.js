@@ -16,6 +16,9 @@ const {
 const Express = require("express");
 const { Client, Message } = require("node-osc");
 
+const debounce = require("lodash.debounce");
+const throttle = require("lodash.throttle");
+
 const express = Express();
 const port = 3333;
 express.use(
@@ -47,8 +50,24 @@ let oscSessionPrefix = "";
 
 let active = true;
 let oscActive = false;
+let oscThrottleTime = 16;
 
 // const camera = systemPreferences.askForMediaAccess("camera");
+
+const throttledSendFunctions = {};
+const sendThrottledMessage = (address, message) => {
+  if (!Object.keys(throttledSendFunctions).includes(address)) {
+    throttledSendFunctions[address] = throttle((message) => {
+      oscClient.send(message, (err) => {
+        if (err) {
+          console.error(new Error(err));
+        }
+      });
+    }, oscThrottleTime);
+  }
+  console.log(oscThrottleTime);
+  throttledSendFunctions[address](message);
+};
 
 // Create the native browser window.
 function createWindow() {
@@ -192,11 +211,7 @@ ipcMain.on("sendMessage", (event, arg) => {
         message.append(arg);
       }
     });
-    oscClient.send(message, (err) => {
-      if (err) {
-        console.error(new Error(err));
-      }
-    });
+    sendThrottledMessage(oscAddress, message);
   }
 });
 ipcMain.on("setActive", (event, arg) => {
@@ -212,7 +227,13 @@ ipcMain.on("setOscDestinationPort", (event, arg) => {
   oscClient = new Client(oscClient.host, arg);
 });
 ipcMain.on("setOscSessionPrefix", (event, arg) => {
-  oscSessionPrefx = arg;
+  oscSessionPrefix = arg;
+});
+ipcMain.on("setOscThrottleTime", (event, arg) => {
+  for (const prop of Object.getOwnPropertyNames(throttledSendFunctions)) {
+    delete throttledSendFunctions[prop];
+  }
+  oscThrottleTime = arg;
 });
 
 ipcMain.on("save", (event, arg) => {
