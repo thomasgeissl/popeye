@@ -42,25 +42,11 @@ protocol.registerSchemesAsPrivileged([
 ]);
 
 let mainWindow;
-const mqtt = require("mqtt");
 let oscClient = new Client("127.0.0.1", 8000);
-let mqttClient = mqtt.connect("mqtt://localhost:1883");
 let oscSessionPrefix = "";
-let mqttSessionPrefix = "";
 
 let active = true;
 let oscActive = false;
-let mqttActive = false;
-
-mqttClient.on("connect", function () {
-  mqttClient.subscribe("presence", function (err) {
-    if (!err) {
-      mqttClient.publish("presence", "Hello mqtt");
-    }
-  });
-});
-
-mqttClient.on("message", function (topic, message) {});
 
 // const camera = systemPreferences.askForMediaAccess("camera");
 
@@ -212,11 +198,6 @@ ipcMain.on("sendMessage", (event, arg) => {
       }
     });
   }
-
-  if (mqttActive) {
-    const topic = `${mqttSessionPrefx}/popeye/${arg.address}`;
-    mqttClient.publish(topic, JSON.stringify(arg));
-  }
 });
 ipcMain.on("setActive", (event, arg) => {
   active = arg;
@@ -233,15 +214,7 @@ ipcMain.on("setOscDestinationPort", (event, arg) => {
 ipcMain.on("setOscSessionPrefix", (event, arg) => {
   oscSessionPrefx = arg;
 });
-ipcMain.on("setMqttActive", (event, arg) => {
-  mqttActive = arg;
-});
-ipcMain.on("setMqttBroker", (event, arg) => {
-  mqttClient = mqtt.connect(arg);
-});
-ipcMain.on("setMqttSessionPrefix", (event, arg) => {
-  mqttSessionPrefix = arg;
-});
+
 ipcMain.on("save", (event, arg) => {
   dialog
     .showSaveDialog(mainWindow, {

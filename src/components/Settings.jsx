@@ -140,82 +140,82 @@ function Settings() {
               ></FormControlLabel>
               {tracker === key && tracker === TRACKERS.POSE && (
                 <TrackerSettings>
-                <LandmarksSelector>
-                  <li key={`poseLandmarkPoint-all-json`}>
-                    <Checkbox
-                      checked={allPoseLandmarkPointsAsJson}
-                      onChange={(event) => {
-                        setAllPoseLandmarkPointsAsJson(event.target.checked);
-                      }}
-                    />{" "}
-                    all as single json
-                  </li>
-                  <li key={`poseLandmarkPoint-all`}>
-                    <Checkbox
-                      checked={false}
-                      onChange={() => {
-                        setAllPoseLandmarkPointsActive();
-                        // setOscActive(event.target.checked);
-                      }}
-                    />{" "}
-                    all
-                  </li>
-                  {poseLandmarkPoints.map((poseLandmark) => {
-                    return (
-                      <li key={`poseLandmarkPoint-${poseLandmark}`}>
-                        <Checkbox
-                          checked={activePoseLandmarkPoints.includes(
-                            poseLandmark
-                          )}
-                          onChange={(event) => {
-                            // setOscActive(event.target.checked);
-                            toggleActivePoseLandmarkPoint(poseLandmark);
-                          }}
-                        />{" "}
-                        {poseLandmark}
-                      </li>
-                    );
-                  })}
-                </LandmarksSelector>
+                  <LandmarksSelector>
+                    <li key={`poseLandmarkPoint-all-json`}>
+                      <Checkbox
+                        checked={allPoseLandmarkPointsAsJson}
+                        onChange={(event) => {
+                          setAllPoseLandmarkPointsAsJson(event.target.checked);
+                        }}
+                      />{" "}
+                      all as single json
+                    </li>
+                    <li key={`poseLandmarkPoint-all`}>
+                      <Checkbox
+                        checked={false}
+                        onChange={() => {
+                          setAllPoseLandmarkPointsActive();
+                          // setOscActive(event.target.checked);
+                        }}
+                      />{" "}
+                      all
+                    </li>
+                    {poseLandmarkPoints.map((poseLandmark) => {
+                      return (
+                        <li key={`poseLandmarkPoint-${poseLandmark}`}>
+                          <Checkbox
+                            checked={activePoseLandmarkPoints.includes(
+                              poseLandmark
+                            )}
+                            onChange={(event) => {
+                              // setOscActive(event.target.checked);
+                              toggleActivePoseLandmarkPoint(poseLandmark);
+                            }}
+                          />{" "}
+                          {poseLandmark}
+                        </li>
+                      );
+                    })}
+                  </LandmarksSelector>
                 </TrackerSettings>
               )}
               {tracker === key && tracker === TRACKERS.HANDS && (
                 <TrackerSettings>
-                <LandmarksSelector>
-                  <li key={`handLandmarkPoint-all-json`}>
-                    <Checkbox
-                      checked={allHandLandmarkPointsJson}
-                      onChange={(event) => {
-                        setAllHandLandmarkPointsAsJson(event.target.checked);
-                      }}
-                    />{" "}
-                    all as single json
-                  </li>
-                  <li key={`handLandmarkPoint-all`}>
-                    <Checkbox
-                      checked={false}
-                      onChange={() => {
-                        setAllHandLandmarkPointsActive();
-                      }}
-                    />{" "}
-                    all
-                  </li>
-                  {handLandmarkPoints.map((handLandmark) => {
-                    return (
-                      <li key={`handLandmarkPoint-${handLandmark}`}>
-                        <Checkbox
-                          checked={activeHandLandmarkPoints.includes(
-                            handLandmark
-                          )}
-                          onChange={() => {
-                            toggleActiveHandLandmarkPoint(handLandmark);
-                          }}
-                        />{" "}
-                        {handLandmark}
-                      </li>
-                    );
-                  })}
-                </LandmarksSelector>
+                  <LandmarksSelector>
+                    <li key={`handLandmarkPoint-all-json`}>
+                      <Checkbox
+                        checked={allHandLandmarkPointsJson}
+                        onChange={(event) => {
+                          setAllHandLandmarkPointsAsJson(event.target.checked);
+                        }}
+                      />{" "}
+                      all as single json
+                    </li>
+                    <li key={`handLandmarkPoint-all`}>
+                      <Checkbox
+                        checked={false}
+                        onChange={() => {
+                          setAllHandLandmarkPointsActive();
+                        }}
+                      />{" "}
+                      all
+                    </li>
+                    {handLandmarkPoints.map((handLandmark) => {
+                      return (
+                        <li key={`handLandmarkPoint-${handLandmark}`}>
+                          <Checkbox
+                            checked={activeHandLandmarkPoints.includes(
+                              handLandmark
+                            )}
+                            onChange={() => {
+                              toggleActiveHandLandmarkPoint(handLandmark);
+                            }}
+                          />{" "}
+                          {handLandmark}
+                        </li>
+                      );
+                    })}
+                  </LandmarksSelector>
                 </TrackerSettings>
               )}
               {tracker === key && tracker === TRACKERS.TEACHABLE_MACHINE && (
@@ -256,18 +256,20 @@ function Settings() {
                     </a>
                     .
                   </div>
-                  <div>
-                    or load one from your filesystem
-                    <Button
-                      variant="outlined"
-                      size="small"
-                      onClick={() => {
-                        window.api?.send("loadTeachableMachineModel");
-                      }}
-                    >
-                      choose
-                    </Button>
-                  </div>
+                  {window.api && (
+                    <div>
+                      or load one from your filesystem
+                      <Button
+                        variant="outlined"
+                        size="small"
+                        onClick={() => {
+                          window.api?.send("loadTeachableMachineModel");
+                        }}
+                      >
+                        choose
+                      </Button>
+                    </div>
+                  )}
                 </TrackerSettings>
               )}
             </div>
@@ -278,51 +280,53 @@ function Settings() {
       <h2>outputs</h2>
 
       <Grid container spacing={2} className="outputs">
-        {window.api && <Grid item xs={6} className="osc">
-          <h3>
-            <Checkbox
-              checked={oscActive}
-              onChange={(event) => {
-                setOscActive(event.target.checked);
-              }}
-            />
-            OSC
-          </h3>
-          <Form>
-            <TextField
-              label="host"
-              variant="outlined"
-              size="small"
-              fullWidth
-              value={oscDestinationHost}
-              onChange={(event) => {
-                setOscDestinationHost(event.target.value);
-              }}
-            />
-            <TextField
-              label="port"
-              variant="outlined"
-              size="small"
-              fullWidth
-              value={oscDestinationPort}
-              onChange={(event) => {
-                setOscDestinationPort(event.target.value);
-              }}
-            />
-            <TextField
-              label="session prefix"
-              variant="outlined"
-              size="small"
-              fullWidth
-              value={oscSessionPrefix}
-              placeholder="/sessionId"
-              onChange={(event) => {
-                setOscSessionPrefix(event.target.value);
-              }}
-              helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
-            />
-          </Form>
-        </Grid>}
+        {window.api && (
+          <Grid item xs={6} className="osc">
+            <h3>
+              <Checkbox
+                checked={oscActive}
+                onChange={(event) => {
+                  setOscActive(event.target.checked);
+                }}
+              />
+              OSC
+            </h3>
+            <Form>
+              <TextField
+                label="host"
+                variant="outlined"
+                size="small"
+                fullWidth
+                value={oscDestinationHost}
+                onChange={(event) => {
+                  setOscDestinationHost(event.target.value);
+                }}
+              />
+              <TextField
+                label="port"
+                variant="outlined"
+                size="small"
+                fullWidth
+                value={oscDestinationPort}
+                onChange={(event) => {
+                  setOscDestinationPort(event.target.value);
+                }}
+              />
+              <TextField
+                label="session prefix"
+                variant="outlined"
+                size="small"
+                fullWidth
+                value={oscSessionPrefix}
+                placeholder="/sessionId"
+                onChange={(event) => {
+                  setOscSessionPrefix(event.target.value);
+                }}
+                helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
+              />
+            </Form>
+          </Grid>
+        )}
         <Grid item xs={6} className="mqtt">
           <h3>
             <Checkbox
