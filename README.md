@@ -23,7 +23,7 @@ brew install --cask popeye
 download the packaged app from the [gh releases](https://github.com/thomasgeissl/popeye/releases/) pages.
 
 
-## Dev
+## Development
 
 - yarn install
 - yarn dev #to start the frontend dev process
@@ -31,3 +31,7 @@ download the packaged app from the [gh releases](https://github.com/thomasgeissl
 - yarn electron-build-mac
 - yarn electron-build-win
 - yarn electron-build-linux
+
+## Online version
+
+There is an [online version](https://thomasgeissl.github.io/popeye/) available. It is hosted via github pages, hence is is no OSC output, only mqtt for the moment.
