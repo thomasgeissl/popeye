@@ -17,7 +17,7 @@ download the packaged app from the [gh releases](https://github.com/thomasgeissl
 
 ```
 brew tap thomasgeissl/tools
-brew install --cask ragazzi
+brew install --cask popeye
 ```
 ## Windows
 download the packaged app from the [gh releases](https://github.com/thomasgeissl/popeye/releases/) pages.
