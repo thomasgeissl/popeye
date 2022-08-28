@@ -9,6 +9,7 @@ import TeachableMachinePose from "./components/TeachableMachinePose";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Settings from "./components/Settings";
+import Overlay from "./components/Overlay";
 import styled from "@emotion/styled";
 import useStore from "./store/store";
 import { TRACKERS, TM_MODE } from "./store/store";
@@ -20,10 +21,11 @@ const Container = styled.div`
   flex-direction: column;
   width: 100vw;
   height: 100vh;
+  color: #fff;
 `;
 const Content = styled.div`
   flex-grow: 1;
-  padding: 24px;
+  padding: 0px;
   overflow:scroll;
 `;
 
@@ -36,10 +38,10 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Container>
-        <Header></Header>
+        {/* <Header></Header> */}
         <Content>
-          {(showSettings || !tracker) && <Settings></Settings>}
-          {!showSettings && (
+          {/* {(showSettings || !tracker) && <Settings></Settings>}
+          {!showSettings && ( */}
             <div>
               {tracker === TRACKERS.POSE && <MPose></MPose>}
               {tracker === TRACKERS.HANDS && <MHands></MHands>}
@@ -50,9 +52,11 @@ function App() {
               {/* <MHolistic></MHolistic> */}
               {/* <FaceExpression></FaceExpression> */}
             </div>
-          )}
+          {/* )} */}
         </Content>
-        <Footer></Footer>
+        <Overlay></Overlay>
+        {(showSettings || !tracker) && <Settings></Settings>}
+        {/* <Footer></Footer> */}
       </Container>
     </ThemeProvider>
   );

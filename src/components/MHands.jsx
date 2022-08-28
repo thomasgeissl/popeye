@@ -42,8 +42,8 @@ const WebcamContainer = styled.div`
 `;
 
 const Overlay = styled.canvas`
-  width: 640px;
-  height: 480px;
+  width: 1280px;
+  height: 720px;
 `;
 
 function MHands() {
@@ -93,11 +93,11 @@ function MHands() {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
             color: ThemeOptions.palette.primary.main,
-            lineWidth: 5,
+            lineWidth: 1,
           });
           drawLandmarks(canvasCtx, landmarks, {
             color: ThemeOptions.palette.secondary.main,
-            lineWidth: 2,
+            radius: 1
           });
         }
       }
@@ -123,7 +123,7 @@ function MHands() {
         }
       },
       width: 640,
-      height: 480,
+      height: 360,
     });
     camera.start();
   }, []);
@@ -133,7 +133,7 @@ function MHands() {
         <Webcam
           ref={webcamRef}
           width="640px"
-          height="480px"
+          height="360px"
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
         ></Webcam>
       </WebcamContainer>

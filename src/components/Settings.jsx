@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback } from "react";
 import styled from "@emotion/styled";
 import useStore, { TM_MODE, TRACKERS } from "../store/store";
-import { MenuItem, TextField } from "@mui/material";
+import { TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -11,6 +11,17 @@ import Grid from "@mui/material/Grid";
 import Select from "@mui/material/Select";
 import Checkbox from "@mui/material/Checkbox";
 import Button from "@mui/material/Button";
+import CloseIcon from '@mui/icons-material/Close';
+import { IconButton } from "@mui/material";
+import Typography from '@mui/material/Typography';
+
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Divider from '@mui/material/Divider';
+import Switch from '@mui/material/Switch';
+import FormGroup from '@mui/material/FormGroup';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
 
 import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
@@ -18,6 +29,14 @@ import { landmarkPoints as handLandmarkPoints } from "./MHands";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  width: 30vw;
+  height: 100vh;
+  position: absolute;
+  right: 0px;
+  overflow: hidden;
+  background-color: rgba(34, 34, 34, .9);
+  backdrop-filter: blur(40px);
+  padding: 24px;
 `;
 const Content = styled.div`
   flex-grow: 1;
@@ -39,6 +58,7 @@ const LandmarksSelector = styled.ul`
 `;
 function Settings() {
   // global state
+  const toggleSettings = useStore((state) => state.toggleSettings);
   const tracker = useStore((state) => state.tracker);
   const setTracker = useStore((state) => state.setTracker);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
@@ -118,18 +138,71 @@ function Settings() {
 
   return (
     <Container>
-      <h2>input</h2>
-      <Select
-        value={videoDeviceId ? videoDeviceId : "default"}
-        onChange={(event) => setVideoDeviceId(event.target.value)}
-      >
-        {devices.map((device, key) => (
+            <Grid container direction="row" justifyContent="space-between" alignItems="center">
+
+      <Typography variant="h5">
+        Settings
+      </Typography>
+      <IconButton
+              size="large"
+              edge="start"
+              color="secondary"
+              aria-label="menu"
+              sx={{ mr: 2 }}
+              onClick={() => toggleSettings()}
+            ><CloseIcon></CloseIcon></IconButton></Grid>
+        
+      <Grid container direction="column" gap={2}>
+
+      <Grid direction="row">
+      
+      <Divider textAlign="center"><Typography variant="overline">
+        General
+      </Typography></Divider>
+      </Grid>
+
+      <FormControl variant="filled" size="small">
+        <InputLabel>Camera Input</InputLabel>
+        <Select
+          value={videoDeviceId ? videoDeviceId : 0}
+          onChange={(event) => setVideoDeviceId(event.target.value)}
+        >
+           {devices.map((device, key) => (
           <MenuItem value={device.deviceId} key={device.deviceId}>
             {device.label}
           </MenuItem>
         ))}
-      </Select>
-      <h2>trackers</h2>
+        </Select>
+      </FormControl>
+
+
+      <FormControl variant="filled" size="small">
+        <InputLabel>Trackers</InputLabel>
+        <Select
+           value={tracker}
+           onChange={(event) => setTracker(event.target.value)}
+        >
+           {Object.entries(TRACKERS).map(([key, value]) => {
+          return (
+            <MenuItem value={value}>
+              {value}
+            </MenuItem>
+          );
+        })}
+        </Select>
+      </FormControl>
+
+      </Grid>
+
+      <Grid direction="row">
+      
+      <Divider textAlign="center"><Typography variant="overline">
+        Tracker Options
+      </Typography></Divider>
+      </Grid>
+
+
+      {/* <h2>trackers</h2>
       <RadioGroup
         value={tracker}
         onChange={(event) => setTracker(event.target.value)}
@@ -279,9 +352,14 @@ function Settings() {
             </div>
           );
         })}
-      </RadioGroup>
+      </RadioGroup> */}
 
-      <h2>outputs</h2>
+       <Grid direction="row">
+      
+      <Divider textAlign="center"><Typography variant="overline">
+        Output
+      </Typography></Divider>
+      </Grid>
 
       <Grid container spacing={2} className="outputs">
         {window.api && (
@@ -343,15 +421,13 @@ function Settings() {
           </Grid>
         )}
         <Grid item xs={6} className="mqtt">
-          <h3>
-            <Checkbox
-              checked={mqttActive}
-              onChange={(event) => {
+            <FormGroup>
+            <FormControlLabel control={<Switch checked={mqttActive}  onChange={(event) => {
                 setMqttActive(event.target.checked);
-              }}
-            />
-            MQTT
-          </h3>
+              }} />} label="MQTTT" />
+          </FormGroup>
+          <Card variant="outlined">
+          <CardContent>
           <Form>
             <TextField
               label="mqtt broker"
@@ -387,6 +463,8 @@ function Settings() {
               helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
             />
           </Form>
+          </CardContent>
+          </Card>
         </Grid>
       </Grid>
     </Container>
