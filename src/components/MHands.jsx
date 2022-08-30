@@ -12,6 +12,7 @@ import styled from "@emotion/styled";
 import useStore from "../store/store";
 import ThemeOptions from "../theme";
 import {send} from "../sender"
+import { color } from "@mui/system";
 
 const labels = [
   "wrist",
@@ -42,8 +43,7 @@ const WebcamContainer = styled.div`
 `;
 
 const Overlay = styled.canvas`
-  width: 1280px;
-  height: 720px;
+  width: 100%;
 `;
 
 function MHands() {
@@ -58,6 +58,7 @@ function MHands() {
   );
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
+
     function onResults(results) {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, index) => {
@@ -76,12 +77,16 @@ function MHands() {
       }
 
       canvasCtx.save();
+      //canvasCtx.imageSmoothingQuality = 'high';
       canvasCtx.clearRect(
         0,
         0,
         canvasRef.current.width,
-        canvasRef.current.height
+       canvasRef.current.height
       );
+      
+      canvasCtx.filter = 'grayscale(100%)';
+
       canvasCtx.drawImage(
         results.image,
         0,
@@ -89,15 +94,23 @@ function MHands() {
         canvasRef.current.width,
         canvasRef.current.height
       );
+
+      canvasCtx.filter = 'none';
+
+      canvasCtx.fillStyle = "rgba(0, 0, 0, .5)";
+      canvasCtx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+      canvasCtx.globalCompositeOperation = 'screen';
+
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-            color: ThemeOptions.palette.primary.main,
+            color: ThemeOptions.palette.secondary.main, //"rgba(255, 255, 255, .25)"
             lineWidth: 1,
           });
           drawLandmarks(canvasCtx, landmarks, {
             color: ThemeOptions.palette.secondary.main,
-            radius: 1
+            radius: 5
           });
         }
       }
@@ -122,8 +135,8 @@ function MHands() {
           await hands.send({ image: webcamRef.current.video });
         }
       },
-      width: 640,
-      height: 360,
+      width: 1280,
+      height: 900,
     });
     camera.start();
   }, []);
@@ -132,12 +145,13 @@ function MHands() {
       <WebcamContainer>
         <Webcam
           ref={webcamRef}
-          width="640px"
-          height="360px"
+          width={1280}
+          height={900}
+          //mirrored={true}
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
         ></Webcam>
       </WebcamContainer>
-      <Overlay ref={canvasRef} className="output_canvas"></Overlay>
+      <Overlay ref={canvasRef} className="output_canvas" width="1280" height="900"></Overlay>
     </div>
   );
 }
