@@ -21,7 +21,7 @@ const Container = styled.div`
   flex-direction: column;
   width: 100vw;
   height: 100vh;
-  color: #fff;
+  //color: #fff;
 `;
 const Content = styled.div`
   flex-grow: 1;

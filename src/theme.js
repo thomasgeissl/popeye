@@ -9,7 +9,7 @@ export const ThemeOptions = {
     },
     secondary: {
       main: "#CE93D8",
-    },
+    }
   },
 };
 
