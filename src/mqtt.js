@@ -11,7 +11,9 @@ const connectClient = (broker) => {
       delete throttledSendFunctions[prop];
     }
     client = mqtt.connect(broker);
-  } catch (error) {}
+  } catch (error) {
+    console.log(error)
+  }
 };
 
 const setThrottleTime = (time) => {

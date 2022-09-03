@@ -25,6 +25,8 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VideocamIcon from "@mui/icons-material/Videocam";
+import Tooltip from "@mui/material/Tooltip";
+import Chip from "@mui/material/Chip";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -35,15 +37,14 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   width: 30vw;
-  height: calc(100vh - 24px);
+  height: calc(100vh - 24px * 2);
   position: absolute;
   right: 0px;
   overflow: scroll;
-  background-color: rgba(34, 34, 34, 0.9);
+  background-color: rgba(34, 34, 34, 0.75);
   backdrop-filter: blur(40px);
-  padding-top: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
+  padding: 24px;
+  z-index: 10;
 `;
 const Content = styled.div`
   flex-grow: 1;
@@ -66,6 +67,7 @@ const LandmarksSelector = styled.ul`
 
 const LandmarkOptions = styled.div`
   position: relative;
+  margin: 24px;
 `;
 
 const Hand = styled.img`
@@ -221,118 +223,344 @@ function Settings() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item sx={{flexGrow: 1}} >
-            <Grid container direction="column" spacing={2}>
-              <Grid item>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <Divider textAlign="center"></Divider>
-                  </Grid>
+        <Grid item sx={{ flexGrow: 1 }}>
+          <Grid container direction="column" spacing={2}>
+            <Grid item>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Divider textAlign="center"></Divider>
+                </Grid>
 
-                  <Grid item>
-                    <Typography variant="overline" color={"white"}>
-                      General
-                    </Typography>
-                  </Grid>
+                <Grid item>
+                  <Typography variant="overline" color={"white"}>
+                    Output
+                  </Typography>
+                </Grid>
 
-                  <Grid item>
-                    <FormControl variant="filled" size="small" fullWidth>
-                      <InputLabel>Camera Input</InputLabel>
-                      <Select
-                        value={videoDeviceId ? videoDeviceId : ""}
-                        onChange={(event) =>
-                          setVideoDeviceId(event.target.value)
-                        }
+                
+                {/* <Grid item xs={6} className="osc">
+                      <h3>
+                        <Switch
+                          checked={oscActive}
+                          disabled={!window.api}
+                          onChange={(event) => {
+                            setOscActive(event.target.checked);
+                          }}
+                        />
+                        OSC
+                      </h3>
+                      <Form>
+                        <TextField
+                          label="host"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscDestinationHost}
+                          onChange={(event) => {
+                            setOscDestinationHost(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          label="port"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscDestinationPort}
+                          onChange={(event) => {
+                            setOscDestinationPort(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          inputProps={{
+                            inputMode: "numeric",
+                            pattern: "[0-9]*",
+                          }}
+                          label="throttle time (ms)"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscThrottleTime}
+                          onChange={(event) => {
+                            setOscThrottleTime(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          label="session prefix"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscSessionPrefix}
+                          placeholder="/sessionId"
+                          onChange={(event) => {
+                            setOscSessionPrefix(event.target.value);
+                          }}
+                          helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
+                        />
+                      </Form>
+                    </Grid> */}
+
+                <Grid item>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
                       >
-                        {devices.map((device, key) => (
-                          <MenuItem
-                            value={device.deviceId}
-                            key={device.deviceId}
-                          >
-                            <Grid
-                              container
-                              direction="row"
-                              //alignItems="center"
-                              //justifyContent= "center"
-                              columnSpacing={1}
-                            >
-                              <Grid item>
-                                <VideocamIcon
-                                  fontSize={"inherit"}
-                                  sx={{ mt: 0.4 }}
-                                ></VideocamIcon>
-                              </Grid>
-                              <Grid item>{device.label}</Grid>
-                            </Grid>
-                          </MenuItem>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  </Grid>
-
-                  <Grid item>
-                    <FormControl variant="filled" size="small" fullWidth>
-                      <InputLabel>Trackers</InputLabel>
-                      <Select
-                        value={tracker}
-                        onChange={(event) => setTracker(event.target.value)}
+                        <Grid item>
+                          <FormGroup>
+                            <FormControlLabel
+                              sx={{ color: "white" }}
+                              control={
+                                <Switch
+                                  checked={mqttActive}
+                                  onChange={(event) => {
+                                    setMqttActive(event.target.checked);
+                                  }}
+                                />
+                              }
+                              label="MQTTT"
+                            />
+                          </FormGroup>
+                        </Grid>
+                        {mqttActive && (
+                          <Grid item>
+                            <Chip
+                              label={mqttActive ? "connected" : "disconnected"}
+                              color={mqttActive ? "success" : "default"}
+                              variant="outlined"
+                              size="small"
+                            />
+                          </Grid>
+                        )}
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        size="large"
+                        edge="start"
+                        color="secondary"
+                        aria-label="menu"
+                        onClick={() => setShowMqtt(!showMqtt)}
                       >
-                        {Object.entries(TRACKERS).map(([key, value]) => {
-                          return <MenuItem key={key} value={value}>{value}</MenuItem>;
-                        })}
-                      </Select>
-                    </FormControl>
+                        <MoreVertIcon></MoreVertIcon>
+                      </IconButton>
+                    </Grid>
+                  </Grid>
+                  {showMqtt && (
+                    <Card variant="outlined">
+                      <CardContent>
+                        <Grid container spacing={2}>
+                          <Grid item xs={12}>
+                            <TextField
+                              label="mqtt broker"
+                              variant="outlined"
+                              size="small"
+                              fullWidth
+                              value={mqttBroker}
+                              onChange={(event) => {
+                                setMqttBroker(event.target.value);
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={4}>
+                            <TextField
+                              inputProps={{
+                                inputMode: "numeric",
+                                pattern: "[0-9]*",
+                              }}
+                              label="throttle time (ms)"
+                              variant="outlined"
+                              size="small"
+                              fullWidth
+                              value={mqttThrottleTime}
+                              onChange={(event) => {
+                                setMqttThrottleTime(event.target.value);
+                              }}
+                            />
+                          </Grid>
+                          <Grid item xs={8}>
+                            <TextField
+                              label="session prefix"
+                              variant="outlined"
+                              size="small"
+                              fullWidth
+                              value={mqttSessionPrefix}
+                              onChange={(event) => {
+                                setMqttSessionPrefix(event.target.value);
+                              }}
+                              //helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
+                            />
+                          </Grid>
+                        </Grid>
+                      </CardContent>
+                    </Card>
+                  )}
+                </Grid>
+                <Grid item>
+                  <Grid
+                    container
+                    direction="row"
+                    justifyContent="space-between"
+                    alignItems="center"
+                  >
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Grid item>
+                          <FormGroup>
+                            <FormControlLabel
+                              sx={{ color: "white" }}
+                              control={
+                                <Switch
+                                  disabled={!window.api}
+                                  checked={oscActive}
+                                  onChange={(event) => {
+                                    setOscActive(event.target.checked);
+                                  }}
+                                />
+                              }
+                              label="OSC"
+                            />
+                          </FormGroup>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                    <Grid item>
+                      <IconButton
+                        disabled={!window.api}
+                        size="large"
+                        edge="start"
+                        color="secondary"
+                        aria-label="menu"
+                        onClick={() => setShowMqtt(!showMqtt)}
+                      >
+                        <MoreVertIcon></MoreVertIcon>
+                      </IconButton>
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-              <Grid item>
-                <Grid container direction="column" spacing={2}>
-                  <Grid item>
-                    <Divider textAlign="center"></Divider>
-                  </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Divider textAlign="center"></Divider>
+                </Grid>
 
-                  <Grid item>
-                    <Typography variant="overline" color={"white"}>
-                      Tracker Options
-                    </Typography>
-                  </Grid>
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="center">
-                      <Grid item>
-                        {tracker === TRACKERS.POSE &&
-                          poseLandmarkPoints.map((poseLandmark) => {
-                            return (
-                              <div>
-                                <Radio
-                                  
-                                  checked={activePoseLandmarkPoints.includes(
-                                    poseLandmark
-                                  )}
-                                  onChange={(event) => {
-                                    toggleActivePoseLandmarkPoint(poseLandmark);
-                                  }}
-                                />{" "}
-                                {poseLandmark}
-                              </div>
-                            );
-                          })}
-                        {tracker === TRACKERS.HANDS && (
-                          <LandmarkOptions>
-                            <Hand src="/hand.svg" />
-                            <LandmarkRadioContainer>
-                              {handLandmarkPoints.map((handLandmark, key) => {
-                                return (
+                <Grid item>
+                  <Typography variant="overline" color={"white"}>
+                    Input
+                  </Typography>
+                </Grid>
+
+                <Grid item>
+                  <FormControl variant="filled" size="small" fullWidth>
+                    <InputLabel>Camera Input</InputLabel>
+                    <Select
+                      value={videoDeviceId ? videoDeviceId : ""}
+                      onChange={(event) => setVideoDeviceId(event.target.value)}
+                    >
+                      {devices.map((device, key) => (
+                        <MenuItem value={device.deviceId} key={device.deviceId}>
+                          <Grid
+                            container
+                            direction="row"
+                            //alignItems="center"
+                            //justifyContent= "center"
+                            columnSpacing={1}
+                          >
+                            <Grid item>
+                              <VideocamIcon
+                                fontSize={"inherit"}
+                                sx={{ mt: 0.4 }}
+                              ></VideocamIcon>
+                            </Grid>
+                            <Grid item>{device.label}</Grid>
+                          </Grid>
+                        </MenuItem>
+                      ))}
+                    </Select>
+                  </FormControl>
+                </Grid>
+
+                <Grid item>
+                  <FormControl variant="filled" size="small" fullWidth>
+                    <InputLabel>Trackers</InputLabel>
+                    <Select
+                      value={tracker}
+                      onChange={(event) => setTracker(event.target.value)}
+                    >
+                      {Object.entries(TRACKERS).map(([key, value]) => {
+                        return (
+                          <MenuItem key={key} value={value}>
+                            {value}
+                          </MenuItem>
+                        );
+                      })}
+                    </Select>
+                  </FormControl>
+                </Grid>
+              </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Divider textAlign="center"></Divider>
+                </Grid>
+
+                <Grid item>
+                  <Typography variant="overline" color={"white"}>
+                    Tracker Options
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Grid container alignItems="center" justifyContent="center">
+                    <Grid item>
+                      {tracker === TRACKERS.POSE &&
+                        poseLandmarkPoints.map((poseLandmark) => {
+                          return (
+                            <div>
+                              <Radio
+                                checked={activePoseLandmarkPoints.includes(
+                                  poseLandmark
+                                )}
+                                onChange={(event) => {
+                                  toggleActivePoseLandmarkPoint(poseLandmark);
+                                }}
+                              />{" "}
+                              {poseLandmark}
+                            </div>
+                          );
+                        })}
+                      {tracker === TRACKERS.HANDS && (
+                        <LandmarkOptions>
+                          <Hand src="/hand.svg" />
+                          <LandmarkRadioContainer>
+                            {handLandmarkPoints.map((handLandmark, key) => {
+                              return (
+                                <Tooltip title={handLandmark} placement="right">
                                   <LandmarkRadio
                                     key={key}
                                     style={{
                                       left:
                                         handLandmarkHotspotPositions[
                                           handLandmark
-                                        ].x - 21,
+                                        ].x - 16,
                                       top:
                                         handLandmarkHotspotPositions[
                                           handLandmark
-                                        ].y - 21,
+                                        ].y - 16,
                                     }}
                                   >
                                     <Radio
@@ -346,39 +574,40 @@ function Settings() {
                                       }
                                     />
                                   </LandmarkRadio>
-                                );
-                              })}
-                            </LandmarkRadioContainer>
-                          </LandmarkOptions>
-                        )}
-                      </Grid>
-                    </Grid>
-                  </Grid>
-                  <Grid item>
-                    <Grid container alignItems="center" justifyContent="center">
-                      <Grid item>
-                        <Button
-                          variant="text"
-                          size="small"
-                          onClick={() => setAllHandLandmarkPointsActive()}
-                        >
-                          All
-                        </Button>
-                      </Grid>
-                      <Grid item>
-                        <Button
-                          variant="text"
-                          size="small"
-                          onClick={() => setNoneHandLandmarkPointsActive()}
-                        >
-                          None
-                        </Button>
-                      </Grid>
+                                </Tooltip>
+                              );
+                            })}
+                          </LandmarkRadioContainer>
+                        </LandmarkOptions>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
+                <Grid item>
+                  <Grid container alignItems="center" justifyContent="center">
+                    <Grid item>
+                      <Button
+                        variant="text"
+                        size="small"
+                        onClick={() => setAllHandLandmarkPointsActive()}
+                      >
+                        All
+                      </Button>
+                    </Grid>
+                    <Grid item>
+                      <Button
+                        variant="text"
+                        size="small"
+                        onClick={() => setNoneHandLandmarkPointsActive()}
+                      >
+                        None
+                      </Button>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
 
-                {/* <h2>trackers</h2>
+              {/* <h2>trackers</h2>
                   <RadioGroup
                     value={tracker}
                     onChange={(event) => setTracker(event.target.value)}
@@ -529,169 +758,8 @@ function Settings() {
                       );
                     })}
                   </RadioGroup> */}
-
-                <Grid item>
-                  <Grid container direction="column" spacing={2}>
-                    <Grid item>
-                      <Divider textAlign="center"></Divider>
-                    </Grid>
-
-                    <Grid item>
-                      <Typography variant="overline" color={"white"}>
-                        Output
-                      </Typography>
-                    </Grid>
-
-                    {window.api && (
-                      <Grid item xs={6} className="osc">
-                        <h3>
-                          <Checkbox
-                            checked={oscActive}
-                            onChange={(event) => {
-                              setOscActive(event.target.checked);
-                            }}
-                          />
-                          OSC
-                        </h3>
-                        <Form>
-                          <TextField
-                            label="host"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                            value={oscDestinationHost}
-                            onChange={(event) => {
-                              setOscDestinationHost(event.target.value);
-                            }}
-                          />
-                          <TextField
-                            label="port"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                            value={oscDestinationPort}
-                            onChange={(event) => {
-                              setOscDestinationPort(event.target.value);
-                            }}
-                          />
-                          <TextField
-                            inputProps={{
-                              inputMode: "numeric",
-                              pattern: "[0-9]*",
-                            }}
-                            label="throttle time (ms)"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                            value={oscThrottleTime}
-                            onChange={(event) => {
-                              setOscThrottleTime(event.target.value);
-                            }}
-                          />
-                          <TextField
-                            label="session prefix"
-                            variant="outlined"
-                            size="small"
-                            fullWidth
-                            value={oscSessionPrefix}
-                            placeholder="/sessionId"
-                            onChange={(event) => {
-                              setOscSessionPrefix(event.target.value);
-                            }}
-                            helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
-                          />
-                        </Form>
-                      </Grid>
-                    )}
-                    <Grid item className="mqtt">
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Grid item>
-                          <FormGroup>
-                            <FormControlLabel
-                              sx={{ color: "white" }}
-                              control={
-                                <Switch
-                                  checked={mqttActive}
-                                  onChange={(event) => {
-                                    setMqttActive(event.target.checked);
-                                  }}
-                                />
-                              }
-                              label="MQTTT"
-                            />
-                          </FormGroup>
-                        </Grid>
-                        <Grid item>
-                          <IconButton
-                            size="large"
-                            edge="start"
-                            color="secondary"
-                            aria-label="menu"
-                            onClick={() => setShowMqtt(!showMqtt)}
-                          >
-                            <MoreVertIcon></MoreVertIcon>
-                          </IconButton>
-                        </Grid>
-                      </Grid>
-                      {showMqtt && (
-                        <Card variant="outlined">
-                          <CardContent>
-                            <Grid container spacing={2}>
-                              <Grid item xs={12}>
-                                <TextField
-                                  label="mqtt broker"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttBroker}
-                                  onChange={(event) => {
-                                    setMqttBroker(event.target.value);
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item xs={4}>
-                                <TextField
-                                  inputProps={{
-                                    inputMode: "numeric",
-                                    pattern: "[0-9]*",
-                                  }}
-                                  label="throttle time (ms)"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttThrottleTime}
-                                  onChange={(event) => {
-                                    setMqttThrottleTime(event.target.value);
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item xs={8}>
-                                <TextField
-                                  label="session prefix"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttSessionPrefix}
-                                  onChange={(event) => {
-                                    setMqttSessionPrefix(event.target.value);
-                                  }}
-                                  //helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
-                                />
-                              </Grid>
-                            </Grid>
-                          </CardContent>
-                        </Card>
-                      )}
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
             </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Container>

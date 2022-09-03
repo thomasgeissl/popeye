@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import MPose from "./components/MPose";
 import MHands from "./components/MHands";
 // import MFaceMesh from "./components/MFaceMesh";
@@ -30,10 +30,16 @@ const Content = styled.div`
 `;
 
 function App() {
+
   const showSettings = useStore((state) => state.showSettings);
   const tracker = useStore((state) => state.tracker);
   const tmMode = useStore((state) => state.tmMode);
   const setTracker = useStore((state) => state.setTracker);
+  const setMqttActive = useStore((state) => state.setMqttActive);
+
+  useEffect(() => {
+    setMqttActive(true)
+  }, []);
 
   return (
     <ThemeProvider theme={theme}>

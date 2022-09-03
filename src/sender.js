@@ -3,7 +3,6 @@ import { publish } from "./mqtt";
 
 const send = (address, args) => {
   const state = useStore.getState();
-  const logging = useStore((state) => state.logging);
 
  if (!state.active) {
     return;
@@ -19,8 +18,7 @@ const send = (address, args) => {
       ? `${state.mqttSessionPrefix}/popeye/${address}`
       : `popeye/${address}`;
     publish(topic, args);
-    logging("MQTT " + topic + " / " + args)
-
+    //console.log(topic, args)
   }
 };
 export { send };

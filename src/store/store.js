@@ -36,7 +36,7 @@ const useStore = create(
       videoDeviceId: null,
       tracker: TRACKERS.HANDS,
       activePoseLandmarkPoints: [],
-      activeHandLandmarkPoints: ["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
+      activeHandLandmarkPoints: ["index_finger_tip"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
       teachableMachineModelUrl:
@@ -48,12 +48,12 @@ const useStore = create(
       oscDestinationPort: 8000,
       oscSessionPrefix: "",
       oscThrottleTime: 16,
-      mqttActive: false,
-      mqttBroker: "192.168.178.42:9001",
+      mqttActive: true,
+      mqttBroker: "ws://localhost:9001",
       mqttSessionPrefix: "",
       mqttThrottleTime: 32,
       showSettings: false,
-      log: ["123", "456", "789"],
+      log: [],
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),
       setTracker: (tracker) => set((state) => ({ tracker: tracker })),
@@ -164,16 +164,21 @@ const useStore = create(
         const state = get();
         window.api?.send("save", JSON.stringify(state));
       },
-      logging:(text) => {
+      logging:(msg) => {
         let _log = get().log
-        _log.push(text)
-        console.log(_log)
+        _log.push(msg)
         if(_log.length > 10)
-          _log.pop()
+          _log.shift()
         set((state) => {
-          return { log: _log };
+          return { log: [..._log] };
         });
-
+      },
+      clipLog:() => {
+        let _log = get().log
+          _log.shift()
+        set((state) => {
+          return { log: [..._log] };
+        });
       }
     };
   })

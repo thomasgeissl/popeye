@@ -65,6 +65,9 @@ function MHands() {
   const allHandLandmarkPointsAsJson = useStore(
     (state) => state.allHandLandmarkPointsAsJson
   );
+
+  const logging = useStore((state) => state.logging);
+
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
 
@@ -76,7 +79,16 @@ function MHands() {
           }
           labels.forEach((label) => {
             if (activeHandLandmarkPoints.includes(label)) {
-              console.log("SEND")
+              //console.log(landmarks[index])
+              //logging("MQTT " + "popeye/sendMessage" + " " + `hands/${index}/${label}` + " x: " + landmarks[index].x.toFixed(2))
+              logging({
+                type: "MQTT",
+                topic: "popeye/sendMessage",
+                msg: `hands/${index}/${label}`,
+                x: landmarks[index].x.toFixed(2),
+                y: landmarks[index].y.toFixed(2),
+                z: landmarks[index].z.toFixed(2),
+              })
               /*window.api?.*/send("sendMessage", {
                 address: `hands/${index}/${label}`,
                 args: [landmarks[index]],
@@ -177,7 +189,7 @@ function MHands() {
       height: 900,
     });
     camera.start();
-  }, []);
+  }, [activeHandLandmarkPoints]);
 
   return (
     <Container>
