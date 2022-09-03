@@ -227,234 +227,7 @@ function Settings() {
           <Grid container direction="column" spacing={2}>
             <Grid item>
               <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <Divider textAlign="center"></Divider>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="overline" color={"white"}>
-                    Output
-                  </Typography>
-                </Grid>
-
-                
-                {/* <Grid item xs={6} className="osc">
-                      <h3>
-                        <Switch
-                          checked={oscActive}
-                          disabled={!window.api}
-                          onChange={(event) => {
-                            setOscActive(event.target.checked);
-                          }}
-                        />
-                        OSC
-                      </h3>
-                      <Form>
-                        <TextField
-                          label="host"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscDestinationHost}
-                          onChange={(event) => {
-                            setOscDestinationHost(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          label="port"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscDestinationPort}
-                          onChange={(event) => {
-                            setOscDestinationPort(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          inputProps={{
-                            inputMode: "numeric",
-                            pattern: "[0-9]*",
-                          }}
-                          label="throttle time (ms)"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscThrottleTime}
-                          onChange={(event) => {
-                            setOscThrottleTime(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          label="session prefix"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscSessionPrefix}
-                          placeholder="/sessionId"
-                          onChange={(event) => {
-                            setOscSessionPrefix(event.target.value);
-                          }}
-                          helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
-                        />
-                      </Form>
-                    </Grid> */}
-
-                <Grid item>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Grid item>
-                          <FormGroup>
-                            <FormControlLabel
-                              sx={{ color: "white" }}
-                              control={
-                                <Switch
-                                  checked={mqttActive}
-                                  onChange={(event) => {
-                                    setMqttActive(event.target.checked);
-                                  }}
-                                />
-                              }
-                              label="MQTTT"
-                            />
-                          </FormGroup>
-                        </Grid>
-                        {mqttActive && (
-                          <Grid item>
-                            <Chip
-                              label={mqttActive ? "connected" : "disconnected"}
-                              color={mqttActive ? "success" : "default"}
-                              variant="outlined"
-                              size="small"
-                            />
-                          </Grid>
-                        )}
-                      </Grid>
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        size="large"
-                        edge="start"
-                        color="secondary"
-                        aria-label="menu"
-                        onClick={() => setShowMqtt(!showMqtt)}
-                      >
-                        <MoreVertIcon></MoreVertIcon>
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                  {showMqtt && (
-                    <Card variant="outlined">
-                      <CardContent>
-                        <Grid container spacing={2}>
-                          <Grid item xs={12}>
-                            <TextField
-                              label="mqtt broker"
-                              variant="outlined"
-                              size="small"
-                              fullWidth
-                              value={mqttBroker}
-                              onChange={(event) => {
-                                setMqttBroker(event.target.value);
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={4}>
-                            <TextField
-                              inputProps={{
-                                inputMode: "numeric",
-                                pattern: "[0-9]*",
-                              }}
-                              label="throttle time (ms)"
-                              variant="outlined"
-                              size="small"
-                              fullWidth
-                              value={mqttThrottleTime}
-                              onChange={(event) => {
-                                setMqttThrottleTime(event.target.value);
-                              }}
-                            />
-                          </Grid>
-                          <Grid item xs={8}>
-                            <TextField
-                              label="session prefix"
-                              variant="outlined"
-                              size="small"
-                              fullWidth
-                              value={mqttSessionPrefix}
-                              onChange={(event) => {
-                                setMqttSessionPrefix(event.target.value);
-                              }}
-                              //helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
-                            />
-                          </Grid>
-                        </Grid>
-                      </CardContent>
-                    </Card>
-                  )}
-                </Grid>
-                <Grid item>
-                  <Grid
-                    container
-                    direction="row"
-                    justifyContent="space-between"
-                    alignItems="center"
-                  >
-                    <Grid item>
-                      <Grid
-                        container
-                        direction="row"
-                        justifyContent="space-between"
-                        alignItems="center"
-                      >
-                        <Grid item>
-                          <FormGroup>
-                            <FormControlLabel
-                              sx={{ color: "white" }}
-                              control={
-                                <Switch
-                                  disabled={!window.api}
-                                  checked={oscActive}
-                                  onChange={(event) => {
-                                    setOscActive(event.target.checked);
-                                  }}
-                                />
-                              }
-                              label="OSC"
-                            />
-                          </FormGroup>
-                        </Grid>
-                      </Grid>
-                    </Grid>
-                    <Grid item>
-                      <IconButton
-                        disabled={!window.api}
-                        size="large"
-                        edge="start"
-                        color="secondary"
-                        aria-label="menu"
-                        onClick={() => setShowMqtt(!showMqtt)}
-                      >
-                        <MoreVertIcon></MoreVertIcon>
-                      </IconButton>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
+                {/* <Grid item>
                   <Divider textAlign="center"></Divider>
                 </Grid>
 
@@ -462,7 +235,7 @@ function Settings() {
                   <Typography variant="overline" color={"white"}>
                     Input
                   </Typography>
-                </Grid>
+                </Grid> */}
 
                 <Grid item>
                   <FormControl variant="filled" size="small" fullWidth>
@@ -493,10 +266,9 @@ function Settings() {
                     </Select>
                   </FormControl>
                 </Grid>
-
                 <Grid item>
                   <FormControl variant="filled" size="small" fullWidth>
-                    <InputLabel>Trackers</InputLabel>
+                    <InputLabel>Tracker</InputLabel>
                     <Select
                       value={tracker}
                       onChange={(event) => setTracker(event.target.value)}
@@ -510,19 +282,6 @@ function Settings() {
                       })}
                     </Select>
                   </FormControl>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <Divider textAlign="center"></Divider>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="overline" color={"white"}>
-                    Tracker Options
-                  </Typography>
                 </Grid>
                 <Grid item>
                   <Grid container alignItems="center" justifyContent="center">
@@ -606,6 +365,254 @@ function Settings() {
                   </Grid>
                 </Grid>
               </Grid>
+            </Grid>
+            <Grid item>
+              <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Divider textAlign="center"></Divider>
+                </Grid>
+
+                <Grid item>
+                  <Typography variant="overline" color={"white"}>
+                    Output
+                  </Typography>
+                </Grid>
+
+                {/* <Grid item xs={6} className="osc">
+                      <h3>
+                        <Switch
+                          checked={oscActive}
+                          disabled={!window.api}
+                          onChange={(event) => {
+                            setOscActive(event.target.checked);
+                          }}
+                        />
+                        OSC
+                      </h3>
+                      <Form>
+                        <TextField
+                          label="host"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscDestinationHost}
+                          onChange={(event) => {
+                            setOscDestinationHost(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          label="port"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscDestinationPort}
+                          onChange={(event) => {
+                            setOscDestinationPort(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          inputProps={{
+                            inputMode: "numeric",
+                            pattern: "[0-9]*",
+                          }}
+                          label="throttle time (ms)"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscThrottleTime}
+                          onChange={(event) => {
+                            setOscThrottleTime(event.target.value);
+                          }}
+                        />
+                        <TextField
+                          label="session prefix"
+                          variant="outlined"
+                          size="small"
+                          fullWidth
+                          value={oscSessionPrefix}
+                          placeholder="/sessionId"
+                          onChange={(event) => {
+                            setOscSessionPrefix(event.target.value);
+                          }}
+                          helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
+                        />
+                      </Form>
+                    </Grid> */}
+                <Grid item>
+                  <Grid container direction="column" spacing={0}>
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Grid item>
+                              <FormGroup>
+                                <FormControlLabel
+                                  sx={{ color: "white" }}
+                                  control={
+                                    <Switch
+                                      checked={mqttActive}
+                                      onChange={(event) => {
+                                        setMqttActive(event.target.checked);
+                                      }}
+                                    />
+                                  }
+                                  label="MQTTT"
+                                />
+                              </FormGroup>
+                            </Grid>
+                            {mqttActive && (
+                              <Grid item>
+                                <Chip
+                                  label={
+                                    mqttActive ? "connected" : "disconnected"
+                                  }
+                                  color={mqttActive ? "success" : "default"}
+                                  variant="outlined"
+                                  size="small"
+                                />
+                              </Grid>
+                            )}
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <IconButton
+                            size="large"
+                            edge="start"
+                            color="secondary"
+                            aria-label="menu"
+                            onClick={() => setShowMqtt(!showMqtt)}
+                          >
+                            <MoreVertIcon></MoreVertIcon>
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                      {showMqtt && (
+                        <Card
+                          variant="outlined"
+                          sx={{ mt: 2, mb: 2, pt: 1, bb: 0, backgroundColor: "#444" }}
+                        >
+                          <CardContent>
+                            <Grid container spacing={4}>
+                              <Grid item xs={12}>
+                                <TextField
+                                  label="Broker"
+                                  variant="outlined"
+                                  size="small"
+                                  fullWidth
+                                  value={mqttBroker}
+                                  onChange={(event) => {
+                                    setMqttBroker(event.target.value);
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={4}>
+                                <TextField
+                                  inputProps={{
+                                    inputMode: "numeric",
+                                    pattern: "[0-9]*",
+                                  }}
+                                  label="Throttle Time (ms)"
+                                  variant="outlined"
+                                  size="small"
+                                  fullWidth
+                                  value={mqttThrottleTime}
+                                  onChange={(event) => {
+                                    setMqttThrottleTime(event.target.value);
+                                  }}
+                                />
+                              </Grid>
+                              <Grid item xs={8}>
+                                <TextField
+                                  label="Session prefix"
+                                  variant="outlined"
+                                  size="small"
+                                  fullWidth
+                                  value={mqttSessionPrefix}
+                                  onChange={(event) => {
+                                    setMqttSessionPrefix(event.target.value);
+                                  }}
+                                  //helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
+                                />
+                              </Grid>
+                            </Grid>
+                          </CardContent>
+                        </Card>
+                      )}
+                    </Grid>
+                    <Grid item>
+                      <Grid
+                        container
+                        direction="row"
+                        justifyContent="space-between"
+                        alignItems="center"
+                      >
+                        <Grid item>
+                          <Grid
+                            container
+                            direction="row"
+                            justifyContent="space-between"
+                            alignItems="center"
+                          >
+                            <Grid item>
+                              <FormGroup>
+                                <FormControlLabel
+                                  sx={{ color: "white" }}
+                                  control={
+                                    <Switch
+                                      disabled={!window.api}
+                                      checked={oscActive}
+                                      onChange={(event) => {
+                                        setOscActive(event.target.checked);
+                                      }}
+                                    />
+                                  }
+                                  label="OSC"
+                                />
+                              </FormGroup>
+                            </Grid>
+                          </Grid>
+                        </Grid>
+                        <Grid item>
+                          <IconButton
+                            disabled={!window.api}
+                            size="large"
+                            edge="start"
+                            color="secondary"
+                            aria-label="menu"
+                            onClick={() => setShowMqtt(!showMqtt)}
+                          >
+                            <MoreVertIcon></MoreVertIcon>
+                          </IconButton>
+                        </Grid>
+                      </Grid>
+                    </Grid>
+                  </Grid>
+                </Grid>
+              </Grid>
+            </Grid>
+
+            <Grid item>
+              {/* <Grid container direction="column" spacing={2}>
+                <Grid item>
+                  <Divider textAlign="center"></Divider>
+                </Grid>
+
+                <Grid item>
+                  <Typography variant="overline" color={"white"}>
+                    Tracker Options
+                  </Typography>
+                </Grid>
+              </Grid> */}
 
               {/* <h2>trackers</h2>
                   <RadioGroup
