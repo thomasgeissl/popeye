@@ -11,7 +11,7 @@ import Webcam from "react-webcam";
 import styled from "@emotion/styled";
 import useStore from "../store/store";
 import ThemeOptions from "../theme";
-import {send} from "../sender"
+import { send } from "../sender";
 import { color } from "@mui/system";
 
 const labels = [
@@ -43,7 +43,16 @@ const WebcamContainer = styled.div`
 `;
 
 const Overlay = styled.canvas`
-  width: 100%;
+width: 100%;
+height: calc(100vw * 900 / 1280);
+`;
+
+const Container = styled.div`
+width: 100vw;
+height: 100vh;
+overflow: hidden;
+display: flex;
+alignItems: center;
 `;
 
 function MHands() {
@@ -63,11 +72,12 @@ function MHands() {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, index) => {
           if (allHandLandmarkPointsAsJson) {
-            send("hands/${index}/all", [JSON.stringify(landmarks)] )
+            send("hands/${index}/all", [JSON.stringify(landmarks)]);
           }
           labels.forEach((label) => {
             if (activeHandLandmarkPoints.includes(label)) {
-              window.api?.send("sendMessage", {
+              console.log("SEND")
+              /*window.api?.*/send("sendMessage", {
                 address: `hands/${index}/${label}`,
                 args: [landmarks[index]],
               });
@@ -82,10 +92,10 @@ function MHands() {
         0,
         0,
         canvasRef.current.width,
-       canvasRef.current.height
+        canvasRef.current.height
       );
-      
-      canvasCtx.filter = 'grayscale(100%)';
+
+      canvasCtx.filter = "grayscale(100%)";
 
       canvasCtx.drawImage(
         results.image,
@@ -95,30 +105,58 @@ function MHands() {
         canvasRef.current.height
       );
 
-      canvasCtx.filter = 'none';
+      canvasCtx.filter = "none";
 
       canvasCtx.fillStyle = "rgba(0, 0, 0, .5)";
-      canvasCtx.fillRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+      canvasCtx.fillRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
 
-      canvasCtx.globalCompositeOperation = 'screen';
+      canvasCtx.globalCompositeOperation = "screen";
 
       if (results.multiHandLandmarks) {
         for (const landmarks of results.multiHandLandmarks) {
           drawConnectors(canvasCtx, landmarks, HAND_CONNECTIONS, {
-            color: ThemeOptions.palette.secondary.main, //"rgba(255, 255, 255, .25)"
+            color: "rgba(255, 255,255, .1)",
             lineWidth: 1,
           });
-          drawLandmarks(canvasCtx, landmarks, {
-            color: ThemeOptions.palette.secondary.main,
-            radius: 5
-          });
+
         }
       }
+
+      let activeLandmarks = [];
+      let inactiveLandmarks = [];
+
+      if (results.multiHandLandmarks) {
+        results.multiHandLandmarks.forEach((landmarks) => {
+          labels.forEach((label, index) => {
+            if (activeHandLandmarkPoints.includes(label))
+              activeLandmarks.push(landmarks[index]);
+            else inactiveLandmarks.push(landmarks[index]);
+          });
+        });
+      }
+
+      drawLandmarks(canvasCtx, activeLandmarks, {
+        color: ThemeOptions.palette.secondary.main,
+        radius: 5,
+      });
+
+      drawLandmarks(canvasCtx, inactiveLandmarks, {
+        color: "rgba(255, 255,255, .1)",
+        radius: 2,
+      });
+
       canvasCtx.restore();
     }
     const hands = new Hands({
       locateFile: (file) => {
-        return window.api ? `static://models/hands/${file}` : `models/hands/${file}` ;
+        return window.api
+          ? `static://models/hands/${file}`
+          : `models/hands/${file}`;
       },
     });
     hands.setOptions({
@@ -140,8 +178,9 @@ function MHands() {
     });
     camera.start();
   }, []);
+
   return (
-    <div className="hands">
+    <Container>
       <WebcamContainer>
         <Webcam
           ref={webcamRef}
@@ -151,8 +190,13 @@ function MHands() {
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
         ></Webcam>
       </WebcamContainer>
-      <Overlay ref={canvasRef} className="output_canvas" width="1280" height="900"></Overlay>
-    </div>
+      <Overlay
+        ref={canvasRef}
+        className="output_canvas"
+        width="1280"
+        height="900"
+      ></Overlay>
+    </Container>
   );
 }
 
