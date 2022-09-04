@@ -118,6 +118,7 @@ function MPose() {
         canvasRef.current.width,
         canvasRef.current.height
       );
+
       //   canvasCtx.drawImage(
       //     results.segmentationMask,
       //     0,

@@ -126,8 +126,7 @@ function Overlay() {
                 >
                   <Grid container direction="row" spacing={2}>
                     <Grid item><strong>{line.type}</strong></Grid>
-                    <Grid item>{line.topic}</Grid>
-                    <Grid item sx={{flexGrow: 1}}>{line.msg}</Grid>
+                    <Grid item sx={{flexGrow: 1}}>{line.topic}</Grid>
                     <Grid item>X {line.x}</Grid>
                     <Grid item>Y {line.y}</Grid>
                     <Grid item>Z {line.z}</Grid>

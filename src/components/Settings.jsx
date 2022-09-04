@@ -36,7 +36,7 @@ import { landmarkPoints as handLandmarkPoints } from "./MHands";
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  width: 30vw;
+  width: 33vw;
   height: calc(100vh - 24px * 2);
   position: absolute;
   right: 0px;

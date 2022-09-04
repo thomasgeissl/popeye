@@ -83,16 +83,14 @@ function MHands() {
               //logging("MQTT " + "popeye/sendMessage" + " " + `hands/${index}/${label}` + " x: " + landmarks[index].x.toFixed(2))
               logging({
                 type: "MQTT",
-                topic: "popeye/sendMessage",
-                msg: `hands/${index}/${label}`,
+                topic: "popeye/" + `hands/${index}/${label}`,
                 x: landmarks[index].x.toFixed(2),
                 y: landmarks[index].y.toFixed(2),
                 z: landmarks[index].z.toFixed(2),
               })
-              /*window.api?.*/send("sendMessage", {
-                address: `hands/${index}/${label}`,
-                args: [landmarks[index]],
-              });
+              /*window.api?.*/send(
+                `hands/${index}/${label}`, landmarks[index]
+              );
             }
           });
         });
