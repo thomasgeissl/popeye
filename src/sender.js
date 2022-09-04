@@ -3,7 +3,8 @@ import { publish } from "./mqtt";
 
 const send = (address, args) => {
   const state = useStore.getState();
-  if (!state.active) {
+
+ if (!state.active) {
     return;
   }
   if (state.oscActive) {
@@ -17,6 +18,7 @@ const send = (address, args) => {
       ? `${state.mqttSessionPrefix}/popeye/${address}`
       : `popeye/${address}`;
     publish(topic, args);
+    //console.log(topic, args)
   }
 };
 export { send };

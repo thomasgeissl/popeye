@@ -72,8 +72,8 @@ const sendThrottledMessage = (address, message) => {
 // Create the native browser window.
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 768,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,

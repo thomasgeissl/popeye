@@ -1,0 +1,25 @@
+<svg width="231" height="247" viewBox="0 0 231 247" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="hand_hotspots">
+<circle id="wrist" cx="98" cy="206" r="5" fill="#D9D9D9"/>
+<circle id="pinky_tip" cx="18" cy="72" r="5" fill="#D9D9D9"/>
+<circle id="pinky_tip_2" cx="29" cy="94" r="5" fill="#D9D9D9"/>
+<circle id="pinky_dip" cx="40" cy="116" r="5" fill="#D9D9D9"/>
+<circle id="pinky_mcp" cx="51" cy="138" r="5" fill="#D9D9D9"/>
+<circle id="ring_finger_mcp" cx="72" cy="128" r="5" fill="#D9D9D9"/>
+<circle id="ring_finger_pip" cx="65" cy="105" r="5" fill="#D9D9D9"/>
+<circle id="ring_finger_dip" cx="58" cy="82" r="5" fill="#D9D9D9"/>
+<circle id="ring_finger_tip" cx="51" cy="59" r="5" fill="#D9D9D9"/>
+<circle id="middle_finger_mcp" cx="97" cy="119" r="5" fill="#D9D9D9"/>
+<circle id="middle_finger_pip" cx="97" cy="96" r="5" fill="#D9D9D9"/>
+<circle id="middle_finger_dip" cx="97" cy="73" r="5" fill="#D9D9D9"/>
+<circle id="middle_finger_tip" cx="97" cy="50" r="5" fill="#D9D9D9"/>
+<circle id="index_finger_mcp" cx="125.124" cy="124.773" r="5" transform="rotate(15 125.124 124.773)" fill="#D9D9D9"/>
+<circle id="index_finger_pip" cx="131.077" cy="102.556" r="5" transform="rotate(15 131.077 102.556)" fill="#D9D9D9"/>
+<circle id="index_finger_dip" cx="137.029" cy="80.3399" r="5" transform="rotate(15 137.029 80.3399)" fill="#D9D9D9"/>
+<circle id="index_finger_tip" cx="142.982" cy="58.1237" r="5" transform="rotate(15 142.982 58.1237)" fill="#D9D9D9"/>
+<circle id="thumb_cmc" cx="149.071" cy="171.862" r="5" transform="rotate(45 149.071 171.862)" fill="#D9D9D9"/>
+<circle id="thumb_mcp" cx="165.334" cy="155.598" r="5" transform="rotate(45 165.334 155.598)" fill="#D9D9D9"/>
+<circle id="thumb_ip" cx="181.598" cy="139.335" r="5" transform="rotate(45 181.598 139.335)" fill="#D9D9D9"/>
+<circle id="thumb_tip" cx="197.861" cy="123.071" r="5" transform="rotate(45 197.861 123.071)" fill="#D9D9D9"/>
+</g>
+</svg>
