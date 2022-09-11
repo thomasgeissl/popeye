@@ -76,8 +76,8 @@ function MPose() {
   const sessionPrefix = useStore((state) => state.sessionPrefix);
   const active = useStore((state) => state.active);
   const mqttActive = useStore((state) => state.mqttActive);
-  const activePoseLandmarkPoints = useStore(
-    (state) => state.activePoseLandmarkPoints
+  const landmarkPoints = useStore(
+    (state) => state.landmarkPoints
   );
   const allPoseLandmarkPointsAsJson = useStore(
     (state) => state.allPoseLandmarkPointsAsJson
@@ -117,7 +117,7 @@ function MPose() {
         send(`pose/all`, [results.poseLandmarks]);
       }
       labels.forEach((label, index) => {
-        if (activePoseLandmarkPoints.includes(label)) {
+        if (landmarkPoints.includes(label)) {
           send(`pose/${label}`, [results.poseLandmarks[index]]);
         }
       });
@@ -160,7 +160,7 @@ function MPose() {
         let inactiveLandmarks = [];
 
         labels.forEach((label, index) => {
-          if (activePoseLandmarkPoints.includes(label))
+          if (landmarkPoints.includes(label))
             activeLandmarks.push(results.poseLandmarks[index]);
           else inactiveLandmarks.push(results.poseLandmarks[index]);
         });
@@ -198,7 +198,7 @@ function MPose() {
       height: 480,
     });
     camera.start();
-  }, [activePoseLandmarkPoints]);
+  }, [landmarkPoints]);
   return (
     <Container>
       <WebcamContainer>

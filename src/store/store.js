@@ -35,8 +35,7 @@ const useStore = create(
     return {
       videoDeviceId: null,
       tracker: TRACKERS.POSE,
-      activePoseLandmarkPoints: ["left_eye", "right_eye"],
-      activeHandLandmarkPoints: ["index_finger_tip"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
+      landmarkPoints: ["left_eye", "right_eye"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
       teachableMachineModelUrl:
@@ -102,57 +101,42 @@ const useStore = create(
         setThrottleTime(mqttThrottleTime);
         set((state) => ({ mqttThrottleTime }));
       },
-      toggleActivePoseLandmarkPoint: (landmarkPoint) => {
-        set((state) => {
-          let activePoseLandmarkPoints = [...state.activePoseLandmarkPoints];
-          if (activePoseLandmarkPoints.includes(landmarkPoint)) {
-            activePoseLandmarkPoints.splice(
-              activePoseLandmarkPoints.indexOf(landmarkPoint),
-              1
-            );
-          } else {
-            activePoseLandmarkPoints.push(landmarkPoint);
-          }
-          return { activePoseLandmarkPoints };
-        });
-      },
-      setAllPoseLandmarkPointsActive: () => {
-        set((state) => {
-          return { activePoseLandmarkPoints: [...poseLandmarkPoints] };
-        });
-      },
       setAllPoseLandmarkPointsAsJson: (allPoseLandmarkPointsAsJson) => {
         set((state) => {
           return { allPoseLandmarkPointsAsJson };
         });
       },
-      toggleActiveHandLandmarkPoint: (landmarkPoint) => {
-        set((state) => {
-          let activeHandLandmarkPoints = [...state.activeHandLandmarkPoints];
-          if (activeHandLandmarkPoints.includes(landmarkPoint)) {
-            activeHandLandmarkPoints.splice(
-              activeHandLandmarkPoints.indexOf(landmarkPoint),
-              1
-            );
-          } else {
-            activeHandLandmarkPoints.push(landmarkPoint);
-          }
-          return { activeHandLandmarkPoints };
-        });
-      },
-      setAllHandLandmarkPointsActive: () => {
-        set((state) => {
-          return { activeHandLandmarkPoints: [...handLandmarkPoints] };
-        });
-      },
-      setNoneHandLandmarkPointsActive: () => {
-        set((state) => {
-          return { activeHandLandmarkPoints: [] };
-        });
-      },
       setAllHandLandmarkPointsAsJson: (allHandLandmarkPointsAsJson) => {
         set((state) => {
           return { allHandLandmarkPointsAsJson };
+        });
+      },
+      addLandmarkPoints: (landmarkPoints) => {
+        set((state) => {
+          return { landmarkPoints: [...get().landmarkPoints, ...landmarkPoints] };
+        });
+      },
+      toggleLandmarkPoint: (landmarkPoint) => {
+        set((state) => {
+          let landmarkPoints = [...state.landmarkPoints];
+          if (landmarkPoints.includes(landmarkPoint)) {
+            landmarkPoints.splice(
+              landmarkPoints.indexOf(landmarkPoint),
+              1
+            );
+          } else {
+            landmarkPoints.push(landmarkPoint);
+          }
+          return { landmarkPoints };
+        });
+      },
+      removeLandmarkPoints: (landmarkPoints) => {
+        const points =  [];
+        [...get().landmarkPoints].map(landmark => {if(!landmarkPoints.includes(landmark)) {
+          points.push(landmark);
+        }})
+        set((state) => {
+          return { landmarkPoints: points };
         });
       },
       setTeachableMachineModelUrl: (teachableMachineModelUrl) => {

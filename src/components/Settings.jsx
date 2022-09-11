@@ -117,12 +117,12 @@ const handLandmarkHotSpotPositions = [
 ];
 
 const handsLandmarkHotSpotPositions = [
-  { label: "right_pinky", x: 19, y: 76 },
-  { label: "right_index", x: 115, y: 46 },
-  { label: "right_thumb", x: 152, y: 113 },
-  { label: "left_pinky", x: 330, y: 76 },
-  { label: "left_index", x: 238, y: 46 },
-  { label: "left_thumb", x: 152, y: 113 },
+  { label: "right_pinky", x: 8, y: 86 },
+  { label: "right_index", x: 75, y: 65 },
+  { label: "right_thumb", x: 100, y: 115 },
+  { label: "left_pinky", x: 220, y: 86 },
+  { label: "left_index", x: 156, y: 65 },
+  { label: "left_thumb", x: 130, y: 115 },
 ];
 
 const faceLandmarkHotSpotPositions = [
@@ -379,7 +379,7 @@ function Settings() {
                     </Grid>
                   </Grid>
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                   <Grid container alignItems="center" justifyContent="center">
                     <Grid item>
                       <Button
@@ -400,7 +400,7 @@ function Settings() {
                       </Button>
                     </Grid>
                   </Grid>
-                </Grid>
+                </Grid> */}
               </Grid>
             </Grid>
             <Grid item>

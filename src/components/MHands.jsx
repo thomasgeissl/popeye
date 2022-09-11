@@ -59,9 +59,7 @@ function MHands() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
-  const activeHandLandmarkPoints = useStore(
-    (state) => state.activeHandLandmarkPoints
-  );
+  const landmarkPoints = useStore((state) => state.landmarkPoints);
   const allHandLandmarkPointsAsJson = useStore(
     (state) => state.allHandLandmarkPointsAsJson
   );
@@ -78,7 +76,7 @@ function MHands() {
             send("hands/${index}/all", [JSON.stringify(landmarks)]);
           }
           labels.forEach((label) => {
-            if (activeHandLandmarkPoints.includes(label)) {
+            if (landmarkPoints.includes(label)) {
               //console.log(landmarks[index])
               //logging("MQTT " + "popeye/sendMessage" + " " + `hands/${index}/${label}` + " x: " + landmarks[index].x.toFixed(2))
               logging({
@@ -143,7 +141,7 @@ function MHands() {
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks) => {
           labels.forEach((label, index) => {
-            if (activeHandLandmarkPoints.includes(label))
+            if (landmarkPoints.includes(label))
               activeLandmarks.push(landmarks[index]);
             else inactiveLandmarks.push(landmarks[index]);
           });
@@ -187,7 +185,7 @@ function MHands() {
       height: 900,
     });
     camera.start();
-  }, [activeHandLandmarkPoints]);
+  }, [landmarkPoints]);
 
   return (
     <Container>

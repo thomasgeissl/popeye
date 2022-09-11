@@ -15,6 +15,14 @@ const Result = styled.li`
   }
 `;
 
+const Video = styled.video`
+position: fixed;
+right: 0;
+bottom: 0;
+min-width: 100%;
+min-height: 100%;
+`;
+
 function TeachableMachineImage() {
   const videoRef = useRef(null);
   const [classifier, setClassifier] = useState(null);
@@ -68,7 +76,7 @@ function TeachableMachineImage() {
   }, [sessionPrefix, results]);
   return (
     <div>
-      <video
+      <Video
         ref={videoRef}
         style={{ transform: "scale(-1, 1)" }}
         width="640"
