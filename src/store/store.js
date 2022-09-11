@@ -34,8 +34,8 @@ const useStore = create(
     });
     return {
       videoDeviceId: null,
-      tracker: TRACKERS.HANDS,
-      activePoseLandmarkPoints: [],
+      tracker: TRACKERS.POSE,
+      activePoseLandmarkPoints: ["left_eye", "right_eye"],
       activeHandLandmarkPoints: ["index_finger_tip"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
@@ -53,6 +53,7 @@ const useStore = create(
       mqttSessionPrefix: "",
       mqttThrottleTime: 32,
       showSettings: false,
+      
       log: [],
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),

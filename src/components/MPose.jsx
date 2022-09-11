@@ -54,9 +54,18 @@ const labels = [
 const WebcamContainer = styled.div`
   display: none;
 `;
+
 const Overlay = styled.canvas`
-  width: 640px;
-  height: 480px;
+  width: 100%;
+  height: calc(100vw * 900 / 1280);
+`;
+
+const Container = styled.div`
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  alignitems: center;
 `;
 
 function MPose() {
@@ -78,7 +87,9 @@ function MPose() {
     const canvasCtx = canvasRef.current.getContext("2d");
     const pose = new Pose({
       locateFile: (file) => {
-        return window.api ? `static://models/pose/${file}` : `models/pose/${file}` ;
+        return window.api
+          ? `static://models/pose/${file}`
+          : `models/pose/${file}`;
       },
     });
     pose.setOptions({
@@ -111,7 +122,9 @@ function MPose() {
         }
       });
 
+      // Only overwrite existing pixels.
       canvasCtx.save();
+      //canvasCtx.imageSmoothingQuality = 'high';
       canvasCtx.clearRect(
         0,
         0,
@@ -119,26 +132,8 @@ function MPose() {
         canvasRef.current.height
       );
 
-      //   canvasCtx.drawImage(
-      //     results.segmentationMask,
-      //     0,
-      //     0,
-      //     canvasRef.current.width,
-      //     canvasRef.current.height
-      //   );
+      canvasCtx.filter = "grayscale(100%)";
 
-      // Only overwrite existing pixels.
-      canvasCtx.globalCompositeOperation = "source-in";
-      canvasCtx.fillStyle = "#00FF00";
-      canvasCtx.fillRect(
-        0,
-        0,
-        canvasRef.current.width,
-        canvasRef.current.height
-      );
-
-      // Only overwrite missing pixels.
-      canvasCtx.globalCompositeOperation = "destination-atop";
       canvasCtx.drawImage(
         results.image,
         0,
@@ -147,15 +142,45 @@ function MPose() {
         canvasRef.current.height
       );
 
-      canvasCtx.globalCompositeOperation = "source-over";
-      drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
-        color: ThemeOptions.palette.primary.main,
-        lineWidth: 1,
-      });
-      drawLandmarks(canvasCtx, results.poseLandmarks, {
-        color: ThemeOptions.palette.secondary.main,
-        lineWidth: 1,
-      });
+      canvasCtx.filter = "none";
+
+      canvasCtx.fillStyle = "rgba(0, 0, 0, .5)";
+      canvasCtx.fillRect(
+        0,
+        0,
+        canvasRef.current.width,
+        canvasRef.current.height
+      );
+
+      canvasCtx.globalCompositeOperation = "screen";
+
+
+      if (results.poseLandmarks) {
+        let activeLandmarks = [];
+        let inactiveLandmarks = [];
+
+        labels.forEach((label, index) => {
+          if (activePoseLandmarkPoints.includes(label))
+            activeLandmarks.push(results.poseLandmarks[index]);
+          else inactiveLandmarks.push(results.poseLandmarks[index]);
+        });
+
+        drawConnectors(canvasCtx, results.poseLandmarks, POSE_CONNECTIONS, {
+          color: "rgba(255, 255,255, .1)",
+          lineWidth: 1,
+        });
+
+        drawLandmarks(canvasCtx, activeLandmarks, {
+          color: ThemeOptions.palette.secondary.main,
+          radius: 5,
+        });
+
+        drawLandmarks(canvasCtx, inactiveLandmarks, {
+          color: "rgba(255, 255,255, .1)",
+          radius: 2,
+        });
+      }
+
       canvasCtx.restore();
 
       //   grid.updateLandmarks(results.poseWorldLandmarks);
@@ -165,7 +190,7 @@ function MPose() {
 
     const camera = new Camera(webcamRef.current.video, {
       onFrame: async () => {
-        if (webcamRef.current?.video) {
+        if (webcamRef.current?.video) { 
           await pose.send({ image: webcamRef.current.video });
         }
       },
@@ -173,9 +198,9 @@ function MPose() {
       height: 480,
     });
     camera.start();
-  }, []);
+  }, [activePoseLandmarkPoints]);
   return (
-    <div className="pose">
+    <Container>
       <WebcamContainer>
         <Webcam
           ref={webcamRef}
@@ -185,9 +210,14 @@ function MPose() {
           mirrored={true}
         ></Webcam>
       </WebcamContainer>
-      <Overlay ref={canvasRef} className="output_canvas"></Overlay>
+      <Overlay
+        ref={canvasRef}
+        className="output_canvas"
+        width="1280"
+        height="900"
+      ></Overlay>
       <div ref={landmarkRef} className="landmark-grid-container"></div>
-    </div>
+    </Container>
   );
 }
 

@@ -27,11 +27,17 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
+import Tabs from "@mui/material/Tabs";
+import Tab from "@mui/material/Tab";
 
 import { useTheme } from "@mui/material/styles";
 
+import LandmarkOptionsPanel from "./settings/LandmarkOptionsPanel";
+import MqttOptionsPanel from "./settings/MqttOptionsPanel";
+
 import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
+import { Hands } from "@mediapipe/hands";
 
 const Container = styled.div`
   display: flex;
@@ -70,7 +76,7 @@ const LandmarkOptions = styled.div`
   margin: 24px;
 `;
 
-const Hand = styled.img`
+const Sketch = styled.img`
   opacity: 0.1;
 `;
 
@@ -86,29 +92,71 @@ const LandmarkRadio = styled.div`
   left: 0px;
 `;
 
-const handLandmarkHotspotPositions = {
-  wrist: { x: 90, y: 204 },
-  thumb_cmc: { x: 115, y: 181 },
-  thumb_mcp: { x: 140, y: 158 },
-  thumb_ip: { x: 165, y: 135 },
-  thumb_tip: { x: 190, y: 112 },
-  index_finger_mcp: { x: 123, y: 107 },
-  index_finger_pip: { x: 126, y: 78 },
-  index_finger_dip: { x: 129, y: 49 },
-  index_finger_tip: { x: 132, y: 20 },
-  middle_finger_mcp: { x: 90, y: 104 },
-  middle_finger_pip: { x: 88, y: 68 },
-  middle_finger_dip: { x: 86, y: 32 },
-  middle_finger_tip: { x: 84, y: -4 },
-  ring_finger_mcp: { x: 58, y: 111 },
-  ring_finger_pip: { x: 51, y: 79 },
-  ring_finger_dip: { x: 44, y: 47 },
-  ring_finger_tip: { x: 37, y: 15 },
-  pinky_mcp: { x: 32, y: 127 },
-  pinky_pip: { x: 22, y: 105 },
-  pinky_dip: { x: 12, y: 83 },
-  pinky_tip: { x: 2, y: 61 },
-};
+const handLandmarkHotSpotPositions = [
+  { label: "wrist", x: 90, y: 204 },
+  { label: "thumb_cmc", x: 115, y: 181 },
+  { label: "thumb_mcp", x: 140, y: 158 },
+  { label: "thumb_ip", x: 165, y: 135 },
+  { label: "thumb_tip", x: 190, y: 112 },
+  { label: "index_finger_mcp", x: 123, y: 107 },
+  { label: "index_finger_pip", x: 126, y: 78 },
+  { label: "index_finger_dip", x: 129, y: 49 },
+  { label: "index_finger_tip", x: 132, y: 20 },
+  { label: "middle_finger_mcp", x: 90, y: 104 },
+  { label: "middle_finger_pip", x: 88, y: 68 },
+  { label: "middle_finger_dip", x: 86, y: 32 },
+  { label: "middle_finger_tip", x: 84, y: -4 },
+  { label: "ring_finger_mcp", x: 58, y: 111 },
+  { label: "ring_finger_pip", x: 51, y: 79 },
+  { label: "ring_finger_dip", x: 44, y: 47 },
+  { label: "ring_finger_tip", x: 37, y: 15 },
+  { label: "pinky_mcp", x: 32, y: 127 },
+  { label: "pinky_pip", x: 22, y: 105 },
+  { label: "pinky_dip", x: 12, y: 83 },
+  { label: "pinky_tip", x: 2, y: 61 },
+];
+
+const handsLandmarkHotSpotPositions = [
+  { label: "right_pinky", x: 19, y: 76 },
+  { label: "right_index", x: 115, y: 46 },
+  { label: "right_thumb", x: 152, y: 113 },
+  { label: "left_pinky", x: 330, y: 76 },
+  { label: "left_index", x: 238, y: 46 },
+  { label: "left_thumb", x: 152, y: 113 },
+];
+
+const faceLandmarkHotSpotPositions = [
+  { label: "nose", x: 126, y: 110 },
+  { label: "left_eye", x: 158, y: 67 },
+  { label: "left_eye_inner", x: 135, y: 67 },
+  { label: "left_eye_outer", x: 181, y: 67 },
+  { label: "right_eye", x: 78, y: 67 },
+  { label: "right_eye_inner", x: 101, y: 67 },
+  { label: "right_eye_outer", x: 55, y: 67 },
+  { label: "left_ear", x: 217, y: 89 },
+  { label: "right_ear", x: 13, y: 89 },
+  { label: "mouth_right", x: 103, y: 169 },
+  { label: "mouth_left", x: 136, y: 169 },
+];
+
+const bodyLandmarkHotSpotPositions = [
+  { label: "left_shoulder", x: 138, y: 34 },
+  { label: "right_shoulder", x: 92, y: 34 },
+  { label: "left_elbow", x: 148, y: 74 },
+  { label: "right_elbow", x: 82, y: 74 },
+  { label: "left_wrist", x: 169, y: 103 },
+  { label: "right_wrist", x: 60, y: 103 },
+  { label: "left_hip", x: 128, y: 113 },
+  { label: "right_hip", x: 102, y: 113 },
+  { label: "left_knee", x: 129, y: 161 },
+  { label: "right_knee", x: 101, y: 161 },
+  { label: "left_ankle", x: 130, y: 200 },
+  { label: "right_ankle", x: 100, y: 200 },
+  { label: "left_heel", x: 130, y: 225 },
+  { label: "right_heel", x: 100, y: 225 },
+  { label: "left_foot_index", x: 158, y: 225 },
+  { label: "right_foot_index", x: 72, y: 225 },
+];
 
 function Settings() {
   const theme = useTheme();
@@ -184,7 +232,9 @@ function Settings() {
 
   // local state
   const [devices, setDevices] = useState([]);
+  const [poseTab, setPoseTab] = useState(0);
   const [showMqtt, setShowMqtt] = useState(false);
+
   const handleDevices = useCallback(
     (mediaDevices) =>
       setDevices(mediaDevices.filter(({ kind }) => kind === "videoinput")),
@@ -286,58 +336,45 @@ function Settings() {
                 <Grid item>
                   <Grid container alignItems="center" justifyContent="center">
                     <Grid item>
-                      {tracker === TRACKERS.POSE &&
-                        poseLandmarkPoints.map((poseLandmark) => {
-                          return (
-                            <div>
-                              <Radio
-                                checked={activePoseLandmarkPoints.includes(
-                                  poseLandmark
-                                )}
-                                onChange={(event) => {
-                                  toggleActivePoseLandmarkPoint(poseLandmark);
-                                }}
-                              />{" "}
-                              {poseLandmark}
-                            </div>
-                          );
-                        })}
+                      {tracker === TRACKERS.POSE && (
+                        <div>
+                          <Tabs
+                            value={poseTab}
+                            onChange={(event, value) => {
+                              setPoseTab(value);
+                            }}
+                            aria-label="basic tabs example"
+                          >
+                            <Tab label="Body" />
+                            <Tab label="Face" />
+                            <Tab label="Hands" />
+                          </Tabs>
+                          <LandmarkOptionsPanel
+                            hidden={poseTab != 0}
+                            sketch="/body.svg"
+                            landmarks={bodyLandmarkHotSpotPositions}
+                            offset={{ x: -14, y: -12 }}
+                          ></LandmarkOptionsPanel>
+                          <LandmarkOptionsPanel
+                            hidden={poseTab != 1}
+                            sketch="/face.svg"
+                            landmarks={faceLandmarkHotSpotPositions}
+                            offset={{ x: -14, y: -12 }}
+                          ></LandmarkOptionsPanel>
+                          <LandmarkOptionsPanel
+                            hidden={poseTab != 2}
+                            sketch="/hands.svg"
+                            landmarks={handsLandmarkHotSpotPositions}
+                            offset={{ x: -14, y: -12 }}
+                          ></LandmarkOptionsPanel>
+                        </div>
+                      )}
                       {tracker === TRACKERS.HANDS && (
-                        <LandmarkOptions>
-                          <Hand src="/hand.svg" />
-                          <LandmarkRadioContainer>
-                            {handLandmarkPoints.map((handLandmark, key) => {
-                              return (
-                                <Tooltip title={handLandmark} placement="right">
-                                  <LandmarkRadio
-                                    key={key}
-                                    style={{
-                                      left:
-                                        handLandmarkHotspotPositions[
-                                          handLandmark
-                                        ].x - 16,
-                                      top:
-                                        handLandmarkHotspotPositions[
-                                          handLandmark
-                                        ].y - 16,
-                                    }}
-                                  >
-                                    <Radio
-                                      checked={activeHandLandmarkPoints.includes(
-                                        handLandmark
-                                      )}
-                                      onClick={() =>
-                                        toggleActiveHandLandmarkPoint(
-                                          handLandmark
-                                        )
-                                      }
-                                    />
-                                  </LandmarkRadio>
-                                </Tooltip>
-                              );
-                            })}
-                          </LandmarkRadioContainer>
-                        </LandmarkOptions>
+                        <LandmarkOptionsPanel
+                          sketch="/hand.svg"
+                          landmarks={handLandmarkHotSpotPositions}
+                          offset={{ x: 8, y: -10 }}
+                        ></LandmarkOptionsPanel>
                       )}
                     </Grid>
                   </Grid>
@@ -496,58 +533,7 @@ function Settings() {
                           </IconButton>
                         </Grid>
                       </Grid>
-                      {showMqtt && (
-                        <Card
-                          variant="outlined"
-                          sx={{ mt: 2, mb: 2, pt: 1, bb: 0, backgroundColor: "#444" }}
-                        >
-                          <CardContent>
-                            <Grid container spacing={4}>
-                              <Grid item xs={12}>
-                                <TextField
-                                  label="Broker"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttBroker}
-                                  onChange={(event) => {
-                                    setMqttBroker(event.target.value);
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item xs={4}>
-                                <TextField
-                                  inputProps={{
-                                    inputMode: "numeric",
-                                    pattern: "[0-9]*",
-                                  }}
-                                  label="Throttle Time (ms)"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttThrottleTime}
-                                  onChange={(event) => {
-                                    setMqttThrottleTime(event.target.value);
-                                  }}
-                                />
-                              </Grid>
-                              <Grid item xs={8}>
-                                <TextField
-                                  label="Session prefix"
-                                  variant="outlined"
-                                  size="small"
-                                  fullWidth
-                                  value={mqttSessionPrefix}
-                                  onChange={(event) => {
-                                    setMqttSessionPrefix(event.target.value);
-                                  }}
-                                  //helperText="optional, will prefix the mqtt topic, e.g. sessionId/popeye/..."
-                                />
-                              </Grid>
-                            </Grid>
-                          </CardContent>
-                        </Card>
-                      )}
+                      {showMqtt && <MqttOptionsPanel></MqttOptionsPanel>}
                     </Grid>
                     <Grid item>
                       <Grid
@@ -602,18 +588,6 @@ function Settings() {
             </Grid>
 
             <Grid item>
-              {/* <Grid container direction="column" spacing={2}>
-                <Grid item>
-                  <Divider textAlign="center"></Divider>
-                </Grid>
-
-                <Grid item>
-                  <Typography variant="overline" color={"white"}>
-                    Tracker Options
-                  </Typography>
-                </Grid>
-              </Grid> */}
-
               {/* <h2>trackers</h2>
                   <RadioGroup
                     value={tracker}
@@ -668,45 +642,7 @@ function Settings() {
                               </LandmarksSelector>
                             </TrackerSettings>
                           )}
-                          {tracker === key && tracker === TRACKERS.HANDS && (
-                            <TrackerSettings>
-                              <LandmarksSelector>
-                                <li key={`handLandmarkPoint-all-json`}>
-                                  <Checkbox
-                                    checked={allHandLandmarkPointsJson}
-                                    onChange={(event) => {
-                                      setAllHandLandmarkPointsAsJson(event.target.checked);
-                                    }}
-                                  />{" "}
-                                  all as single json
-                                </li>
-                                <li key={`handLandmarkPoint-all`}>
-                                  <Checkbox
-                                    checked={false}
-                                    onChange={() => {
-                                      setAllHandLandmarkPointsActive();
-                                    }}
-                                  />{" "}
-                                  all
-                                </li>
-                                {handLandmarkPoints.map((handLandmark) => {
-                                  return (
-                                    <li key={`handLandmarkPoint-${handLandmark}`}>
-                                      <Checkbox
-                                        checked={activeHandLandmarkPoints.includes(
-                                          handLandmark
-                                        )}
-                                        onChange={() => {
-                                          toggleActiveHandLandmarkPoint(handLandmark);
-                                        }}
-                                      />{" "}
-                                      {handLandmark}
-                                    </li>
-                                  );
-                                })}
-                              </LandmarksSelector>
-                            </TrackerSettings>
-                          )}
+                          
                           {tracker === key && tracker === TRACKERS.TEACHABLE_MACHINE && (
                             <TrackerSettings>
                               <RadioGroup
