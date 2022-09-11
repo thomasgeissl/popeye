@@ -29,6 +29,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Link from "@mui/material/Link";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -334,7 +335,7 @@ function Settings() {
                   </FormControl>
                 </Grid>
                 <Grid item>
-                  <Grid container alignItems="center" justifyContent="center">
+                  <Grid container direction="column" alignItems="center">
                     <Grid item>
                       {tracker === TRACKERS.POSE && (
                         <div>
@@ -376,31 +377,55 @@ function Settings() {
                           offset={{ x: 8, y: -10 }}
                         ></LandmarkOptionsPanel>
                       )}
+                      {tracker === TRACKERS.TEACHABLE_MACHINE && (
+                        <Grid container direction="column" spacing={4}>
+                          <Grid item>
+                            <Typography variant="body2" color={"gray"}>
+                              Head over to Google's great{" "}
+                              <Link
+                                color="primary"
+                                href="https://teachablemachine.withgoogle.com/train"
+                                target="_blank"
+                              >
+                                teachablemachine
+                              </Link>{" "}
+                              service and train a model. At the end of the
+                              process your are provided a link that you can
+                              paste here.
+                            </Typography>
+                          </Grid>
+                          <Grid item>
+                            <TextField
+                              label="Model URL"
+                              variant="outlined"
+                              size="small"
+                              fullWidth
+                              value={teachableMachineModelUrl}
+                              onChange={(event) => {
+                                setTeachableMachineModelUrl(event.target.value);
+                              }}
+                            />
+                          </Grid>
+
+                          {window.api && (
+                            <div>
+                              or load one from your filesystem
+                              <Button
+                                variant="outlined"
+                                size="small"
+                                onClick={() => {
+                                  window.api?.send("loadTeachableMachineModel");
+                                }}
+                              >
+                                choose
+                              </Button>
+                            </div>
+                          )}
+                        </Grid>
+                      )}
                     </Grid>
                   </Grid>
                 </Grid>
-                {/* <Grid item>
-                  <Grid container alignItems="center" justifyContent="center">
-                    <Grid item>
-                      <Button
-                        variant="text"
-                        size="small"
-                        onClick={() => setAllHandLandmarkPointsActive()}
-                      >
-                        All
-                      </Button>
-                    </Grid>
-                    <Grid item>
-                      <Button
-                        variant="text"
-                        size="small"
-                        onClick={() => setNoneHandLandmarkPointsActive()}
-                      >
-                        None
-                      </Button>
-                    </Grid>
-                  </Grid>
-                </Grid> */}
               </Grid>
             </Grid>
             <Grid item>

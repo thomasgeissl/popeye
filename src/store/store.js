@@ -34,12 +34,12 @@ const useStore = create(
     });
     return {
       videoDeviceId: null,
-      tracker: TRACKERS.POSE,
+      tracker: TRACKERS.TEACHABLE_MACHINE,
       landmarkPoints: ["left_eye", "right_eye"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
       teachableMachineModelUrl:
-        "https://teachablemachine.withgoogle.com/models/4F0vC57p4/",
+        "https://teachablemachine.withgoogle.com/models/22h08P6zo/",
       tmMode: TM_MODE.IMAGE,
       active: true,
       oscActive: false,
