@@ -57,7 +57,7 @@ const WebcamContainer = styled.div`
 
 const Overlay = styled.canvas`
   width: 100%;
-  height: calc(100vw * 900 / 1280);
+  height: calc(100vw * 960 / 1280);
 `;
 
 const Container = styled.div`
@@ -134,6 +134,9 @@ function MPose() {
 
       canvasCtx.filter = "grayscale(100%)";
 
+      canvasCtx.translate(canvasRef.current.width, 0);
+      canvasCtx.scale(-1, 1);
+
       canvasCtx.drawImage(
         results.image,
         0,
@@ -194,8 +197,8 @@ function MPose() {
           await pose.send({ image: webcamRef.current.video });
         }
       },
-      width: 640,
-      height: 480,
+      width: 1280,
+      height: 960,
     });
     camera.start();
   }, [landmarkPoints]);
@@ -204,8 +207,8 @@ function MPose() {
       <WebcamContainer>
         <Webcam
           ref={webcamRef}
-          width="640px"
-          height="480px"
+          width="1280px"
+          height="960px"
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
           mirrored={true}
         ></Webcam>
@@ -214,7 +217,7 @@ function MPose() {
         ref={canvasRef}
         className="output_canvas"
         width="1280"
-        height="900"
+        height="960"
       ></Overlay>
       <div ref={landmarkRef} className="landmark-grid-container"></div>
     </Container>

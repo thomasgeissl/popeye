@@ -44,12 +44,12 @@ const WebcamContainer = styled.div`
 
 const Overlay = styled.canvas`
 width: 100%;
-height: calc(100vw * 900 / 1280);
+height: calc(100vw * 960 / 1280);
 `;
 
 const Container = styled.div`
-width: 100vw;
-height: 100vh;
+//width: 100vw;
+//height: 100vh;
 overflow: hidden;
 display: flex;
 alignItems: center;
@@ -105,6 +105,9 @@ function MHands() {
 
       canvasCtx.filter = "grayscale(100%)";
 
+      canvasCtx.translate(canvasRef.current.width, 0);
+      canvasCtx.scale(-1, 1);
+      
       canvasCtx.drawImage(
         results.image,
         0,
@@ -182,7 +185,7 @@ function MHands() {
         }
       },
       width: 1280,
-      height: 900,
+      height: 960,
     });
     camera.start();
   }, [landmarkPoints]);
@@ -193,7 +196,7 @@ function MHands() {
         <Webcam
           ref={webcamRef}
           width={1280}
-          height={900}
+          height={960}
           //mirrored={true}
           videoConstraints={videoDeviceId ? { deviceId: videoDeviceId } : {}}
         ></Webcam>
@@ -202,7 +205,7 @@ function MHands() {
         ref={canvasRef}
         className="output_canvas"
         width="1280"
-        height="900"
+        height="960"
       ></Overlay>
     </Container>
   );
