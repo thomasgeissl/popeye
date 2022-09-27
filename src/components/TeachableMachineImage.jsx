@@ -2,18 +2,18 @@ import { useRef, useEffect, useState } from "react";
 import ml5 from "ml5";
 import useStore from "../store/store";
 import styled from "@emotion/styled";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import { useTheme } from "@mui/material/styles";
 
-const Results = styled.ul`
-  list-style-type: none;
+const Results = styled.div`
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  mix-blend-mode: screen;
+  margin: 24px;
 `;
-const Result = styled.li`
-  position: relative;
-  .confidence {
-    position: relative;
-    width: ${(props) =>
-      (props.confidence > 0.3 ? props.confidence : 0.3) * 100}%;
-  }
-`;
+
 
 const Video = styled.video`
   position: absolute;
@@ -41,6 +41,8 @@ const Container = styled.div`
 `;
 
 function TeachableMachineImage() {
+
+  const theme = useTheme();
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
   const [classifier, setClassifier] = useState(null);
@@ -154,6 +156,45 @@ function TeachableMachineImage() {
         width="1280"
         height="960"
       ></Overlay>
+      {/* <Results>
+         {results
+          .sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0))
+          .map((result) => {
+            return (
+              <Result
+                key={`result-${result.label}`}
+                confidence={result.confidence}
+              >
+                <span className="confidence">
+                  {result.label}: {Math.round(result.confidence * 100) / 100}
+                </span>
+              </Result>
+            );
+          })}
+      </Results> */}
+      <Results>
+      <Grid container direction="column">
+      {results
+          .sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0))
+          .map((result) => {
+            return (
+              <Grid item xs={12}>
+                <Typography
+                  variant="caption"
+                  color={theme.palette.secondary.main}
+                  sx={{opacity: result.confidence > .5 ? 1 : 0.2}}
+                  xs={12}
+                >
+                  <Grid container direction="row" spacing={2}>
+                    <Grid item><strong>{result.label}</strong></Grid>
+                    <Grid item>{result.confidence.toFixed(2)}</Grid>
+                  </Grid>
+                </Typography>
+              </Grid>
+            );
+          })}
+        </Grid>
+        </Results>
     </Container>
     // <div>
     //   <Video
