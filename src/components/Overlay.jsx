@@ -35,8 +35,6 @@ function Overlay() {
   const clipLog = useStore((state) => state.clipLog);
   const theme = useTheme();
 
-  const console = useRef(null);
-
   const timeout = useRef(null);
 
   useEffect(() => {
@@ -66,7 +64,7 @@ function Overlay() {
                   direction="row"
                   justifyContent="flex-start"
                   alignItems="center"
-                  spacing={4}
+                  spacing={2}
                 >
                   <Grid item>
                     <img src="/icon.svg" />
@@ -115,7 +113,7 @@ function Overlay() {
         </Grid>
       </Header>
       <Footer>
-        <Grid container direction="column" ref={console}>
+        <Grid container direction="column">
           {log.map((line, index) => {
             return (
               <Grid item sx={{ opacity: index / log.length }} xs={12}>
