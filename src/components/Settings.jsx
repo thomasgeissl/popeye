@@ -35,6 +35,7 @@ import { useTheme } from "@mui/material/styles";
 
 import LandmarkOptionsPanel from "./settings/LandmarkOptionsPanel";
 import MqttOptionsPanel from "./settings/MqttOptionsPanel";
+import OSCOptionsPanel from "./settings/OSCOptionsPanel";
 
 import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
@@ -235,6 +236,7 @@ function Settings() {
   const [devices, setDevices] = useState([]);
   const [poseTab, setPoseTab] = useState(0);
   const [showMqtt, setShowMqtt] = useState(false);
+  const [showOSC, setShowOSC] = useState(false);
 
   const handleDevices = useCallback(
     (mediaDevices) =>
@@ -408,18 +410,21 @@ function Settings() {
                           </Grid>
 
                           {window.api && (
-                            <div>
-                              or load one from your filesystem
+                            <Grid item>
+                              <Typography variant="body2" color={"gray"}>
+                              Alternatively you can load a model from your filesystem.
+                              </Typography>
                               <Button
                                 variant="outlined"
                                 size="small"
+                                align="right"
                                 onClick={() => {
                                   window.api?.send("loadTeachableMachineModel");
                                 }}
                               >
-                                choose
+                                Load Local Model
                               </Button>
-                            </div>
+                            </Grid>
                           )}
                         </Grid>
                       )}
@@ -440,66 +445,7 @@ function Settings() {
                   </Typography>
                 </Grid>
 
-                {/* <Grid item xs={6} className="osc">
-                      <h3>
-                        <Switch
-                          checked={oscActive}
-                          disabled={!window.api}
-                          onChange={(event) => {
-                            setOscActive(event.target.checked);
-                          }}
-                        />
-                        OSC
-                      </h3>
-                      <Form>
-                        <TextField
-                          label="host"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscDestinationHost}
-                          onChange={(event) => {
-                            setOscDestinationHost(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          label="port"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscDestinationPort}
-                          onChange={(event) => {
-                            setOscDestinationPort(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          inputProps={{
-                            inputMode: "numeric",
-                            pattern: "[0-9]*",
-                          }}
-                          label="throttle time (ms)"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscThrottleTime}
-                          onChange={(event) => {
-                            setOscThrottleTime(event.target.value);
-                          }}
-                        />
-                        <TextField
-                          label="session prefix"
-                          variant="outlined"
-                          size="small"
-                          fullWidth
-                          value={oscSessionPrefix}
-                          placeholder="/sessionId"
-                          onChange={(event) => {
-                            setOscSessionPrefix(event.target.value);
-                          }}
-                          helperText="optional, will prefix the osc address, e.g. /sessionId/popeye/..."
-                        />
-                      </Form>
-                    </Grid> */}
+                
                 <Grid item>
                   <Grid container direction="column" spacing={0}>
                     <Grid item>
@@ -600,132 +546,17 @@ function Settings() {
                             edge="start"
                             color="secondary"
                             aria-label="menu"
-                            onClick={() => setShowMqtt(!showMqtt)}
+                            onClick={() => setShowOSC(!showOSC)}
                           >
                             <MoreVertIcon></MoreVertIcon>
                           </IconButton>
                         </Grid>
                       </Grid>
+                      {showOSC && <OSCOptionsPanel></OSCOptionsPanel>}
                     </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
-
-            <Grid item>
-              {/* <h2>trackers</h2>
-                  <RadioGroup
-                    value={tracker}
-                    onChange={(event) => setTracker(event.target.value)}
-                  >
-                    {Object.entries(TRACKERS).map(([key, value]) => {
-                      return (
-                        <div key={key}>
-                          <FormControlLabel
-                            value={value}
-                            control={<Radio />}
-                            label={value}
-                          ></FormControlLabel>
-                          {tracker === key && tracker === TRACKERS.POSE && (
-                            <TrackerSettings>
-                              <LandmarksSelector>
-                                <li key={`poseLandmarkPoint-all-json`}>
-                                  <Checkbox
-                                    checked={allPoseLandmarkPointsAsJson}
-                                    onChange={(event) => {
-                                      setAllPoseLandmarkPointsAsJson(event.target.checked);
-                                    }}
-                                  />{" "}
-                                  all as single json
-                                </li>
-                                <li key={`poseLandmarkPoint-all`}>
-                                  <Checkbox
-                                    checked={false}
-                                    onChange={() => {
-                                      setAllPoseLandmarkPointsActive();
-                                      // setOscActive(event.target.checked);
-                                    }}
-                                  />{" "}
-                                  all
-                                </li>
-                                {poseLandmarkPoints.map((poseLandmark) => {
-                                  return (
-                                    <li key={`poseLandmarkPoint-${poseLandmark}`}>
-                                      <Checkbox
-                                        checked={activePoseLandmarkPoints.includes(
-                                          poseLandmark
-                                        )}
-                                        onChange={(event) => {
-                                          // setOscActive(event.target.checked);
-                                          toggleActivePoseLandmarkPoint(poseLandmark);
-                                        }}
-                                      />{" "}
-                                      {poseLandmark}
-                                    </li>
-                                  );
-                                })}
-                              </LandmarksSelector>
-                            </TrackerSettings>
-                          )}
-                          
-                          {tracker === key && tracker === TRACKERS.TEACHABLE_MACHINE && (
-                            <TrackerSettings>
-                              <RadioGroup
-                                value={tmMode}
-                                onChange={(event) => setTmMode(event.target.value)}
-                              >
-                                {Object.entries(TM_MODE).map(([key, value]) => {
-                                  return (
-                                    <FormControlLabel
-                                      value={value}
-                                      key={key}
-                                      control={<Radio />}
-                                      label={value}
-                                    ></FormControlLabel>
-                                  );
-                                })}
-                              </RadioGroup>
-                              <TextField
-                                label="model url"
-                                variant="outlined"
-                                size="small"
-                                fullWidth
-                                value={teachableMachineModelUrl}
-                                onChange={(event) => {
-                                  setTeachableMachineModelUrl(event.target.value);
-                                }}
-                              />
-
-                              <div>
-                                train a model{" "}
-                                <a
-                                  href="https://teachablemachine.withgoogle.com/train"
-                                  target="_blank"
-                                >
-                                  here
-                                </a>
-                                .
-                              </div>
-                              {window.api && (
-                                <div>
-                                  or load one from your filesystem
-                                  <Button
-                                    variant="outlined"
-                                    size="small"
-                                    onClick={() => {
-                                      window.api?.send("loadTeachableMachineModel");
-                                    }}
-                                  >
-                                    choose
-                                  </Button>
-                                </div>
-                              )}
-                            </TrackerSettings>
-                          )}
-                        </div>
-                      );
-                    })}
-                  </RadioGroup> */}
             </Grid>
           </Grid>
         </Grid>
