@@ -5,14 +5,24 @@ let client = null; //mqtt.connect("ws://localhost:9001");
 let throttleTime = 16;
 const throttledSendFunctions = {};
 
-const connectClient = (broker) => {
+const connectClient = (protocol, host, port, onSuccess, onError) => {
+  const broker = protocol + "://" + host + ":" + port
   try {
     for (const prop of Object.getOwnPropertyNames(throttledSendFunctions)) {
       delete throttledSendFunctions[prop];
     }
     client = mqtt.connect(broker);
+
+    client.on('connect',  () => {
+      onSuccess(broker)
+    })
+
+    client.on('offline', () => {
+      onError(broker)
+    })
+    
   } catch (error) {
-    console.log(error)
+      onError(broker)
   }
 };
 

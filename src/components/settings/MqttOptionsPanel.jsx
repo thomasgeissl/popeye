@@ -4,13 +4,21 @@ import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import Grid from "@mui/material/Grid";
 import TextField from "@mui/material/TextField";
+import Select from "@mui/material/Select";
+import MenuItem from "@mui/material/MenuItem";
+import InputLabel from "@mui/material/InputLabel";
+import FormControl from "@mui/material/FormControl";
 
 function MqttOptionsPanel() {
-  const mqttBroker = useStore((state) => state.mqttBroker);
+  const mqttProtocol = useStore((state) => state.mqttProtocol);
+  const mqttHost = useStore((state) => state.mqttHost);
+  const mqttPort = useStore((state) => state.mqttPort);
   const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
   const mqttThrottleTime = useStore((state) => state.mqttThrottleTime);
 
-  const setMqttBroker = useStore((state) => state.setMqttBroker);
+  const setMqttProtocol = useStore((state) => state.setMqttProtocol);
+  const setMqttHost = useStore((state) => state.setMqttHost);
+  const setMqttPort = useStore((state) => state.setMqttPort);
   const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
   const setMqttThrottleTime = useStore((state) => state.setMqttThrottleTime);
 
@@ -26,16 +34,40 @@ function MqttOptionsPanel() {
       }}
     >
       <CardContent>
-        <Grid container spacing={4}>
+        <Grid container spacing={2}>
           <Grid item xs={12}>
+            <FormControl fullWidth size="small" variant="outlined">
+              <InputLabel>Protocol</InputLabel>
+              <Select
+                value={mqttProtocol}
+                onChange={(event) => setMqttProtocol(event.target.value)}
+              >
+                <MenuItem value={"ws"}>Websocket</MenuItem>
+                <MenuItem value={"http"}>TCP</MenuItem>
+              </Select>
+            </FormControl>
+          </Grid>
+          <Grid item xs={6}>
             <TextField
-              label="Broker"
+              label="Host"
               variant="outlined"
               size="small"
               fullWidth
-              value={mqttBroker}
+              value={mqttHost}
               onChange={(event) => {
-                setMqttBroker(event.target.value);
+                setMqttHost(event.target.value);
+              }}
+            />
+          </Grid>
+          <Grid item xs={3}>
+            <TextField
+              label="Port"
+              variant="outlined"
+              size="small"
+              fullWidth
+              value={mqttPort}
+              onChange={(event) => {
+                setMqttPort(event.target.value);
               }}
             />
           </Grid>

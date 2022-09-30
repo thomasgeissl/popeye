@@ -53,6 +53,7 @@ const Container = styled.div`
   backdrop-filter: blur(40px);
   padding: 24px;
   z-index: 10;
+  overflow-y:scroll;
 `;
 const Content = styled.div`
   flex-grow: 1;
@@ -179,17 +180,9 @@ function Settings() {
     (state) => state.setOscDestinationHost
   );
   const mqttActive = useStore((state) => state.mqttActive);
-  const mqttBroker = useStore((state) => state.mqttBroker);
+  const mqttStatus = useStore((state) => state.mqttStatus);
   const setMqttActive = useStore((state) => state.setMqttActive);
-  const setMqttBroker = useStore((state) => state.setMqttBroker);
-  const oscSessionPrefix = useStore((state) => state.oscSessionPrefix);
-  const oscThrottleTime = useStore((state) => state.oscThrottleTime);
-  const mqttSessionPrefix = useStore((state) => state.mqttSessionPrefix);
-  const mqttThrottleTime = useStore((state) => state.mqttThrottleTime);
-  const setOscSessionPrefix = useStore((state) => state.setOscSessionPrefix);
-  const setOscThrottleTime = useStore((state) => state.setOscThrottleTime);
-  const setMqttSessionPrefix = useStore((state) => state.setMqttSessionPrefix);
-  const setMqttThrottleTime = useStore((state) => state.setMqttThrottleTime);
+
   const activePoseLandmarkPoints = useStore(
     (state) => state.activePoseLandmarkPoints
   );
@@ -482,9 +475,9 @@ function Settings() {
                               <Grid item>
                                 <Chip
                                   label={
-                                    mqttActive ? "connected" : "disconnected"
+                                    mqttStatus//mqttStatus ? "connected" : "disconnected"
                                   }
-                                  color={mqttActive ? "success" : "default"}
+                                  color={mqttStatus === "connected" ? "success" : "warning"}
                                   variant="outlined"
                                   size="small"
                                 />

@@ -47,12 +47,15 @@ const useStore = create(
       oscDestinationPort: 8000,
       oscSessionPrefix: "",
       oscThrottleTime: 16,
+      mqttStatus: "connecting",
       mqttActive: true,
-      mqttBroker: "ws://localhost:9001",
+      mqttProtocol: "ws",
+      mqttHost: "localhost",
+      mqttPort: "9001",
       mqttSessionPrefix: "",
       mqttThrottleTime: 32,
       showSettings: false,
-      
+
       log: [],
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),
@@ -86,13 +89,31 @@ const useStore = create(
       setMqttActive: (active) => {
         set((state) => {
           if (active) {
-            connectBroker(state.mqttBroker);
+            connectBroker(
+              state.mqttProtocol,
+              state.mqttHost,
+              state.mqttPort,
+              (broker) => {
+                console.log("SUCCESS", broker);
+                get().setMqttStatus("connected");
+              },
+              (broker) => {
+                console.log("ERROR", broker);
+                get().setMqttStatus("connecting");
+              }
+            );
           }
           return { mqttActive: active };
         });
       },
-      setMqttBroker: (broker) => {
-        set((state) => ({ mqttActive: false, mqttBroker: broker }));
+      setMqttProtocol: (protocol) => {
+        set((state) => ({ mqttActive: false, mqttProtocol: protocol }));
+      },
+      setMqttHost: (host) => {
+        set((state) => ({ mqttActive: false, mqttHost: host }));
+      },
+      setMqttPort: (port) => {
+        set((state) => ({ mqttActive: false, mqttPort: port }));
       },
       setMqttSessionPrefix: (mqttSessionPrefix) => {
         set((state) => ({ mqttSessionPrefix }));
@@ -100,6 +121,9 @@ const useStore = create(
       setMqttThrottleTime: (mqttThrottleTime) => {
         setThrottleTime(mqttThrottleTime);
         set((state) => ({ mqttThrottleTime }));
+      },
+      setMqttStatus: (mqttStatus) => {
+        set((state) => ({ mqttStatus }));
       },
       setAllPoseLandmarkPointsAsJson: (allPoseLandmarkPointsAsJson) => {
         set((state) => {
@@ -113,17 +137,16 @@ const useStore = create(
       },
       addLandmarkPoints: (landmarkPoints) => {
         set((state) => {
-          return { landmarkPoints: [...get().landmarkPoints, ...landmarkPoints] };
+          return {
+            landmarkPoints: [...get().landmarkPoints, ...landmarkPoints],
+          };
         });
       },
       toggleLandmarkPoint: (landmarkPoint) => {
         set((state) => {
           let landmarkPoints = [...state.landmarkPoints];
           if (landmarkPoints.includes(landmarkPoint)) {
-            landmarkPoints.splice(
-              landmarkPoints.indexOf(landmarkPoint),
-              1
-            );
+            landmarkPoints.splice(landmarkPoints.indexOf(landmarkPoint), 1);
           } else {
             landmarkPoints.push(landmarkPoint);
           }
@@ -131,10 +154,12 @@ const useStore = create(
         });
       },
       removeLandmarkPoints: (landmarkPoints) => {
-        const points =  [];
-        [...get().landmarkPoints].map(landmark => {if(!landmarkPoints.includes(landmark)) {
-          points.push(landmark);
-        }})
+        const points = [];
+        [...get().landmarkPoints].map((landmark) => {
+          if (!landmarkPoints.includes(landmark)) {
+            points.push(landmark);
+          }
+        });
         set((state) => {
           return { landmarkPoints: points };
         });
@@ -149,22 +174,21 @@ const useStore = create(
         const state = get();
         window.api?.send("save", JSON.stringify(state));
       },
-      logging:(msg) => {
-        let _log = get().log
-        _log.push(msg)
-        if(_log.length > 10)
-          _log.shift()
+      logging: (msg) => {
+        let _log = get().log;
+        _log.push(msg);
+        if (_log.length > 10) _log.shift();
         set((state) => {
           return { log: [..._log] };
         });
       },
-      clipLog:() => {
-        let _log = get().log
-          _log.shift()
+      clipLog: () => {
+        let _log = get().log;
+        _log.shift();
         set((state) => {
           return { log: [..._log] };
         });
-      }
+      },
     };
   })
 );
