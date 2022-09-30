@@ -24,6 +24,8 @@ import FormGroup from "@mui/material/FormGroup";
 import Card from "@mui/material/Card";
 import CardContent from "@mui/material/CardContent";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ExpandLessIcon from "@mui/icons-material/ExpandLess";
 import VideocamIcon from "@mui/icons-material/Videocam";
 import Tooltip from "@mui/material/Tooltip";
 import Chip from "@mui/material/Chip";
@@ -53,7 +55,7 @@ const Container = styled.div`
   backdrop-filter: blur(40px);
   padding: 24px;
   z-index: 10;
-  overflow-y:scroll;
+  overflow-y: scroll;
 `;
 const Content = styled.div`
   flex-grow: 1;
@@ -405,7 +407,8 @@ function Settings() {
                           {window.api && (
                             <Grid item>
                               <Typography variant="body2" color={"gray"}>
-                              Alternatively you can load a model from your filesystem.
+                                Alternatively you can load a model from your
+                                filesystem.
                               </Typography>
                               <Button
                                 variant="outlined"
@@ -438,7 +441,6 @@ function Settings() {
                   </Typography>
                 </Grid>
 
-                
                 <Grid item>
                   <Grid container direction="column" spacing={0}>
                     <Grid item>
@@ -475,9 +477,13 @@ function Settings() {
                               <Grid item>
                                 <Chip
                                   label={
-                                    mqttStatus//mqttStatus ? "connected" : "disconnected"
+                                    mqttStatus //mqttStatus ? "connected" : "disconnected"
                                   }
-                                  color={mqttStatus === "connected" ? "success" : "warning"}
+                                  color={
+                                    mqttStatus === "connected"
+                                      ? "success"
+                                      : "warning"
+                                  }
                                   variant="outlined"
                                   size="small"
                                 />
@@ -493,7 +499,8 @@ function Settings() {
                             aria-label="menu"
                             onClick={() => setShowMqtt(!showMqtt)}
                           >
-                            <MoreVertIcon></MoreVertIcon>
+                            {showMqtt && <ExpandLessIcon></ExpandLessIcon>}
+                            {!showMqtt && <ExpandMoreIcon></ExpandMoreIcon>}
                           </IconButton>
                         </Grid>
                       </Grid>
@@ -541,7 +548,8 @@ function Settings() {
                             aria-label="menu"
                             onClick={() => setShowOSC(!showOSC)}
                           >
-                            <MoreVertIcon></MoreVertIcon>
+                            {showOSC && <ExpandLessIcon></ExpandLessIcon>}
+                            {!showOSC && <ExpandMoreIcon></ExpandMoreIcon>}
                           </IconButton>
                         </Grid>
                       </Grid>
