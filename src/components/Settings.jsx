@@ -32,6 +32,7 @@ import Chip from "@mui/material/Chip";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Link from "@mui/material/Link";
+import CircularProgress from "@mui/material/CircularProgress";
 
 import { useTheme } from "@mui/material/styles";
 
@@ -44,8 +45,8 @@ import { landmarkPoints as handLandmarkPoints } from "./MHands";
 import { Hands } from "@mediapipe/hands";
 
 const Container = styled.div`
-  display: flex;
-  flex-direction: column;
+  //display: flex;
+  //flex-direction: column;
   width: 33vw;
   height: calc(100vh - 24px * 2);
   position: absolute;
@@ -57,46 +58,6 @@ const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
 `;
-const Content = styled.div`
-  flex-grow: 1;
-  position: relative;
-`;
-const TrackerSettings = styled.div`
-  padding: 12px;
-`;
-const Form = styled.div`
-  .MuiFormControl-root {
-    margin-bottom: 16px;
-  }
-`;
-
-const LandmarksSelector = styled.ul`
-  columns: 4;
-  list-style-type: none;
-  padding-left: 0;
-`;
-
-const LandmarkOptions = styled.div`
-  position: relative;
-  margin: 24px;
-`;
-
-const Sketch = styled.img`
-  opacity: 0.1;
-`;
-
-const LandmarkRadioContainer = styled.div`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-`;
-
-const LandmarkRadio = styled.div`
-  position: absolute;
-  top: 0px;
-  left: 0px;
-`;
-
 const handLandmarkHotSpotPositions = [
   { label: "wrist", x: 90, y: 204 },
   { label: "thumb_cmc", x: 115, y: 181 },
@@ -173,51 +134,11 @@ function Settings() {
   const setVideoDeviceId = useStore((state) => state.setVideoDeviceId);
   const oscActive = useStore((state) => state.oscActive);
   const setOscActive = useStore((state) => state.setOscActive);
-  const oscDestinationPort = useStore((state) => state.oscDestinationPort);
-  const setOscDestinationPort = useStore(
-    (state) => state.setOscDestinationPort
-  );
-  const oscDestinationHost = useStore((state) => state.oscDestinationHost);
-  const setOscDestinationHost = useStore(
-    (state) => state.setOscDestinationHost
-  );
+
   const mqttActive = useStore((state) => state.mqttActive);
   const mqttStatus = useStore((state) => state.mqttStatus);
   const setMqttActive = useStore((state) => state.setMqttActive);
 
-  const activePoseLandmarkPoints = useStore(
-    (state) => state.activePoseLandmarkPoints
-  );
-  const allPoseLandmarkPointsAsJson = useStore(
-    (state) => state.allPoseLandmarkPointsAsJson
-  );
-  const setAllPoseLandmarkPointsAsJson = useStore(
-    (state) => state.setAllPoseLandmarkPointsAsJson
-  );
-  const allHandLandmarkPointsJson = useStore(
-    (state) => state.allHandLandmarkPointsJson
-  );
-  const setAllHandLandmarkPointsAsJson = useStore(
-    (state) => state.setAllHandLandmarkPointsAsJson
-  );
-  const activeHandLandmarkPoints = useStore(
-    (state) => state.activeHandLandmarkPoints
-  );
-  const toggleActivePoseLandmarkPoint = useStore(
-    (state) => state.toggleActivePoseLandmarkPoint
-  );
-  const setAllPoseLandmarkPointsActive = useStore(
-    (state) => state.setAllPoseLandmarkPointsActive
-  );
-  const toggleActiveHandLandmarkPoint = useStore(
-    (state) => state.toggleActiveHandLandmarkPoint
-  );
-  const setAllHandLandmarkPointsActive = useStore(
-    (state) => state.setAllHandLandmarkPointsActive
-  );
-  const setNoneHandLandmarkPointsActive = useStore(
-    (state) => state.setNoneHandLandmarkPointsActive
-  );
   const teachableMachineModelUrl = useStore(
     (state) => state.teachableMachineModelUrl
   );
@@ -245,10 +166,11 @@ function Settings() {
 
   return (
     <Container>
-      <Grid container direction="column" spacing={2}>
-        <Grid item>
+      <Grid container xs={12} rowSpacing={2}>
+        <Grid item xs={12}>
           <Grid
             container
+            xs={12}
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -271,10 +193,10 @@ function Settings() {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item sx={{ flexGrow: 1 }}>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Grid container direction="column" spacing={2}>
+        <Grid item xs={12} sx={{ flexGrow: 1 }}>
+          <Grid container xs={12} rowSpacing={2} >
+            <Grid item xs={12}>
+              <Grid container xs={12} rowSpacing={2}>
                 {/* <Grid item>
                   <Divider textAlign="center"></Divider>
                 </Grid>
@@ -285,7 +207,7 @@ function Settings() {
                   </Typography>
                 </Grid> */}
 
-                <Grid item>
+                <Grid item xs={12}>
                   <FormControl variant="filled" size="small" fullWidth>
                     <InputLabel>Camera Input</InputLabel>
                     <Select
@@ -314,7 +236,7 @@ function Settings() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item>
+                <Grid item xs={12}>
                   <FormControl variant="filled" size="small" fullWidth>
                     <InputLabel>Tracker</InputLabel>
                     <Select
@@ -331,9 +253,9 @@ function Settings() {
                     </Select>
                   </FormControl>
                 </Grid>
-                <Grid item>
-                  <Grid container direction="column" alignItems="center">
-                    <Grid item>
+                <Grid item xs={12}>
+                  <Grid container xs={12} direction="column" alignItems="center">
+                    <Grid item xs={12}>
                       {tracker === TRACKERS.POSE && (
                         <div>
                           <Tabs
@@ -375,8 +297,13 @@ function Settings() {
                         ></LandmarkOptionsPanel>
                       )}
                       {tracker === TRACKERS.TEACHABLE_MACHINE && (
-                        <Grid container direction="column" spacing={4}>
-                          <Grid item>
+                        <Grid container xs={12} rowSpacing={2}>
+                          <Grid item xs={12}>
+                            <Typography variant="h5" color={"gray"}>
+                              A
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
                             <Typography variant="body2" color={"gray"}>
                               Head over to Google's great{" "}
                               <Link
@@ -391,7 +318,7 @@ function Settings() {
                               paste here.
                             </Typography>
                           </Grid>
-                          <Grid item>
+                          <Grid item xs={12}>
                             <TextField
                               label="Model URL"
                               variant="outlined"
@@ -403,25 +330,56 @@ function Settings() {
                               }}
                             />
                           </Grid>
-
-                          {window.api && (
-                            <Grid item>
-                              <Typography variant="body2" color={"gray"}>
-                                Alternatively you can load a model from your
-                                filesystem.
-                              </Typography>
-                              <Button
-                                variant="outlined"
-                                size="small"
-                                align="right"
-                                onClick={() => {
-                                  window.api?.send("loadTeachableMachineModel");
-                                }}
-                              >
-                                Load Local Model
-                              </Button>
+                          <Grid item xs={12}>
+                            <Grid container xs={12} justifyContent="flex-end">
+                              <Grid item>
+                                <Button
+                                  variant="outlined"
+                                  size="small"
+                                  align="right"
+                                  onClick={() => {
+                                    window.api?.send(
+                                      "loadTeachableMachineModel"
+                                    );
+                                  }}
+                                >
+                                  Load Cloud Model
+                                </Button>
+                              </Grid>
                             </Grid>
-                          )}
+                          </Grid>
+                        </Grid>
+                      )}
+                      {tracker === TRACKERS.TEACHABLE_MACHINE && window.api && (
+                        <Grid container xs={12} rowSpacing={2}>
+                          <Grid item xs={12}>
+                            <Typography variant="h5" color={"gray"}>
+                              B
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Typography variant="body2" color={"gray"}>
+                              Load a model from your filesystem.
+                            </Typography>
+                          </Grid>
+                          <Grid item xs={12}>
+                            <Grid container justifyContent="flex-end">
+                              <Grid item>
+                                <Button
+                                  variant="outlined"
+                                  size="small"
+                                  //align="right"
+                                  onClick={() => {
+                                    window.api?.send(
+                                      "loadTeachableMachineModel"
+                                    );
+                                  }}
+                                >
+                                  Load Local Model
+                                </Button>
+                              </Grid>
+                            </Grid>
+                          </Grid>
                         </Grid>
                       )}
                     </Grid>
@@ -429,23 +387,24 @@ function Settings() {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item>
-              <Grid container direction="column" spacing={2}>
-                <Grid item>
+            <Grid item xs={12}>
+              <Grid container xs={12} rowSpacing={2}>
+                <Grid item xs={12}>
                   <Divider textAlign="center"></Divider>
                 </Grid>
 
-                <Grid item>
+                <Grid item xs={12}>
                   <Typography variant="overline" color={"white"}>
                     Output
                   </Typography>
                 </Grid>
 
-                <Grid item>
-                  <Grid container direction="column" spacing={0}>
-                    <Grid item>
+                <Grid item xs={12}>
+                  <Grid container xs={12} spacing={0}>
+                    <Grid item xs={12}>
                       <Grid
                         container
+                        xs={12}
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"
@@ -475,18 +434,27 @@ function Settings() {
                             </Grid>
                             {mqttActive && (
                               <Grid item>
-                                <Chip
-                                  label={
-                                    mqttStatus //mqttStatus ? "connected" : "disconnected"
-                                  }
-                                  color={
-                                    mqttStatus === "connected"
-                                      ? "success"
-                                      : "warning"
-                                  }
-                                  variant="outlined"
-                                  size="small"
-                                />
+                                {mqttStatus === "connected" && (
+                                  <Chip
+                                    label={
+                                      mqttStatus //mqttStatus ? "connected" : "disconnected"
+                                    }
+                                    color={
+                                      mqttStatus === "connected"
+                                        ? "success"
+                                        : "warning"
+                                    }
+                                    variant="outlined"
+                                    size="small"
+                                  ></Chip>
+                                )}
+                                {mqttStatus != "connected" && (
+                                  <CircularProgress
+                                    color="warning"
+                                    size={20}
+                                    thickness={4}
+                                  ></CircularProgress>
+                                )}
                               </Grid>
                             )}
                           </Grid>
@@ -506,7 +474,7 @@ function Settings() {
                       </Grid>
                       {showMqtt && <MqttOptionsPanel></MqttOptionsPanel>}
                     </Grid>
-                    <Grid item>
+                    <Grid item xs={12}>
                       <Grid
                         container
                         direction="row"
