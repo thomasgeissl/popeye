@@ -1,7 +1,7 @@
 import { useEffect, useState, useCallback, useRef } from "react";
 import styled from "@emotion/styled";
 import useStore, { TM_MODE, TRACKERS } from "../store/store";
-import { TextField } from "@mui/material";
+import { keyframes, TextField } from "@mui/material";
 import Radio from "@mui/material/Radio";
 import RadioGroup from "@mui/material/RadioGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
@@ -44,9 +44,17 @@ import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
 import { Hands } from "@mediapipe/hands";
 
+const blink = keyframes`
+0%, 50%, 100% {
+  opacity: .25;
+}
+25%, 75% {
+  opacity: 1;
+}
+`;
+
 const Container = styled.div`
-  //display: flex;
-  //flex-direction: column;
+
   width: 33vw;
   height: calc(100vh - 24px * 2);
   position: absolute;
@@ -58,6 +66,15 @@ const Container = styled.div`
   z-index: 10;
   overflow-y: scroll;
 `;
+
+const Blinker = styled.div`
+  animation-name: ${blink};
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+  opacity: 1;
+`;
+
 const handLandmarkHotSpotPositions = [
   { label: "wrist", x: 90, y: 204 },
   { label: "thumb_cmc", x: 115, y: 181 },
@@ -194,7 +211,7 @@ function Settings() {
           </Grid>
         </Grid>
         <Grid item xs={12} sx={{ flexGrow: 1 }}>
-          <Grid container xs={12} rowSpacing={2} >
+          <Grid container xs={12} rowSpacing={2}>
             <Grid item xs={12}>
               <Grid container xs={12} rowSpacing={2}>
                 {/* <Grid item>
@@ -254,7 +271,12 @@ function Settings() {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <Grid container xs={12} direction="column" alignItems="center">
+                  <Grid
+                    container
+                    xs={12}
+                    direction="column"
+                    alignItems="center"
+                  >
                     <Grid item xs={12}>
                       {tracker === TRACKERS.POSE && (
                         <div>
@@ -449,11 +471,19 @@ function Settings() {
                                   ></Chip>
                                 )}
                                 {mqttStatus != "connected" && (
-                                  <CircularProgress
-                                    color="warning"
-                                    size={20}
-                                    thickness={4}
-                                  ></CircularProgress>
+                                  <Blinker>
+                                    <Chip
+                                      label={"connecting"}
+                                      color={"warning"}
+                                      variant="outlined"
+                                      size="small"
+                                    ></Chip>
+                                  </Blinker>
+                                  // <CircularProgress
+                                  //   color="warning"
+                                  //   size={20}
+                                  //   thickness={4}
+                                  // ></CircularProgress>
                                 )}
                               </Grid>
                             )}
