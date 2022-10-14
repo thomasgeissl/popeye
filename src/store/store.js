@@ -3,6 +3,7 @@ import { devtools } from "zustand/middleware";
 import { connectClient as connectBroker, setThrottleTime } from "../mqtt";
 
 const TRACKERS = {
+  COCOSSD: "COCOSSD",
   POSE: "POSE",
   HANDS: "HANDS",
   // FACE_MESH: "FACE_MESH",

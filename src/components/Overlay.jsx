@@ -120,7 +120,7 @@ function Overlay() {
                 <Typography
                   variant="caption"
                   color={theme.palette.secondary.main}
-                  xs={12}
+                  fullWidth
                 >
                   <Grid container direction="row" spacing={2}>
                     <Grid item><strong>{line.type}</strong></Grid>

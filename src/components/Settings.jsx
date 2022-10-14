@@ -449,7 +449,7 @@ function Settings() {
                                       }}
                                     />
                                   }
-                                  label="MQTTT"
+                                  label="MQTT"
                                 />
                               </FormGroup>
                             </Grid>
