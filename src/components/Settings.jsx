@@ -372,7 +372,7 @@ function Settings() {
                         </Grid>
                       )}
                       {tracker === TRACKERS.TEACHABLE_MACHINE && window.api && (
-                        <Grid container xs={12} rowSpacing={2}>
+                        <Grid container rowSpacing={2}>
                           <Grid item xs={12}>
                             <Typography variant="h5" color={"gray"}>
                               B
