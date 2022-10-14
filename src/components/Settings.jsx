@@ -187,7 +187,6 @@ function Settings() {
         <Grid item xs={12}>
           <Grid
             container
-            xs={12}
             direction="row"
             justifyContent="space-between"
             alignItems="center"
@@ -211,9 +210,9 @@ function Settings() {
           </Grid>
         </Grid>
         <Grid item xs={12} sx={{ flexGrow: 1 }}>
-          <Grid container xs={12} rowSpacing={2}>
+          <Grid container rowSpacing={2}>
             <Grid item xs={12}>
-              <Grid container xs={12} rowSpacing={2}>
+              <Grid container rowSpacing={2}>
                 {/* <Grid item>
                   <Divider textAlign="center"></Divider>
                 </Grid>
@@ -319,7 +318,7 @@ function Settings() {
                         ></LandmarkOptionsPanel>
                       )}
                       {tracker === TRACKERS.TEACHABLE_MACHINE && (
-                        <Grid container xs={12} rowSpacing={2}>
+                        <Grid container rowSpacing={2}>
                           <Grid item xs={12}>
                             <Typography variant="h5" color={"gray"}>
                               A
@@ -353,7 +352,7 @@ function Settings() {
                             />
                           </Grid>
                           <Grid item xs={12}>
-                            <Grid container xs={12} justifyContent="flex-end">
+                            <Grid container justifyContent="flex-end">
                               <Grid item>
                                 <Button
                                   variant="outlined"
@@ -410,7 +409,7 @@ function Settings() {
               </Grid>
             </Grid>
             <Grid item xs={12}>
-              <Grid container xs={12} rowSpacing={2}>
+              <Grid container rowSpacing={2}>
                 <Grid item xs={12}>
                   <Divider textAlign="center"></Divider>
                 </Grid>
@@ -422,7 +421,7 @@ function Settings() {
                 </Grid>
 
                 <Grid item xs={12}>
-                  <Grid container xs={12} spacing={0}>
+                  <Grid container spacing={0}>
                     <Grid item xs={12}>
                       <Grid
                         container
