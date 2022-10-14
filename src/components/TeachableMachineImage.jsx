@@ -178,7 +178,7 @@ function TeachableMachineImage() {
           .sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0))
           .map((result) => {
             return (
-              <Grid item xs={12}>
+              <Grid item xs={12} key={`result-${result.label}`}>
                 <Typography
                   variant="caption"
                   color={theme.palette.secondary.main}
