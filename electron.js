@@ -47,12 +47,7 @@ protocol.registerSchemesAsPrivileged([
 let mainWindow;
 let oscClient = new Client("127.0.0.1", 8000);
 let oscSessionPrefix = "";
-
-let active = true;
-let oscActive = false;
 let oscThrottleTime = 16;
-
-// const camera = systemPreferences.askForMediaAccess("camera");
 
 const throttledSendFunctions = {};
 const sendThrottledMessage = (address, message) => {
@@ -72,8 +67,8 @@ const sendThrottledMessage = (address, message) => {
 // Create the native browser window.
 function createWindow() {
   mainWindow = new BrowserWindow({
-    width: 800,
-    height: 600,
+    width: 1024,
+    height: 768,
     webPreferences: {
       webSecurity: false,
       nodeIntegration: true,
@@ -195,30 +190,22 @@ app.on("web-contents-created", (event, contents) => {
 // code. You can also put them in separate files and require them here.
 
 ipcMain.on("sendMessage", (event, arg) => {
-  if (!active) {
-    return;
-  }
-  // console.log(arg);
-  if (oscActive) {
-    const oscAddress = `${oscSessionPrefix}/popeye/${arg.address}`;
-    const message = new Message(oscAddress);
-    arg?.args.forEach((arg) => {
-      if (typeof arg === "object") {
-        message.append(arg.x);
-        message.append(arg.y);
-        message.append(arg.z);
-      } else {
-        message.append(arg);
-      }
+  const oscAddress = `${arg.address}`;
+  const message = new Message(oscAddress);
+  if (Array.isArray(arg?.args)) {
+    arg.args.forEach((a) => {
+      message.append(a);
     });
-    sendThrottledMessage(oscAddress, message);
   }
-});
-ipcMain.on("setActive", (event, arg) => {
-  active = arg;
-});
-ipcMain.on("setOscActive", (event, arg) => {
-  oscActive = arg;
+  // if (typeof arg?.args === "object") {
+  //   console.log("append object");
+  //   message.append(arg.args.x);
+  //   message.append(arg.args.y);
+  //   message.append(arg.args.z);
+  // } else if (typeof arg?.args === "array") {
+  //   console.log("append array");
+  // }
+  sendThrottledMessage(oscAddress, message);
 });
 ipcMain.on("setOscDestinationHost", (event, arg) => {
   oscClient = new Client(arg, oscClient.port);
