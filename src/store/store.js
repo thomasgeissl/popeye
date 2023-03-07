@@ -177,7 +177,7 @@ const useStore = create(
               topic:
                 state.mqttSessionPrefix !== ""
                   ? `${state.mqttSessionPrefix}/popeye/${topic}`
-                  : topic,
+                  : `popeye/${topic}`,
               args: value,
             });
           }
@@ -187,7 +187,7 @@ const useStore = create(
               topic:
                 state.oscSessionPrefix !== ""
                   ? `/${state.oscSessionPrefix}/popeye/${topic}`
-                  : `/${topic}`,
+                  : `/popeye/${topic}`,
               args: value,
             });
           }

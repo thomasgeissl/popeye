@@ -100,45 +100,45 @@ const handLandmarkHotSpotPositions = [
 ];
 
 const handsLandmarkHotSpotPositions = [
-  { label: "right_pinky", x: 8, y: 86 },
-  { label: "right_index", x: 75, y: 65 },
-  { label: "right_thumb", x: 100, y: 115 },
-  { label: "left_pinky", x: 220, y: 86 },
-  { label: "left_index", x: 156, y: 65 },
-  { label: "left_thumb", x: 130, y: 115 },
+  { label: "left_pinky", x: 8, y: 86 },
+  { label: "left_index", x: 75, y: 65 },
+  { label: "left_thumb", x: 100, y: 115 },
+  { label: "right_pinky", x: 220, y: 86 },
+  { label: "right_index", x: 156, y: 65 },
+  { label: "right_thumb", x: 130, y: 115 },
 ];
 
 const faceLandmarkHotSpotPositions = [
   { label: "nose", x: 126, y: 110 },
-  { label: "left_eye", x: 158, y: 67 },
-  { label: "left_eye_inner", x: 135, y: 67 },
-  { label: "left_eye_outer", x: 181, y: 67 },
-  { label: "right_eye", x: 78, y: 67 },
-  { label: "right_eye_inner", x: 101, y: 67 },
-  { label: "right_eye_outer", x: 55, y: 67 },
-  { label: "left_ear", x: 217, y: 89 },
-  { label: "right_ear", x: 13, y: 89 },
-  { label: "mouth_right", x: 103, y: 169 },
-  { label: "mouth_left", x: 136, y: 169 },
+  { label: "left_eye", x: 78, y: 67 },
+  { label: "left_eye_inner", x: 101, y: 67 },
+  { label: "left_eye_outer", x: 55, y: 67 },
+  { label: "right_eye", x: 158, y: 67 },
+  { label: "right_eye_inner", x: 135, y: 67 },
+  { label: "right_eye_outer", x: 181, y: 67 },
+  { label: "left_ear", x: 13, y: 89 },
+  { label: "right_ear", x: 217, y: 89 },
+  { label: "mouth_left", x: 103, y: 169 },
+  { label: "mouth_right", x: 136, y: 169 },
 ];
 
 const bodyLandmarkHotSpotPositions = [
-  { label: "left_shoulder", x: 138, y: 34 },
-  { label: "right_shoulder", x: 92, y: 34 },
-  { label: "left_elbow", x: 148, y: 74 },
-  { label: "right_elbow", x: 82, y: 74 },
-  { label: "left_wrist", x: 169, y: 103 },
-  { label: "right_wrist", x: 60, y: 103 },
-  { label: "left_hip", x: 128, y: 113 },
-  { label: "right_hip", x: 102, y: 113 },
-  { label: "left_knee", x: 129, y: 161 },
-  { label: "right_knee", x: 101, y: 161 },
-  { label: "left_ankle", x: 130, y: 200 },
-  { label: "right_ankle", x: 100, y: 200 },
-  { label: "left_heel", x: 130, y: 225 },
-  { label: "right_heel", x: 100, y: 225 },
-  { label: "left_foot_index", x: 158, y: 225 },
-  { label: "right_foot_index", x: 72, y: 225 },
+  { label: "left_shoulder", x: 92, y: 34 },
+  { label: "right_shoulder", x: 138, y: 34 },
+  { label: "left_elbow", x: 82, y: 74 },
+  { label: "right_elbow", x: 148, y: 74 },
+  { label: "left_wrist", x: 60, y: 103 },
+  { label: "right_wrist", x: 169, y: 103 },
+  { label: "left_hip", x: 102, y: 113 },
+  { label: "right_hip", x: 128, y: 113 },
+  { label: "left_knee", x: 101, y: 161 },
+  { label: "right_knee", x: 129, y: 161 },
+  { label: "left_ankle", x: 100, y: 200 },
+  { label: "right_ankle", x: 130, y: 200 },
+  { label: "left_heel", x: 100, y: 225 },
+  { label: "right_heel", x: 130, y: 225 },
+  { label: "left_foot_index", x: 72, y: 225 },
+  { label: "right_foot_index", x: 158, y: 225 },
 ];
 
 function Settings() {
@@ -183,7 +183,7 @@ function Settings() {
 
   return (
     <Container>
-      <Grid container xs={12} rowSpacing={2}>
+      <Grid container rowSpacing={2}>
         <Grid item xs={12}>
           <Grid
             container
@@ -424,7 +424,6 @@ function Settings() {
                     <Grid item xs={12}>
                       <Grid
                         container
-                        xs={12}
                         direction="row"
                         justifyContent="space-between"
                         alignItems="center"

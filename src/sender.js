@@ -10,6 +10,9 @@ const send = (address, args) => {
       argsList.push(args.x);
       argsList.push(args.y);
       argsList.push(args.z);
+      if(args.visibility){
+        argsList.push(args.visibility);
+      }
     }
     if (args.confidence) {
       argsList.push(args.confidence);
@@ -23,7 +26,7 @@ const send = (address, args) => {
     });
   }
   if (state.mqttActive) {
-    const topic = state.mqttSessionPrefix
+    const topic = state.mqttSessionPrefix !== ""
       ? `${state.mqttSessionPrefix}/popeye/${address}`
       : `popeye/${address}`;
     publish(topic, args);
