@@ -11,8 +11,6 @@ import Webcam from "react-webcam";
 import styled from "@emotion/styled";
 import useStore from "../store/store";
 import ThemeOptions from "../theme";
-import { send } from "../sender";
-import { color } from "@mui/system";
 
 const labels = [
   "wrist",
@@ -43,16 +41,14 @@ const WebcamContainer = styled.div`
 `;
 
 const Overlay = styled.canvas`
-width: 100%;
-height: calc(100vw * 960 / 1280);
+  width: 100%;
+  height: calc(100vw * 960 / 1280);
 `;
 
 const Container = styled.div`
-//width: 100vw;
-//height: 100vh;
-overflow: hidden;
-display: flex;
-alignItems: center;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
 `;
 
 function MHands() {
@@ -64,31 +60,23 @@ function MHands() {
     (state) => state.allHandLandmarkPointsAsJson
   );
 
-  const logging = useStore((state) => state.logging);
+  const send = useStore((state) => state.send);
 
   useEffect(() => {
     const canvasCtx = canvasRef.current.getContext("2d");
 
     function onResults(results) {
       if (results.multiHandLandmarks) {
-        results.multiHandLandmarks.forEach((landmarks, index) => {
+        results.multiHandLandmarks.forEach((landmarks, handIndex) => {
           if (allHandLandmarkPointsAsJson) {
-            send("hands/${index}/all", [JSON.stringify(landmarks)]);
+            send(`hands/${index}/all`, [JSON.stringify(landmarks)]);
           }
           labels.forEach((label) => {
             if (landmarkPoints.includes(label)) {
-              //console.log(landmarks[index])
-              //logging("MQTT " + "popeye/sendMessage" + " " + `hands/${index}/${label}` + " x: " + landmarks[index].x.toFixed(2))
-              logging({
-                type: "MQTT",
-                topic: "popeye/" + `hands/${index}/${label}`,
-                x: landmarks[index].x.toFixed(2),
-                y: landmarks[index].y.toFixed(2),
-                z: landmarks[index].z.toFixed(2),
-              })
-              /*window.api?.*/send(
-                `hands/${index}/${label}`, landmarks[index]
-              );
+              const jointIndex = labels.indexOf(label)
+              if(jointIndex !== 0){
+                send(`hands/${handIndex}/${label}`, landmarks[jointIndex]);
+              }
             }
           });
         });
@@ -107,7 +95,7 @@ function MHands() {
 
       canvasCtx.translate(canvasRef.current.width, 0);
       canvasCtx.scale(-1, 1);
-      
+
       canvasCtx.drawImage(
         results.image,
         0,
@@ -134,7 +122,6 @@ function MHands() {
             color: "rgba(255, 255,255, .1)",
             lineWidth: 1,
           });
-
         }
       }
 

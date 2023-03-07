@@ -29,7 +29,7 @@ const Container = styled.div`
   //height: 100vh;
   overflow: hidden;
   display: flex;
-  alignitems: center;
+  align-items: center;
 `;
 
 const detector = ml5.objectDetector("cocossd");
@@ -38,7 +38,6 @@ function CocoSsd() {
   const webcamRef = useRef(null);
   const canvasRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
-  const logging = useStore((state) => state.logging);
 
   const [detections, setDetections] = useState([]);
 

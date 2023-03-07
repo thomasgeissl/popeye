@@ -14,7 +14,6 @@ const Results = styled.div`
   margin: 24px;
 `;
 
-
 const Video = styled.video`
   position: absolute;
   //right: 0;
@@ -41,7 +40,6 @@ const Container = styled.div`
 `;
 
 function TeachableMachineImage() {
-
   const theme = useTheme();
   const canvasRef = useRef(null);
   const videoRef = useRef(null);
@@ -50,6 +48,7 @@ function TeachableMachineImage() {
   const videoDeviceId = useStore((state) => state.videoDeviceId);
   const sessionPrefix = useStore((state) => state.sessionPrefix);
   const modelUrl = useStore((state) => state.teachableMachineModelUrl);
+  const send = useStore((state) => state.send);
 
   useEffect(
     () => {
@@ -87,18 +86,13 @@ function TeachableMachineImage() {
 
   useEffect(() => {
     results.forEach((result) => {
-      window.api?.send("sendMessage", {
-        address: `tm/${result.label}`,
-        sessionPrefix,
-        args: [result.confidence],
-      });
+      send(`tm/${result.label}`, { confidence: result.confidence });
     });
   }, [sessionPrefix, results]);
 
   const requestRef = useRef();
 
   const animate = (time) => {
-
     const canvasCtx = canvasRef.current.getContext("2d");
 
     canvasCtx.save();
@@ -135,7 +129,6 @@ function TeachableMachineImage() {
   };
 
   useEffect(() => {
-
     requestRef.current = requestAnimationFrame(animate);
     return () => cancelAnimationFrame(requestRef.current);
   }, []);
@@ -172,29 +165,33 @@ function TeachableMachineImage() {
             );
           })}
       </Results> */}
-      <Results>
-      <Grid container direction="column">
-      {results
-          .sort((a, b) => (a.label < b.label ? -1 : a.label > b.label ? 1 : 0))
-          .map((result) => {
-            return (
-              <Grid item xs={12} key={`result-${result.label}`}>
-                <Typography
-                  variant="caption"
-                  color={theme.palette.secondary.main}
-                  sx={{opacity: result.confidence > .5 ? 1 : 0.2}}
-                  xs={12}
-                >
-                  <Grid container direction="row" spacing={2}>
-                    <Grid item><strong>{result.label}</strong></Grid>
-                    <Grid item>{result.confidence.toFixed(2)}</Grid>
-                  </Grid>
-                </Typography>
-              </Grid>
-            );
-          })}
+      {/* <Results>
+        <Grid container direction="column">
+          {results
+            .sort((a, b) =>
+              a.label < b.label ? -1 : a.label > b.label ? 1 : 0
+            )
+            .map((result) => {
+              return (
+                <Grid item xs={12} key={`result-${result.label}`}>
+                  <Typography
+                    variant="caption"
+                    color={theme.palette.secondary.main}
+                    sx={{ opacity: result.confidence > 0.5 ? 1 : 0.2 }}
+                    xs={12}
+                  >
+                    <Grid container direction="row" spacing={2}>
+                      <Grid item>
+                        <strong>{result.label}</strong>
+                      </Grid>
+                      <Grid item>{result.confidence.toFixed(2)}</Grid>
+                    </Grid>
+                  </Typography>
+                </Grid>
+              );
+            })}
         </Grid>
-        </Results>
+      </Results> */}
     </Container>
     // <div>
     //   <Video

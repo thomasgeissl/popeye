@@ -16,13 +16,12 @@ const TM_MODE = {
 
 import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
 import { landmarkPoints as handLandmarkPoints } from "../components/MHands";
+import { send } from "../sender";
 
 const useStore = create(
   devtools((set, get) => {
     window.api?.receive("load", (data) => {
       set(() => data);
-      window.api?.send("setActive", data.active);
-      window.api?.send("setOscActive", data.oscActive);
       window.api?.send("setOscDestinationHost", data.oscDestinationHost);
       window.api?.send("setOscDestinationPort", data.oscDestinationPort);
       window.api?.send("setOscSessionPrefix", data.oscSessionPrefix);
@@ -35,7 +34,7 @@ const useStore = create(
     });
     return {
       videoDeviceId: null,
-      tracker: TRACKERS.TEACHABLE_MACHINE,
+      tracker: TRACKERS.HANDS,
       landmarkPoints: ["left_eye", "right_eye"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
@@ -49,7 +48,7 @@ const useStore = create(
       oscSessionPrefix: "",
       oscThrottleTime: 16,
       mqttStatus: "connecting",
-      mqttActive: true,
+      mqttActive: false,
       mqttProtocol: "ws",
       mqttHost: "localhost",
       mqttPort: "9001",
@@ -63,12 +62,7 @@ const useStore = create(
       setTracker: (tracker) => set((state) => ({ tracker: tracker })),
       setVideoDeviceId: (videoDeviceId) =>
         set((state) => ({ videoDeviceId: videoDeviceId })),
-      setActive: (active) => {
-        window.api?.send("setActive", active);
-        set((state) => ({ active: active }));
-      },
       setOscActive: (active) => {
-        window.api?.send("setOscActive", active);
         set((state) => ({ oscActive: active }));
       },
       setOscDestinationHost: (host) => {
@@ -139,7 +133,7 @@ const useStore = create(
       addLandmarkPoints: (landmarkPoints) => {
         set((state) => {
           return {
-            landmarkPoints: [...get().landmarkPoints, ...landmarkPoints],
+            landmarkPoints: [...state.landmarkPoints, ...landmarkPoints],
           };
         });
       },
@@ -154,15 +148,9 @@ const useStore = create(
           return { landmarkPoints };
         });
       },
-      removeLandmarkPoints: (landmarkPoints) => {
-        const points = [];
-        [...get().landmarkPoints].map((landmark) => {
-          if (!landmarkPoints.includes(landmark)) {
-            points.push(landmark);
-          }
-        });
-        set((state) => {
-          return { landmarkPoints: points };
+      clearLandmarkPoints: () => {
+        set(() => {
+          return { landmarkPoints: [] };
         });
       },
       setTeachableMachineModelUrl: (teachableMachineModelUrl) => {
@@ -175,13 +163,34 @@ const useStore = create(
         const state = get();
         window.api?.send("save", JSON.stringify(state));
       },
-      logging: (msg) => {
-        let _log = get().log;
-        _log.push(msg);
-        if (_log.length > 10) _log.shift();
+      send: (topic, value) => {
         set((state) => {
-          return { log: [..._log] };
+          const newEntries = [];
+          if (state.mqttActive) {
+            newEntries.push({
+              type: "MQTT",
+              topic:
+                state.mqttSessionPrefix !== ""
+                  ? `${state.mqttSessionPrefix}/popeye/${topic}`
+                  : topic,
+              args: value,
+            });
+          }
+          if (state.oscActive) {
+            newEntries.push({
+              type: "OSC",
+              topic:
+                state.oscSessionPrefix !== ""
+                  ? `/${state.oscSessionPrefix}/popeye/${topic}`
+                  : `/${topic}`,
+              args: value,
+            });
+          }
+          return {
+            log: [...newEntries, ...state.log].slice(0, 10),
+          };
         });
+        send(topic, value);
       },
       clipLog: () => {
         let _log = get().log;

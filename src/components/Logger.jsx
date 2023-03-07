@@ -29,8 +29,6 @@ const Footer = styled.div`
 
 function Overlay() {
   const toggleSettings = useStore((state) => state.toggleSettings);
-  const setActive = useStore((state) => state.setActive);
-
   const log = useStore((state) => state.log);
   const clipLog = useStore((state) => state.clipLog);
   const theme = useTheme();
@@ -114,20 +112,40 @@ function Overlay() {
       </Header>
       <Footer>
         <Grid container direction="column">
-          {log.map((line, index) => {
+          {log.map((entry, index) => {
             return (
-              <Grid item sx={{ opacity: index / log.length }} xs={12}>
+              <Grid
+                item
+                sx={{ opacity: index / log.length }}
+                xs={12}
+                key={`log-${index}`}
+              >
                 <Typography
                   variant="caption"
                   color={theme.palette.secondary.main}
                   fullWidth
                 >
                   <Grid container direction="row" spacing={2}>
-                    <Grid item><strong>{line.type}</strong></Grid>
-                    <Grid item sx={{flexGrow: 1}}>{line.topic}</Grid>
-                    <Grid item>X {line.x}</Grid>
-                    <Grid item>Y {line.y}</Grid>
-                    <Grid item>Z {line.z}</Grid>
+                    <Grid item>
+                      <strong>{entry.type}</strong>
+                    </Grid>
+                    <Grid item sx={{ flexGrow: 1 }}>
+                      {entry.topic}
+                    </Grid>
+                    {/* <Grid>
+                      <pre>{JSON.stringify(entry.args)} </pre>
+                    </Grid> */}
+                    {Object.entries(entry.args).map((argEntry) => {
+                      return (
+                        <>
+                          {argEntry[1] && (
+                            <Grid item key={`arg-${index}-${argEntry[0]}`}>
+                              {argEntry[0]}: {argEntry[1].toFixed(2)}
+                            </Grid>
+                          )}
+                        </>
+                      );
+                    })}
                   </Grid>
                 </Typography>
               </Grid>

@@ -20,7 +20,6 @@ const Spacer = styled.div`
 
 function Header() {
   const active = useStore((state) => state.active);
-  const setActive = useStore((state) => state.setActive);
   const showSettings = useStore((state) => state.showSettings);
   const toggleSettings = useStore((state) => state.toggleSettings);
   const tracker = useStore((state) => state.tracker);
@@ -65,11 +64,6 @@ function Header() {
               </IconButton>
             </>
           )}
-          {!showSettings && <Switch
-            checked={active}
-            onChange={(event) => setActive(event.target.checked)}
-            color="secondary"
-          />}
         </ToolbarContent>
       </Toolbar>
     </AppBar>

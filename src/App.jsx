@@ -9,7 +9,7 @@ import TeachableMachinePose from "./components/TeachableMachinePose";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import Settings from "./components/Settings";
-import Overlay from "./components/Overlay";
+import Logger from "./components/Logger";
 import styled from "@emotion/styled";
 import useStore from "./store/store";
 import { TRACKERS, TM_MODE } from "./store/store";
@@ -37,9 +37,6 @@ function App() {
   const setTracker = useStore((state) => state.setTracker);
   const setMqttActive = useStore((state) => state.setMqttActive);
 
-  useEffect(() => {
-    setMqttActive(true)
-  }, []);
 
   return (
     <ThemeProvider theme={theme}>
@@ -60,7 +57,7 @@ function App() {
             </div>
           {/* )} */}
         </Content>
-        <Overlay></Overlay>
+        <Logger></Logger>
         {(showSettings || !tracker) && <Settings></Settings>}
         {/* <Footer></Footer> */}
       </Container>

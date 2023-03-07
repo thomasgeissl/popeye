@@ -49,8 +49,8 @@ function LandmarkOptionsPanel({
     (state) => state.addLandmarkPoints
   );
 
-  const removeLandmarkPoints = useStore(
-    (state) => state.removeLandmarkPoints
+  const clearLandmarkPoints = useStore(
+    (state) => state.clearLandmarkPoints
   );
 
   const toggleLandmarkPoint = useStore(
@@ -69,9 +69,6 @@ function LandmarkOptionsPanel({
     addLandmarkPoints(allLandmarkPointLabels())
   }
 
-  const removeAllLandmarkPoints = () => {
-    removeLandmarkPoints(allLandmarkPointLabels())
-  }
 
   return (
     <LandmarkOptions hidden={hidden}>
@@ -124,7 +121,7 @@ function LandmarkOptionsPanel({
               <Button
                 variant="text"
                 size="small"
-                onClick={() => removeAllLandmarkPoints()}
+                onClick={() => clearLandmarkPoints()}
               >
                 None
               </Button>

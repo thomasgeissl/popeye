@@ -13,8 +13,6 @@ import useStore from "../store/store";
 import styled from "@emotion/styled";
 import ThemeOptions from "../theme";
 
-import { send } from "../sender";
-
 const labels = [
   "nose",
   "left_eye_inner",
@@ -65,7 +63,7 @@ const Container = styled.div`
   height: 100vh;
   overflow: hidden;
   display: flex;
-  alignitems: center;
+  align-items: center;
 `;
 
 function MPose() {
@@ -73,14 +71,14 @@ function MPose() {
   const canvasRef = useRef(null);
   const landmarkRef = useRef(null);
   const videoDeviceId = useStore((state) => state.videoDeviceId);
-  const sessionPrefix = useStore((state) => state.sessionPrefix);
-  const active = useStore((state) => state.active);
-  const mqttActive = useStore((state) => state.mqttActive);
   const landmarkPoints = useStore(
     (state) => state.landmarkPoints
   );
   const allPoseLandmarkPointsAsJson = useStore(
     (state) => state.allPoseLandmarkPointsAsJson
+  );
+  const send = useStore(
+    (state) => state.send
   );
 
   useEffect(() => {
@@ -113,12 +111,12 @@ function MPose() {
         return;
       }
 
-      if (allPoseLandmarkPointsAsJson) {
-        send(`pose/all`, [results.poseLandmarks]);
-      }
+      // if (allPoseLandmarkPointsAsJson) {
+      //   send(`pose/all`, [results.poseLandmarks]);
+      // }
       labels.forEach((label, index) => {
         if (landmarkPoints.includes(label)) {
-          send(`pose/${label}`, [results.poseLandmarks[index]]);
+          send(`pose/${label}`, results.poseLandmarks[index]);
         }
       });
 

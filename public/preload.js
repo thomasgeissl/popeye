@@ -12,8 +12,6 @@ process.once("loaded", () => {
     send: (channel, data) => {
       // whitelist channels
       let validChannels = [
-        "setActive",
-        "setOscActive",
         "setOscDestinationPort",
         "setOscDestinationHost",
         "setoscThrottleTime",

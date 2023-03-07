@@ -4,13 +4,22 @@ import { publish } from "./mqtt";
 const send = (address, args) => {
   const state = useStore.getState();
 
- if (!state.active) {
-    return;
-  }
   if (state.oscActive) {
+    const argsList = [];
+    if (args.x && args.y && args.z) {
+      argsList.push(args.x);
+      argsList.push(args.y);
+      argsList.push(args.z);
+    }
+    if (args.confidence) {
+      argsList.push(args.confidence);
+    }
+    const oscAddress = state.oscSessionPrefix
+    ? `/${state.oscSessionPrefix}/popeye/${address}`
+    : `/popeye/${address}`;
     window.api?.send("sendMessage", {
-      address,
-      args,
+      address: oscAddress,
+      args: argsList,
     });
   }
   if (state.mqttActive) {
