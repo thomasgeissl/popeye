@@ -94,11 +94,9 @@ const useStore = create(
               state.mqttHost,
               state.mqttPort,
               (broker) => {
-                console.log("SUCCESS", broker);
                 get().setMqttStatus("connected");
               },
               (broker) => {
-                console.log("ERROR", broker);
                 get().setMqttStatus("connecting");
               }
             );

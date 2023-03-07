@@ -7,6 +7,8 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import Typography from "@mui/material/Typography";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef } from "react";
+import packageJson from "../../package.json";
+const { version } = packageJson;
 
 const Container = styled.div`
   position: absolute;
@@ -87,7 +89,7 @@ function Overlay() {
                           variant="caption"
                           color={theme.palette.secondary.main}
                         >
-                          1.0
+                          {version}
                         </Typography>
                       </Grid>
                     </Grid>
