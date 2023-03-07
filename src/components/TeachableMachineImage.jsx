@@ -52,7 +52,8 @@ function TeachableMachineImage() {
 
   useEffect(
     () => {
-      const classifier = ml5.imageClassifier(modelUrl, () => {
+      console.log("setting up new classifier, TODO: delete old one", modelUrl)
+      const newClassifier = ml5.imageClassifier(modelUrl, () => {
         navigator.mediaDevices
           .getUserMedia({
             video: videoDeviceId ? { deviceId: videoDeviceId } : true,
@@ -62,7 +63,7 @@ function TeachableMachineImage() {
             videoRef.current.srcObject = stream;
             videoRef.current.play();
           });
-        setClassifier(classifier);
+        setClassifier(newClassifier);
       });
       const onResults = (error, r) => {
         if (error) {
@@ -73,13 +74,15 @@ function TeachableMachineImage() {
       };
 
       const intervalId = setInterval(function () {
-        if (classifier && videoRef.current) {
-          classifier.classify(videoRef.current, onResults);
+        if (newClassifier && videoRef.current) {
+          newClassifier.classify(videoRef.current, onResults);
         }
       }, 100);
     },
-    [setClassifier, setResults],
+    [setClassifier, setResults, modelUrl],
     () => {
+      // TODO: delete classifier, or stop
+      // delete newClassifier
       clearInterval(intervalId);
     }
   );

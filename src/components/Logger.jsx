@@ -9,6 +9,7 @@ import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef } from "react";
 import packageJson from "../../package.json";
 const { version } = packageJson;
+import Logo from "../assets/icon.svg"
 
 const Container = styled.div`
   position: absolute;
@@ -67,7 +68,8 @@ function Overlay() {
                   spacing={2}
                 >
                   <Grid item>
-                    <img src="/icon.svg" />
+                    {/* <img src="/icon.svg" /> */}
+                    <img src={Logo}></img>
                   </Grid>
                   <Grid item>
                     <Grid

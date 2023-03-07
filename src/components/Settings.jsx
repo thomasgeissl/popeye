@@ -44,6 +44,11 @@ import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
 import { Hands } from "@mediapipe/hands";
 
+import BodySvg from "../assets/body.svg"
+import HandsSvg from "../assets/hands.svg"
+import HandSvg from "../assets/hand.svg"
+import FaceSvg from "../assets/face.svg"
+
 const blink = keyframes`
 0%, 50%, 100% {
   opacity: .25;
@@ -291,19 +296,19 @@ function Settings() {
                           </Tabs>
                           <LandmarkOptionsPanel
                             hidden={poseTab != 0}
-                            sketch="/body.svg"
+                            sketch={BodySvg}
                             landmarks={bodyLandmarkHotSpotPositions}
                             offset={{ x: -14, y: -12 }}
                           ></LandmarkOptionsPanel>
                           <LandmarkOptionsPanel
                             hidden={poseTab != 1}
-                            sketch="/face.svg"
+                            sketch={FaceSvg}
                             landmarks={faceLandmarkHotSpotPositions}
                             offset={{ x: -14, y: -12 }}
                           ></LandmarkOptionsPanel>
                           <LandmarkOptionsPanel
                             hidden={poseTab != 2}
-                            sketch="/hands.svg"
+                            sketch={HandsSvg}
                             landmarks={handsLandmarkHotSpotPositions}
                             offset={{ x: -14, y: -12 }}
                           ></LandmarkOptionsPanel>
@@ -311,7 +316,7 @@ function Settings() {
                       )}
                       {tracker === TRACKERS.HANDS && (
                         <LandmarkOptionsPanel
-                          sketch="/hand.svg"
+                          sketch={HandSvg}
                           landmarks={handLandmarkHotSpotPositions}
                           offset={{ x: 8, y: -10 }}
                         ></LandmarkOptionsPanel>
