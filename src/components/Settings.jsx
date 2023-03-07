@@ -272,7 +272,6 @@ function Settings() {
                 <Grid item xs={12}>
                   <Grid
                     container
-                    xs={12}
                     direction="column"
                     alignItems="center"
                   >

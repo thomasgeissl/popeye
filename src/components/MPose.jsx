@@ -99,6 +99,7 @@ function MPose() {
       minTrackingConfidence: 0.5,
     });
     const onResults = (results) => {
+      const landmarkPoints = useStore.getState().landmarkPoints
       if (!results.poseLandmarks) {
         canvasCtx.drawImage(
           results.image,
@@ -199,7 +200,7 @@ function MPose() {
       height: 960,
     });
     camera.start();
-  }, [landmarkPoints]);
+  }, []);
   return (
     <Container>
       <WebcamContainer>

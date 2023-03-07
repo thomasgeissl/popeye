@@ -35,7 +35,7 @@ const useStore = create(
     return {
       videoDeviceId: null,
       tracker: TRACKERS.HANDS,
-      landmarkPoints: ["left_eye", "right_eye"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
+      landmarkPoints: [], //["left_eye", "right_eye"], //["pinky_tip", "ring_finger_tip", "middle_finger_tip", "index_finger_tip", "thumb_tip", "wrist"],
       allPoseLandmarkPointsAsJson: false,
       allHandLandmarkPointsAsJson: false,
       teachableMachineModelUrl:
@@ -59,7 +59,12 @@ const useStore = create(
       log: [],
       toggleSettings: () =>
         set((state) => ({ showSettings: !state.showSettings })),
-      setTracker: (tracker) => set((state) => ({ tracker: tracker })),
+      setTracker: (tracker) =>
+        set((state) => {
+          return { 
+            landmarkPoints: [],
+            tracker: tracker };
+        }),
       setVideoDeviceId: (videoDeviceId) =>
         set((state) => ({ videoDeviceId: videoDeviceId })),
       setOscActive: (active) => {

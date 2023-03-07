@@ -66,6 +66,7 @@ function MHands() {
     const canvasCtx = canvasRef.current.getContext("2d");
 
     function onResults(results) {
+      const landmarkPoints = useStore.getState().landmarkPoints
       if (results.multiHandLandmarks) {
         results.multiHandLandmarks.forEach((landmarks, handIndex) => {
           if (allHandLandmarkPointsAsJson) {
@@ -74,7 +75,7 @@ function MHands() {
           labels.forEach((label) => {
             if (landmarkPoints.includes(label)) {
               const jointIndex = labels.indexOf(label)
-              if(jointIndex !== 0){
+              if(jointIndex >= 0){
                 send(`hands/${handIndex}/${label}`, landmarks[jointIndex]);
               }
             }
@@ -175,7 +176,7 @@ function MHands() {
       height: 960,
     });
     camera.start();
-  }, [landmarkPoints]);
+  }, []);
 
   return (
     <Container>
