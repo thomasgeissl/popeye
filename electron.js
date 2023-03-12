@@ -60,7 +60,6 @@ const sendThrottledMessage = (address, message) => {
       });
     }, oscThrottleTime);
   }
-  console.log(oscThrottleTime);
   throttledSendFunctions[address](message);
 };
 
