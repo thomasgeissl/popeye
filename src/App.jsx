@@ -13,6 +13,7 @@ import useStore from "./store/store";
 import { TRACKERS, TM_MODE } from "./store/store";
 import { ThemeProvider } from "@mui/material";
 import theme from "./theme";
+import CocoSsd from "./components/CocoSsd";
 
 const Container = styled.div`
   display: flex;
@@ -36,6 +37,7 @@ function App() {
     <ThemeProvider theme={theme}>
       <Container>
         <Content>
+          {tracker === TRACKERS.COCOSSD && <CocoSsd></CocoSsd>}
           {tracker === TRACKERS.POSE && <MPose></MPose>}
           {tracker === TRACKERS.HANDS && <MHands></MHands>}
           {/* {tracker === TRACKERS.FACE_MESH && <MFaceMesh></MFaceMesh>} */}
