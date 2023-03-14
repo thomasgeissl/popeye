@@ -39,6 +39,8 @@ const Container = styled.div`
   display: flex;
 `;
 
+// second testing model: https://teachablemachine.withgoogle.com/models/PD96bo_q_/
+let intervalId
 function TeachableMachineImage() {
   const theme = useTheme();
   const canvasRef = useRef(null);
@@ -52,6 +54,7 @@ function TeachableMachineImage() {
 
   useEffect(
     () => {
+      clearInterval(intervalId);
       console.log("setting up new classifier, TODO: delete old one", modelUrl)
       const newClassifier = ml5.imageClassifier(modelUrl, () => {
         navigator.mediaDevices
@@ -73,7 +76,7 @@ function TeachableMachineImage() {
         setResults([...r]);
       };
 
-      const intervalId = setInterval(function () {
+      intervalId = setInterval(function () {
         if (newClassifier && videoRef.current) {
           newClassifier.classify(videoRef.current, onResults);
         }

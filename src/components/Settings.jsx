@@ -166,6 +166,7 @@ function Settings() {
   );
   const tmMode = useStore((state) => state.tmMode);
   const setTmMode = useStore((state) => state.setTmMode);
+  const [localTeachableMachineModelUrl, setLocalTeachableMachineModelUrl] = useState("")
   const setTeachableMachineModelUrl = useStore(
     (state) => state.setTeachableMachineModelUrl
   );
@@ -349,9 +350,9 @@ function Settings() {
                               variant="outlined"
                               size="small"
                               fullWidth
-                              value={teachableMachineModelUrl}
+                              value={localTeachableMachineModelUrl}
                               onChange={(event) => {
-                                setTeachableMachineModelUrl(event.target.value);
+                                setLocalTeachableMachineModelUrl(event.target.value);
                               }}
                             />
                           </Grid>
@@ -362,10 +363,12 @@ function Settings() {
                                   variant="outlined"
                                   size="small"
                                   align="right"
+                                  disabled={localTeachableMachineModelUrl === teachableMachineModelUrl}
                                   onClick={() => {
-                                    window.api?.send(
-                                      "loadTeachableMachineModel"
-                                    );
+                                    setTeachableMachineModelUrl(localTeachableMachineModelUrl)
+                                    // window.api?.send(
+                                    //   "loadTeachableMachineModel"
+                                    // );
                                   }}
                                 >
                                   Load Cloud Model

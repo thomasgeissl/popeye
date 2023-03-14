@@ -14,8 +14,8 @@ const TM_MODE = {
   POSE: "POSE",
 };
 
-import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
-import { landmarkPoints as handLandmarkPoints } from "../components/MHands";
+// import { landmarkPoints as poseLandmarkPoints } from "../components/MPose";
+// import { landmarkPoints as handLandmarkPoints } from "../components/MHands";
 import { send } from "../sender";
 
 const useStore = create(
