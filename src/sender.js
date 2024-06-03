@@ -1,6 +1,8 @@
 import useStore from "./store/store";
 import { publish } from "./mqtt";
 
+import { appWindow } from "@tauri-apps/api/window";
+
 const send = (address, args) => {
   const state = useStore.getState();
 
@@ -10,7 +12,7 @@ const send = (address, args) => {
       argsList.push(args.x);
       argsList.push(args.y);
       argsList.push(args.z);
-      if(args.visibility){
+      if (args.visibility) {
         argsList.push(args.visibility);
       }
     }
@@ -18,17 +20,21 @@ const send = (address, args) => {
       argsList.push(args.confidence);
     }
     const oscAddress = state.oscSessionPrefix
-    ? `/${state.oscSessionPrefix}/popeye/${address}`
-    : `/popeye/${address}`;
-    window.api?.send("sendMessage", {
+      ? `/${state.oscSessionPrefix}/popeye/${address}`
+      : `/popeye/${address}`;
+    // emit an event that is only visible to the current window
+    appWindow?.emit("event-name", {
+      host: state.oscDestinationHost,
+      port: state.oscDestinationPort,
       address: oscAddress,
       args: argsList,
     });
   }
   if (state.mqttActive) {
-    const topic = state.mqttSessionPrefix !== ""
-      ? `${state.mqttSessionPrefix}/popeye/${address}`
-      : `popeye/${address}`;
+    const topic =
+      state.mqttSessionPrefix !== ""
+        ? `${state.mqttSessionPrefix}/popeye/${address}`
+        : `popeye/${address}`;
     publish(topic, args);
     //console.log(topic, args)
   }

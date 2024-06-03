@@ -44,10 +44,10 @@ import { landmarkPoints as poseLandmarkPoints } from "./MPose";
 import { landmarkPoints as handLandmarkPoints } from "./MHands";
 import { Hands } from "@mediapipe/hands";
 
-import BodySvg from "../assets/body.svg"
-import HandsSvg from "../assets/hands.svg"
-import HandSvg from "../assets/hand.svg"
-import FaceSvg from "../assets/face.svg"
+import BodySvg from "../assets/body.svg";
+import HandsSvg from "../assets/hands.svg";
+import HandSvg from "../assets/hand.svg";
+import FaceSvg from "../assets/face.svg";
 
 const blink = keyframes`
 0%, 50%, 100% {
@@ -59,7 +59,6 @@ const blink = keyframes`
 `;
 
 const Container = styled.div`
-
   width: 33vw;
   height: calc(100vh - 24px * 2);
   position: absolute;
@@ -166,7 +165,8 @@ function Settings() {
   );
   const tmMode = useStore((state) => state.tmMode);
   const setTmMode = useStore((state) => state.setTmMode);
-  const [localTeachableMachineModelUrl, setLocalTeachableMachineModelUrl] = useState("")
+  const [localTeachableMachineModelUrl, setLocalTeachableMachineModelUrl] =
+    useState("");
   const setTeachableMachineModelUrl = useStore(
     (state) => state.setTeachableMachineModelUrl
   );
@@ -276,11 +276,7 @@ function Settings() {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                  >
+                  <Grid container direction="column" alignItems="center">
                     <Grid item xs={12}>
                       {tracker === TRACKERS.POSE && (
                         <div>
@@ -352,7 +348,9 @@ function Settings() {
                               fullWidth
                               value={localTeachableMachineModelUrl}
                               onChange={(event) => {
-                                setLocalTeachableMachineModelUrl(event.target.value);
+                                setLocalTeachableMachineModelUrl(
+                                  event.target.value
+                                );
                               }}
                             />
                           </Grid>
@@ -363,9 +361,14 @@ function Settings() {
                                   variant="outlined"
                                   size="small"
                                   align="right"
-                                  disabled={localTeachableMachineModelUrl === teachableMachineModelUrl}
+                                  disabled={
+                                    localTeachableMachineModelUrl ===
+                                    teachableMachineModelUrl
+                                  }
                                   onClick={() => {
-                                    setTeachableMachineModelUrl(localTeachableMachineModelUrl)
+                                    setTeachableMachineModelUrl(
+                                      localTeachableMachineModelUrl
+                                    );
                                     // window.api?.send(
                                     //   "loadTeachableMachineModel"
                                     // );
@@ -529,7 +532,8 @@ function Settings() {
                                   sx={{ color: "white" }}
                                   control={
                                     <Switch
-                                      disabled={!window.api}
+                                      // TODO: check if runs in tauri or in web
+                                      // disabled={!window.api}
                                       checked={oscActive}
                                       onChange={(event) => {
                                         setOscActive(event.target.checked);

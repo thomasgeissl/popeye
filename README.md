@@ -25,12 +25,9 @@ download the packaged app from the [gh releases](https://github.com/thomasgeissl
 
 ## Development
 
-- yarn install
-- yarn dev #to start the frontend dev process
-- yarn electron-dev #to start the electron dev process
-- yarn electron-build-mac
-- yarn electron-build-win
-- yarn electron-build-linux
+- npm install
+- npm run tauri dev
+- npm run tauri build
 
 ## Online version
 
