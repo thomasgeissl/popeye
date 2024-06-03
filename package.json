@@ -1,7 +1,7 @@
 {
   "name": "popeye",
   "private": true,
-  "version": "0.0.4",
+  "version": "1.0.0",
   "main": "./public/electron.js",
   "homepage": "https://thomasgeissl.github.io/popeye/",
   "scripts": {
