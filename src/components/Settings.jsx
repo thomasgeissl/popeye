@@ -532,8 +532,7 @@ function Settings() {
                                   sx={{ color: "white" }}
                                   control={
                                     <Switch
-                                      // TODO: check if runs in tauri or in web
-                                      // disabled={!window.api}
+                                      disabled={!window.__TAURI__}
                                       checked={oscActive}
                                       onChange={(event) => {
                                         setOscActive(event.target.checked);
@@ -548,7 +547,7 @@ function Settings() {
                         </Grid>
                         <Grid item>
                           <IconButton
-                            // disabled={!window.api}
+                            disabled={!window.__TAURI__}
                             size="large"
                             edge="start"
                             color="secondary"
