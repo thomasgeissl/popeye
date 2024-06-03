@@ -28,11 +28,11 @@ fn main() {
                             let port = v["port"].as_u64().unwrap_or(8888);
                             let address = v["address"].as_str().unwrap_or("/popeye");
                             let args = match v["args"].as_array() {
-                              Some(arr) => arr.iter()
-                                  .filter_map(|val| val.as_f64().map(|f| f as f32))
-                                  .collect::<Vec<f32>>(),
-                              None => vec![],
-                          };
+                                Some(arr) => arr.iter()
+                                    .filter_map(|val| val.as_f64().map(|f| f as f32))
+                                    .collect::<Vec<f32>>(),
+                                None => vec![],
+                            };
                             let destination = format!("{}:{}", host, port);
 
                             let msg_buf = encoder::encode(&OscPacket::Message(OscMessage {
@@ -55,8 +55,13 @@ fn main() {
             });
             // app.unlisten(id);
             // app.emit_all("event-name", Payload { message: "Tauri is awesome!".into() }).unwrap();
+
             let window = app.get_window("main").unwrap();
-            // window.open_devtools();
+            #[cfg(debug_assertions)]
+            {
+                window.open_devtools();
+            }
+
             Ok(())
         })
         .run(tauri::generate_context!())
