@@ -548,7 +548,7 @@ function Settings() {
                         </Grid>
                         <Grid item>
                           <IconButton
-                            disabled={!window.api}
+                            // disabled={!window.api}
                             size="large"
                             edge="start"
                             color="secondary"
