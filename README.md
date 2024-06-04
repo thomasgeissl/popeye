@@ -24,7 +24,7 @@ download the packaged app from the [gh releases](https://github.com/thomasgeissl
 
 
 ## Development
-
+- curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 - npm install
 - npm run tauri dev
 - npm run tauri build
