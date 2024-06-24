@@ -20,7 +20,7 @@ fn main() {
         .setup(|app| {
             let sock = Arc::new(Mutex::new(UdpSocket::bind("127.0.0.1:33833").unwrap()));
             let sock_clone = Arc::clone(&sock);
-            app.listen_global("event-name", move |event| {
+            let listen_global: tauri::EventHandler = app.listen_global("event-name", move |event| {
                 if let Some(payload) = event.payload() {
                     match serde_json::from_str::<Value>(payload) {
                         Ok(v) => {

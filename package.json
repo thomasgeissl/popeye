@@ -7,7 +7,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "tauri": "tauri",
+    "tauri": "RUST_BACKTRACE=1 tauri",
     "build": "vite build  --base=./",
     "preview": "vite preview",
     "electron-dev": "electronmon .",

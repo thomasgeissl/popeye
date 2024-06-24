@@ -532,7 +532,7 @@ function Settings() {
                                   sx={{ color: "white" }}
                                   control={
                                     <Switch
-                                      disabled={!window.__TAURI__}
+                                      disabled={!window.__TAURI__ && !window.ofxChoc}
                                       checked={oscActive}
                                       onChange={(event) => {
                                         setOscActive(event.target.checked);

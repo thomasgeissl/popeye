@@ -23,12 +23,17 @@ const send = (address, args) => {
       ? `/${state.oscSessionPrefix}/popeye/${address}`
       : `/popeye/${address}`;
     // emit an event that is only visible to the current window
-    appWindow?.emit("event-name", {
+    const payload = {
       host: state.oscDestinationHost,
       port: state.oscDestinationPort,
       address: oscAddress,
       args: argsList,
-    });
+    }
+    appWindow?.emit("event-name", payload);
+
+    if(window.ofxChoc){
+      window.ofxChoc.notifyEvent("osc", payload)
+    }
   }
   if (state.mqttActive) {
     const topic =
